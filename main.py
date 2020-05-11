@@ -2,6 +2,12 @@
 
 #from Definitions import *
 import hydraulic
-#import Thermal_Functions as thermal
+import Thermal_Functions as thermal
 
-hydraulic.hydraulic_plot_h()
+m_dot_c = hydraulic.iterate_c()
+m_dot_h = hydraulic.iterate_h()
+Re_sh = hydraulic.give_Re_sh(m_dot_c)
+Re_tube = hydraulic.give_Re_tube(m_dot_h)
+
+print(thermal.F_Q(m_dot_c, m_dot_h, Re_tube, Re_sh))
+

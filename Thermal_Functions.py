@@ -160,6 +160,7 @@ def iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer):
 
 def F_Q(m_dot_c, m_dot_h, Re_inner, Re_outer):
     results = iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer)
+    # Give average of heat rates
     Q = (results['Q_dot_cold'] + results['Q_dot_hot'] + results['Q_dot_temp']) / 3
     return Q
 
