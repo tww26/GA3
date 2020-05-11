@@ -62,15 +62,6 @@ Y = 10e-3
 bundle_array = [1, 3, 5, 3, 1]
 F = 1
 
-"""Derived design variables"""
-N_row = len(bundle_array)
-N_tube = sum(bundle_array)
-B = L / (N_baffle + 1)
-if pitch_type == "square" or pitch_type == "Square":
-    a = 0.34
-else:
-    a = 0.2
-
 
 """__________________________________________________________________"""
 
@@ -83,3 +74,9 @@ N_tube = sum(bundle_array)
 L_sh = L + 3e-3
 L_tube = L + 12e-3
 A = np.pi * d_inner * L * N_tube
+
+B = L / (N_baffle + 1)
+if pitch_type == "square" or pitch_type == "Square":
+    a = 0.34
+else:
+    a = 0.2
