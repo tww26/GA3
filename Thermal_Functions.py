@@ -15,7 +15,13 @@ import parametric as para
 """___________________________________Thermal Function Definitions__________________________________________"""
 """_________________________________________________________________________________________________________"""
 
-"""___________________Internal Functions: functions to be used by other thermal functions___________________"""
+
+"""___________________________________________LMTD Method___________________________________________________"""
+"""_________________________________________________________________________________________________________"""
+
+# The following functions relate to the LMTD method to find the heat transfer through iteration of outlet temperatures.
+
+"""____________LMTD Method: INTERNAL Functions: functions to be used by other thermal functions_____________"""
 
 def evaluate_c(geometry):
     if geometry.get('pitch_type') == "square":
@@ -82,8 +88,8 @@ def f_T_out_hot(Q_dot_hot, m_dot_h, cp, T_in_hot):
 
 
 
-"""___________________________Iteration to Determine T_out_cold and T_out_hot_______________________________"""
-
+"""_____________________LMTD Method: ITERATION to Determine T_out_cold and T_out_hot___________________________"""
+#F_Q(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
 def iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
     # These variables will not change during the iteration - Design Point Dependent Constants - Pass into
@@ -109,7 +115,6 @@ def iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     T_out_cold = T_out_cold_init
 
     # These variables will change during the iteration.
-
     Q_dot_cold = f_Q_dot_cold(m_dot_c, cp, T_in_cold, T_out_cold)
     Q_dot_hot = f_Q_dot_hot(m_dot_h, cp, T_in_hot, T_out_hot)
     dTlm = f_dTlm(T_in_hot, T_out_hot, T_in_cold, T_out_cold)
@@ -162,7 +167,8 @@ def iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     return Results
 
 
-"""_______________________________External Functions: functions to be used in main___________________________"""
+
+"""_____________________LMTD Method: EXTERNAL Functions: functions to be used in main_________________________"""
 
 def F_Q(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     results = iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
@@ -191,3 +197,69 @@ def F_E(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     E = F_Q(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry) / (m_dot * cp * (T_in_hot - T_in_cold))
 
     return E
+
+
+
+
+"""_____________________________________________E-NTU Method________________________________________________"""
+"""_________________________________________________________________________________________________________"""
+
+# The following functions relate to the E-NTU method which is a method of obtaining the heat transfer by first
+# first determining the heat exchanger effectiveness, E.
+
+"""_____________________________________E-NTU Method: INTERNAL Functions____________________________________"""
+
+def f_C_min(m_dot_c, m_dot_h):
+# Returns the minimum heat capacity
+    if m_dot_h > m_dot_c:
+       C_min = m_dot_c * cp
+    else:
+        C_min = m_dot_h * cp
+    return C_min
+
+
+def f_C_max(m_dot_c, m_dot_h):
+# Returns the maximum heat capacity
+    if m_dot_h < m_dot_c:
+       C_max = m_dot_c * cp
+    else:
+        C_max = m_dot_h * cp
+    return C_max
+
+def f_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+
+    Nu_inner = f_Nu_inner(Re_inner, Pr)
+    h_inner = f_h_inner(lambda_water, d_inner, Nu_inner)
+
+    # Design Variable - Affected
+    c = evaluate_c(geometry)
+    A = para.A(geometry)
+
+    # Affected in turn by the above...
+    Nu_outer = f_Nu_outer(Re_outer, Pr, c)
+    # And in turn affected by the above...
+    h_outer = f_h_outer(lambda_water, d_outer, Nu_outer)
+    U = f_U(h_inner, h_outer, d_inner, d_outer, lambda_tube)
+
+    C_min = f_C_min(m_dot_c, m_dot_h)
+    C_max = f_C_max(m_dot_c, m_dot_h)
+
+    N_shell = geometry.get('N_shell')
+    C = C_min / C_max
+
+    NTU = U * A / C_min
+
+    E_p = 0.1
+
+    if C == 1:
+        E = (N_shell * E_p) / (1 + (N_shell - 1) * E_p)
+
+    elif C == 0:
+        E = 1 - np.exp(-NTU)
+
+    else:
+        E = ((((1 - E_p * C)/(1 - E_p))**N_shell)-1)/((((1 - E_p * C)/(1 - E_p))**N_shell) - C)
+
+    return E
+
+

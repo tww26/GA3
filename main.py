@@ -10,8 +10,9 @@ N_baffle = 9
 pitch_type = "square"
 Y = 10e-3
 bundle_array = [1,3,5,3,1]
+N_shell = 1
 
-geometry = {'L':L,'N_baffle':N_baffle,'pitch_type':pitch_type,'Y':Y,'bundle_array':bundle_array}
+geometry = {'L':L,'N_baffle':N_baffle,'pitch_type':pitch_type,'Y':Y,'bundle_array':bundle_array, 'N_shell':N_shell}
 
 
 """PLAYING WITH DESIGN VARIABLES"""
