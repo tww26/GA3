@@ -183,6 +183,7 @@ def total_dP_cold(m_dot_c,geometry):
     # Define design variables
     N_row = para.N_row(geometry)
     a = para.a(geometry)
+    N_baffle = geometry.get('N_baffle')
     
     # Calculate A_sh
     A_sh = give_A_sh(geometry)
@@ -198,13 +199,20 @@ def total_dP_cold(m_dot_c,geometry):
     
     # dP FROM SHELL
     # Equation 9 from notes - NOTE DUBIOUS
+    """ALSO INITIALLY I HAD THIS AS FOR THE WHOLE THING, BUT ISN'T IT PER SHELL PASS?"""
     dP_shell = 4 * a * Re_sh**(-0.15) * N_row * rho_water * v_sh**2
+    dP_shell *= (N_baffle + 1)
+    
+    # dP form bends
+    K = 1 # just a guess for now but something to tweak!
+    dP_bends = K* 0.5*rho_water*v_sh**2
+    dP_bends *= N_baffle
     
     # dP FROM NOZZLE
     # Assume one dynamic head (x2 for 2 nozzles)
     dP_nozzle = 2*0.5*rho_water*v_nozzle_c**2
     
-    return(dP_nozzle + dP_shell)
+    return(dP_nozzle + dP_shell + dP_bends)
 
 def give_Re_sh(m_dot_c,geometry):
     """What the name says..."""
