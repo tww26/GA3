@@ -7,6 +7,9 @@ Created on Mon May 11 10:02:39 2020
 
 import numpy as np
 
+
+"""For Parametric Definitions, import design fraiables from main???"""
+
 """_________________________________________________________________________________________________________"""
 """____________________________________________Definitions__________________________________________________"""
 """_________________________________________________________________________________________________________"""
@@ -50,7 +53,7 @@ T_in_cold = 293.15
 
 """Global Input Variables"""
 
-"""Design Variables"""
+#"""Design Variables"""
 
 L = 350e-3
 N_baffle = 9
@@ -66,6 +69,9 @@ F = 1
 
 
 """Parametric Definitions"""
+
+N_row = len(bundle_array)
+N_tube = sum(bundle_array)
 
 L_sh = L + 3e-3
 L_tube = L + 12e-3

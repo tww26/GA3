@@ -7,6 +7,7 @@ Created on Mon May 11 09:44:10 2020
 
 import numpy as np
 import matplotlib.pyplot as plt
+from Definitions import *
 
 """
 Start by defining the Characteristic dP-massflowrate relationship from graphs
@@ -322,4 +323,5 @@ hydraulic_plot_h()
 print(iterate_h())
 hydraulic_plot_c()
 print(iterate_c())
-    
+"""
+   
