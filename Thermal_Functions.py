@@ -191,13 +191,3 @@ def F_E(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     E = F_Q(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry) / (m_dot * cp * (T_in_hot - T_in_cold))
 
     return E
-
-
-
-
-
-
-
-
-
-
