@@ -170,7 +170,7 @@ def iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
 """_____________________LMTD Method: EXTERNAL Functions: functions to be used in main_________________________"""
 
-def F_Q(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+def F_Q_LMTD(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     results = iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
     # Give average of heat rates
     Q = (results['Q_dot_cold'] + results['Q_dot_hot'] + results['Q_dot_temp']) / 3
@@ -187,14 +187,14 @@ def F_T_out_hot(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     return results['T_out_hot']
 
 
-def F_E(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+def F_E_LMTD(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
     if m_dot_h > m_dot_c:
         m_dot = m_dot_c
     else:
         m_dot = m_dot_h
 
-    E = F_Q(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry) / (m_dot * cp * (T_in_hot - T_in_cold))
+    E = F_Q_LMTD(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry) / (m_dot * cp * (T_in_hot - T_in_cold))
 
     return E
 
@@ -226,7 +226,42 @@ def f_C_max(m_dot_c, m_dot_h):
         C_max = m_dot_h * cp
     return C_max
 
-def f_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+
+def f_E_NTU_p(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+# Returns the effectiveness for a single shell pass through the NTU method
+
+    Nu_inner = f_Nu_inner(Re_inner, Pr)
+    h_inner = f_h_inner(lambda_water, d_inner, Nu_inner)
+
+    # Design Variable - Affected
+    c = evaluate_c(geometry)
+    A = para.A(geometry)
+
+    # Affected in turn by the above...
+    Nu_outer = f_Nu_outer(Re_outer, Pr, c)
+    # And in turn affected by the above...
+    h_outer = f_h_outer(lambda_water, d_outer, Nu_outer)
+    U = f_U(h_inner, h_outer, d_inner, d_outer, lambda_tube)
+
+    C_min = f_C_min(m_dot_c, m_dot_h)
+    C_max = f_C_max(m_dot_c, m_dot_h)
+
+    C = C_min / C_max
+
+    NTU = U * A / C_min
+
+    E = 2 * (1 + C + ((1+C**2)**0.5) * (1 + np.exp(-NTU*(1 + C**2)**0.5))/(1 - np.exp(-NTU*(1 + C**2)**0.5)))**-1
+
+    return E
+
+
+"""_____________________________________E-NTU Method: EXTERNAL Functions___________________________________"""
+
+
+def F_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+# Returns the effectiveness through NTU method
+# FUNCTION INCOMPLETE: need a way to determine E_p, the effectiveness per shell pass inorder to be able to generalise
+# to multiple shell passes.
 
     Nu_inner = f_Nu_inner(Re_inner, Pr)
     h_inner = f_h_inner(lambda_water, d_inner, Nu_inner)
@@ -249,17 +284,35 @@ def f_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
     NTU = U * A / C_min
 
-    E_p = 0.1
+    E_p = f_E_NTU_p(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
 
-    if C == 1:
-        E = (N_shell * E_p) / (1 + (N_shell - 1) * E_p)
-
-    elif C == 0:
-        E = 1 - np.exp(-NTU)
+    if N_shell ==1:
+    # if there is one shell then just return the result from f_E_NTU_p
+        E = E_p
 
     else:
-        E = ((((1 - E_p * C)/(1 - E_p))**N_shell)-1)/((((1 - E_p * C)/(1 - E_p))**N_shell) - C)
+    #THIS PART IS UNFINISHED
+    # if there is MORE than one shell the must compute E_p for each pass to determine the overall effectiveness.
+        if C == 1:
+            E = (N_shell * E_p) / (1 + (N_shell - 1) * E_p)
+
+        elif C == 0:
+            E = 1 - np.exp(-NTU)
+
+        else:
+            E = ((((1 - E_p * C)/(1 - E_p))**N_shell)-1)/((((1 - E_p * C)/(1 - E_p))**N_shell) - C)
 
     return E
 
 
+def F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry):
+    E = F_E_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
+
+    if m_dot_h > m_dot_c:
+        T_out_cold = T_in_cold + E * (T_in_hot - T_in_cold)
+        Q = m_dot_c * cp * (T_out_cold - T_in_cold)
+    else:
+        T_out_hot = T_in_hot - E * (T_in_hot - T_in_cold)
+        Q = m_dot_h * cp * (T_in_hot - T_out_hot)
+
+    return Q
