@@ -17,11 +17,11 @@ import parametric as para
 
 """___________________Internal Functions: functions to be used by other thermal functions___________________"""
 
-def evaluate_c(pitch_type):
-    if pitch_type == "triangle":
-        return 0.2
-    else:
+def evaluate_c(geometry):
+    if geometry.get('pitch_type') == "square":
         return 0.15
+    else:
+        return 0.2
 
 
 def f_Nu_inner(Re_inner, Pr):
@@ -84,17 +84,23 @@ def f_T_out_hot(Q_dot_hot, m_dot_h, cp, T_in_hot):
 
 """___________________________Iteration to Determine T_out_cold and T_out_hot_______________________________"""
 
-def iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer):
+def iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
     # These variables will not change during the iteration - Design Point Dependent Constants - Pass into
     # iterate_hydraulic():
-    c = evaluate_c(pitch_type)
     Nu_inner = f_Nu_inner(Re_inner, Pr)
     h_inner = f_h_inner(lambda_water, d_inner, Nu_inner)
+    
+    # Design Variable - Affected
+    c = evaluate_c(geometry)
+    A = para.A(geometry)
+    F = para.F(geometry)
+    # Affected in turn by the above...
     Nu_outer = f_Nu_outer(Re_outer, Pr, c)
+    # And in turn affected by the above...
     h_outer = f_h_outer(lambda_water, d_outer, Nu_outer)
     U = f_U(h_inner, h_outer, d_inner, d_outer, lambda_tube)
-
+    
     # Initialisation: these values serve as initial guess to iterate from
     T_out_hot_init = 315
     T_out_cold_init = 285
@@ -158,31 +164,31 @@ def iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer):
 
 """_______________________________External Functions: functions to be used in main___________________________"""
 
-def F_Q(m_dot_c, m_dot_h, Re_inner, Re_outer):
-    results = iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer)
+def F_Q(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+    results = iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
     # Give average of heat rates
     Q = (results['Q_dot_cold'] + results['Q_dot_hot'] + results['Q_dot_temp']) / 3
     return Q
 
 
-def F_T_out_cold(m_dot_c, m_dot_h, Re_inner, Re_outer):
-    results = iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer)
+def F_T_out_cold(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+    results = iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
     return results['T_out_cold']
 
 
-def F_T_out_hot(m_dot_c, m_dot_h, Re_inner, Re_outer):
-    results = iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer)
+def F_T_out_hot(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+    results = iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
     return results['T_out_hot']
 
 
-def F_E(m_dot_c, m_dot_h, Re_inner, Re_outer):
+def F_E(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
     if m_dot_h > m_dot_c:
         m_dot = m_dot_c
     else:
         m_dot = m_dot_h
 
-    E = F_Q(m_dot_c, m_dot_h, Re_inner, Re_outer) / (m_dot * cp * (T_in_hot - T_in_cold))
+    E = F_Q(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry) / (m_dot * cp * (T_in_hot - T_in_cold))
 
     return E
 

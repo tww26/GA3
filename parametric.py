@@ -15,7 +15,11 @@ def N_tube(geometry):
     return(sum(geometry.get('bundle_array')))
     
 def A(geometry):
-    return(np.pi * d_inner * geometry.get('L') * geometry.get('N_tube'))
+    return(np.pi * d_inner * geometry.get('L') * N_tube(geometry))
+    
+def F(geometry):
+    """1 UNTIL WE ADD MANY PASSES"""
+    return(1)
     
 def a(geometry):
     if geometry.get('pitch_type') == "square" or geometry.get('pitch_type') == "Square":

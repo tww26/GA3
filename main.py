@@ -20,6 +20,6 @@ Re_tube = hydraulic.give_Re_tube(m_dot_h,geometry)
 
 hydraulic.hydraulic_plot_h(geometry)
 
-#print(thermal.F_Q(m_dot_c, m_dot_h, Re_tube, Re_sh))
+print(thermal.F_Q(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry))
 
 
