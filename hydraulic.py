@@ -284,16 +284,17 @@ def hydraulic_plot_c(geometry):
 
 
 def iterate_c(geometry):
-    """Iterates to find the massflowrate of hot flow"""
+    """Iterates to find the massflowrate of cold flow"""
+    # NOTE - I've had this give same ans for 1-2 Baffles?
     
     # Starts mass flowrate at 0
     m_dot = 0
     m_dot_final = 0
     difference = 100000
     
-    for i in range (160):
+    for i in range (1600):
         
-        m_dot += 0.005
+        m_dot += 0.0005
         if abs(total_dP_cold(m_dot,geometry)-dp_flowrate(m_dot,"cold")) < difference:
             difference = abs(total_dP_cold(m_dot,geometry)-dp_flowrate(m_dot,"cold"))
             m_dot_final = m_dot
@@ -308,9 +309,9 @@ def iterate_h(geometry):
     m_dot_final = 0
     difference = 100000
     
-    for i in range (125):
+    for i in range (1250):
         
-        m_dot += 0.005
+        m_dot += 0.0005
         if abs(total_dP_hot(m_dot,geometry)-dp_flowrate(m_dot,"hot")) < difference:
             difference = abs(total_dP_hot(m_dot,geometry)-dp_flowrate(m_dot,"hot"))
             m_dot_final = m_dot
