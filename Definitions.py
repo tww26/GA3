@@ -53,30 +53,30 @@ T_in_cold = 293.15
 
 """Global Input Variables"""
 
-#"""Design Variables"""
+"""OLD - NOW IN MAIN/PARA Design Variables"""
 
-L = 350e-3
-N_baffle = 9
-pitch_type = "square"
-Y = 10e-3
-bundle_array = [1, 3, 5, 3, 1]
-F = 1
+#L = 350e-3
+#N_baffle = 9
+#pitch_type = "square"
+#Y = 10e-3
+#bundle_array = [1, 3, 5, 3, 1]
+#F = 1
 
 
 """__________________________________________________________________"""
 
 
-"""Parametric Definitions"""
+"""Parametric Definitions NOW DEFINED IN PARA"""
 
-N_row = len(bundle_array)
-N_tube = sum(bundle_array)
-
-L_sh = L + 3e-3
-L_tube = L + 12e-3
-A = np.pi * d_inner * L * N_tube
-
-B = L / (N_baffle + 1)
-if pitch_type == "square" or pitch_type == "Square":
-    a = 0.34
-else:
-    a = 0.2
+#N_row = len(bundle_array)
+#N_tube = sum(bundle_array)
+#
+#L_sh = L + 3e-3
+#L_tube = L + 12e-3
+#A = np.pi * d_inner * L * N_tube
+#
+#B = L / (N_baffle + 1)
+#if pitch_type == "square" or pitch_type == "Square":
+#    a = 0.34
+#else:
+#    a = 0.2

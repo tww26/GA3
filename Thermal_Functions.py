@@ -6,9 +6,9 @@ Created on Mon May 11 10:02:05 2020
 """
 
 import numpy as np
-
-"""from Definitions no longer needed?"""
 from Definitions import *
+import parametric as para
+
 
 
 """_________________________________________________________________________________________________________"""

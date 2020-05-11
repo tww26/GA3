@@ -8,6 +8,7 @@ Created on Mon May 11 09:44:10 2020
 import numpy as np
 import matplotlib.pyplot as plt
 from Definitions import *
+import parametric as para
 
 """
 Start by defining the Characteristic dP-massflowrate relationship from graphs
@@ -37,9 +38,12 @@ def dp_flowrate(m_dot,temp):
 HOT STREAM CALCULATIONS
 """
 
-def Find_sigma():
+def Find_sigma(geometry):
     """Returns sigma, the ratio of free area
     geometric parameters defined externally"""
+    
+    # Define design variable
+    N_tube = para.N_tube(geometry)
     
     numerator = 0.25 * np.pi * N_tube * d_inner**2
     denominator = 0.25 * np.pi * D_inner**2
@@ -88,7 +92,7 @@ def Find_f(Re):
     return(f)
 
 # Now combine the above functions to give a pressure drop
-def total_dP_hot(m_dot_h):
+def total_dP_hot(m_dot_h,geometry):
     """Given massflowrate, Calculates velocities, Re and Kc, Ke 
     (assumes design variables D_inner,d_inner,N_tube set elsewhere)
     THEN
@@ -96,6 +100,10 @@ def total_dP_hot(m_dot_h):
         1. Friction in tubes
         2. Entry and Exit losses (assuming infinite Re)
         3. Nozzle losses"""
+    
+    # Define design variables
+    N_tube = para.N_tube(geometry)
+    L = geometry.get('L')
     
     # Calculate tube velocity
     m_dot_tube = m_dot_h / N_tube
@@ -110,7 +118,7 @@ def total_dP_hot(m_dot_h):
     # Re assumed infinite by nozzle (from Friday 8/5/20 MS Teams call)
     
     # Calculate Ke, Kc assuming infinite Re
-    sigma = Find_sigma()
+    sigma = Find_sigma(geometry)
     Kc = Find_Kc(sigma)
     Ke = Find_Ke(sigma)
     
@@ -130,8 +138,10 @@ def total_dP_hot(m_dot_h):
     
     return(dP_tube+dP_nozzle+dP_inout)
 
-def give_Re_tube(m_dot_h):
+def give_Re_tube(m_dot_h,geometry):
     """Does what is says on the tin"""
+    # Define design variables
+    N_tube = para.N_tube(geometry)
     # Calculate tube velocity
     m_dot_tube = m_dot_h / N_tube
     v_tube = m_dot_tube / (rho_water * np.pi * 0.25 * d_inner**2)
@@ -144,8 +154,12 @@ def give_Re_tube(m_dot_h):
 COLD STREAM CALCULATIONS
 """
 
-def give_A_sh():
+def give_A_sh(geometry):
     """Gives A_sh. Defined inits own function as this is something that could be tweaked as we improve A_sh"""
+    
+    # Define design variables
+    Y = geometry.get('Y')
+    B = para.B(geometry)
     
     # Calculate A_sh 
     """NOTE this is something to revisit since some debate about whether its accurate"""
@@ -157,18 +171,21 @@ def give_A_sh():
     
     return(A_sh)
 
-def total_dP_cold(m_dot_c):
+def total_dP_cold(m_dot_c,geometry):
     """Given mass flowrate, calculates velocities and Re
     (assumes some design variables)
     THEN
     Sums pressure drops in the shell:
         1. Drop across shell
         2. Drop across nozzle
-    NOTE that in future we may like to look at bends
+    NOTE that in future we may like to look at bends!!!
     """
+    # Define design variables
+    N_row = para.N_row(geometry)
+    a = para.a(geometry)
     
     # Calculate A_sh
-    A_sh = give_A_sh()
+    A_sh = give_A_sh(geometry)
     
     # Calculate v_sh
     v_sh = m_dot_c / (rho_water*A_sh)
@@ -189,10 +206,10 @@ def total_dP_cold(m_dot_c):
     
     return(dP_nozzle + dP_shell)
 
-def give_Re_sh(m_dot_c):
+def give_Re_sh(m_dot_c,geometry):
     """What the name says..."""
     
-    A_sh = give_A_sh()
+    A_sh = give_A_sh(geometry)
     
     # Calculate v_sh
     v_sh = m_dot_c / (rho_water*A_sh)
@@ -207,7 +224,7 @@ ITERATION & PLOTTING
 """
     
 
-def hydraulic_plot_h():
+def hydraulic_plot_h(geometry):
     """Plots dP-massflowrate curves from both the given characteristics and the calculations for hot flow"""
     
     # Starts mass flowrate at 0
@@ -221,7 +238,7 @@ def hydraulic_plot_h():
         
         m_dot += 0.005
         m_dots.append(m_dot)
-        dp_calc.append(total_dP_hot(m_dot))
+        dp_calc.append(total_dP_hot(m_dot,geometry))
         dp_graph.append(dp_flowrate(m_dot,"hot"))
     
     plt.plot(m_dots,dp_graph,label = "from fig.6 graph")
@@ -236,7 +253,7 @@ def hydraulic_plot_h():
     
     return(m_dot)
 
-def hydraulic_plot_c():
+def hydraulic_plot_c(geometry):
     """Plots dP-massflowrate curves from both the given characteristics and the calculations for hot flow"""
     
     # Starts mass flowrate at 0
@@ -250,7 +267,7 @@ def hydraulic_plot_c():
         
         m_dot += 0.005
         m_dots.append(m_dot)
-        dp_calc.append(total_dP_cold(m_dot))
+        dp_calc.append(total_dP_cold(m_dot,geometry))
         dp_graph.append(dp_flowrate(m_dot,"cold"))
     
     plt.plot(m_dots,dp_graph,label = "from fig.6 graph")
@@ -266,7 +283,7 @@ def hydraulic_plot_c():
     return(m_dot)
 
 
-def iterate_c():
+def iterate_c(geometry):
     """Iterates to find the massflowrate of hot flow"""
     
     # Starts mass flowrate at 0
@@ -277,13 +294,13 @@ def iterate_c():
     for i in range (160):
         
         m_dot += 0.005
-        if abs(total_dP_cold(m_dot)-dp_flowrate(m_dot,"cold")) < difference:
-            difference = abs(total_dP_cold(m_dot)-dp_flowrate(m_dot,"cold"))
+        if abs(total_dP_cold(m_dot,geometry)-dp_flowrate(m_dot,"cold")) < difference:
+            difference = abs(total_dP_cold(m_dot,geometry)-dp_flowrate(m_dot,"cold"))
             m_dot_final = m_dot
             
     return(m_dot_final)
 
-def iterate_h():
+def iterate_h(geometry):
     """Iterates to find the massflowrate of hot flow"""
     
     # Starts mass flowrate at 0
@@ -294,8 +311,8 @@ def iterate_h():
     for i in range (125):
         
         m_dot += 0.005
-        if abs(total_dP_hot(m_dot)-dp_flowrate(m_dot,"hot")) < difference:
-            difference = abs(total_dP_hot(m_dot)-dp_flowrate(m_dot,"hot"))
+        if abs(total_dP_hot(m_dot,geometry)-dp_flowrate(m_dot,"hot")) < difference:
+            difference = abs(total_dP_hot(m_dot,geometry)-dp_flowrate(m_dot,"hot"))
             m_dot_final = m_dot
             
     return(m_dot_final)
