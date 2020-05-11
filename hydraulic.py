@@ -300,6 +300,8 @@ def iterate_h():
     return(m_dot_final)
     
 # Define everything that it needs
+"""
+Testing for the sake of GitKraken
 
 rho_water = 1000
 mu = 0.000651
@@ -314,7 +316,7 @@ B = 0.035
 N_tube = 12
 N_row = 6
 
-"""
+
 
 hydraulic_plot_h()
 print(iterate_h())
