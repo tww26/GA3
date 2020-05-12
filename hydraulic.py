@@ -44,8 +44,9 @@ def Find_sigma(geometry):
     
     # Define design variable
     N_tube = para.N_tube(geometry)
+    N_pass = geometry.get('N_pass')
     
-    numerator = 0.25 * np.pi * N_tube * d_inner**2
+    numerator = 0.25 * np.pi * (N_tube/N_pass) * d_inner**2
     denominator = 0.25 * np.pi * D_inner**2
     
     sigma = numerator / denominator
@@ -103,10 +104,11 @@ def total_dP_hot(m_dot_h,geometry):
     
     # Define design variables
     N_tube = para.N_tube(geometry)
+    N_pass = geometry.get('N_pass')
     L = geometry.get('L')
     
     # Calculate tube velocity
-    m_dot_tube = m_dot_h / N_tube
+    m_dot_tube = m_dot_h / (N_tube / N_pass)
     v_tube = m_dot_tube / (rho_water * np.pi * 0.25 * d_inner**2)
     
     # Calculate nozzle velocity
@@ -123,27 +125,39 @@ def total_dP_hot(m_dot_h,geometry):
     Ke = Find_Ke(sigma)
     
     
-    # dP FROM TUBE FRICTION
-    # This is for one tube, and it's all we need since they're in //
+    """dP FROM TUBE FRICTION"""
+    # This is for one tube, and it's all we need in 1-pass since they're in //
     f = Find_f(Re_tube)
     dP_tube = f*(L/d_inner)*0.5*rho_water*v_tube**2
+    # Times the number of passes
+    dP_tube *= N_pass
     
-    # dP FROM NOZZLE
+    """dP FROM NOZZLE"""
     # Assume one dynamic head (x2 for 2 nozzles)
     dP_nozzle = 2*0.5*rho_water*v_nozzle_h**2
     
-    # dP FROM ENTRY/EXIT
+    """dP FROM ENTRY/EXIT"""
     # In-Out Pressure Head
     dP_inout = 0.5*rho_water*(v_tube**2)*(Kc+Ke)
+    # Generalise for multiple passes
+    dP_inout *= N_pass
+
+    """dP FROM TURN - atm only 180 degree turns between passes"""
+    K_turn = 1 # We need to make this a function of L_header too
+    v_turn = m_dot_tube / (rho_water * (N_tube/N_pass) * np.pi * 0.25 * d_inner**2)
+    dP_turn = 0.5*rho_water*(v_turn**2)*K_turn
+    # Times number of passes - 1
+    dP_turn *= (N_pass-1)
     
-    return(dP_tube+dP_nozzle+dP_inout)
+    return(dP_tube + dP_nozzle + dP_inout + dP_turn)
 
 def give_Re_tube(m_dot_h,geometry):
     """Does what is says on the tin"""
     # Define design variables
     N_tube = para.N_tube(geometry)
     # Calculate tube velocity
-    m_dot_tube = m_dot_h / N_tube
+    # generalise for N_pass
+    m_dot_tube = m_dot_h / (N_tube / N_pass)
     v_tube = m_dot_tube / (rho_water * np.pi * 0.25 * d_inner**2)
     # Calculate Re for tubes
     Re_tube = (v_tube*rho_water*d_inner)/mu
