@@ -3,6 +3,7 @@
 import hydraulic
 import Thermal_Functions as thermal
 import matplotlib.pyplot as plt
+import geometric as geom
 
 """DEFINE STATIC DESIGN VARIABLES"""
 L = 350e-3
@@ -11,8 +12,10 @@ pitch_type = "square"
 Y = 10e-3
 bundle_array = [1,3,5,3,1]
 N_shell = 1
+N_pass = 1
+L_header = 0.1
 
-geometry = {'L':L,'N_baffle':N_baffle,'pitch_type':pitch_type,'Y':Y,'bundle_array':bundle_array, 'N_shell':N_shell}
+geometry = {'L': L,'N_baffle': N_baffle,'pitch_type': pitch_type,'Y': Y,'bundle_array': bundle_array, 'N_shell': N_shell, 'N_pass': N_pass, 'L_header': L_header}
 
 
 """PLAYING WITH DESIGN VARIABLES"""
@@ -46,25 +49,3 @@ geometry = {'L':L,'N_baffle':N_baffle,'pitch_type':pitch_type,'Y':Y,'bundle_arra
 #plt.title("Effect of L and Number of Baffles Variation")
 #plt.show()
 
-
-"""Demonstration of the two methods of determining heat flow: LMTD and NTU"""
-# This shows a good agreement for single shell single pass.
-
-
-m_dot_c = hydraulic.iterate_c(geometry)
-m_dot_h = hydraulic.iterate_h(geometry)
-
-Re_sh = hydraulic.give_Re_sh(m_dot_c, geometry)
-Re_tube = hydraulic.give_Re_tube(m_dot_h, geometry)
-
-print('Mass Flow Rates')
-print('m_dot_h:', m_dot_h)
-print('m_dot_c:', m_dot_c)
-
-print('Heat Transfer Rates')
-print('F_Q_NTU:', thermal.F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry))
-print('F_Q_LMTD:', thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry))
-
-print('Heat Exchanger Effectiveness - E')
-print('F_E_NTU:', thermal.F_E_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry))
-print('F_E_LMTD:', thermal.F_E_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry))
