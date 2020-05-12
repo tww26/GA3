@@ -17,6 +17,8 @@ def N_tube(geometry):
 def A(geometry):
     return(np.pi * d_inner * geometry.get('L') * N_tube(geometry))
     
+"""A_sh is defined in hydraulic.py"""
+    
 def F(geometry):
     """1 UNTIL WE ADD MANY PASSES"""
     return(1)

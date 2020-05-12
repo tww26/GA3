@@ -192,7 +192,7 @@ def total_dP_cold(m_dot_c,geometry):
     v_sh = m_dot_c / (rho_water*A_sh)
     
     # Calculate Re_sh
-    Re_sh = (v_sh * A_sh * rho_water) / mu
+    Re_sh = (v_sh * d_outer * rho_water) / mu
     
     #calculate v_nozzle cold
     v_nozzle_c = m_dot_c / (rho_water * 0.25 * d_nozzle**2 *np.pi)
@@ -223,7 +223,7 @@ def give_Re_sh(m_dot_c,geometry):
     v_sh = m_dot_c / (rho_water*A_sh)
     
     # Calculate Re_sh
-    Re_sh = (v_sh * A_sh * rho_water) / mu
+    Re_sh = (v_sh * d_outer * rho_water) / mu
     
     return(Re_sh)
     
