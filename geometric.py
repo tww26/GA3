@@ -5,6 +5,7 @@ import parametric as para
 # Check total length
 # Check total required length of tubing
 # Check bundle fits within shell
+# Check nozzle fits
 
 
 
