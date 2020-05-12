@@ -249,7 +249,7 @@ def hydraulic_plot_h(geometry):
         dp_calc.append(total_dP_hot(m_dot,geometry))
         dp_graph.append(dp_flowrate(m_dot,"hot"))
     
-    plt.plot(m_dots,dp_graph,label = "from fig.6 graph")
+    plt.plot(m_dots,dp_graph,label = "from pump characteristics")
     plt.plot(m_dots,dp_calc,label = "from calculations")
     plt.xlabel("mass flowrate (prop to flowrate)")
     plt.ylabel("pressure drop (Pa)")
@@ -278,7 +278,7 @@ def hydraulic_plot_c(geometry):
         dp_calc.append(total_dP_cold(m_dot,geometry))
         dp_graph.append(dp_flowrate(m_dot,"cold"))
     
-    plt.plot(m_dots,dp_graph,label = "from fig.6 graph")
+    plt.plot(m_dots,dp_graph,label = "from pump characteristics")
     plt.plot(m_dots,dp_calc,label = "from calculations")
     plt.xlabel("mass flowrate (prop to flowrate)")
     plt.ylabel("pressure drop (Pa)")

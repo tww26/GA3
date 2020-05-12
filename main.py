@@ -57,6 +57,9 @@ m_dot_h = hydraulic.iterate_h(geometry)
 Re_sh = hydraulic.give_Re_sh(m_dot_c, geometry)
 Re_tube = hydraulic.give_Re_tube(m_dot_h, geometry)
 
+hydraulic.hydraulic_plot_c(geometry)
+hydraulic.hydraulic_plot_h(geometry)
+
 print('Mass Flow Rates')
 print('m_dot_h:', m_dot_h)
 print('m_dot_c:', m_dot_c)
