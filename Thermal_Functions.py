@@ -90,7 +90,7 @@ def f_T_out_hot(Q_dot_hot, m_dot_h, cp, T_in_hot):
 
 """_____________________LMTD Method: ITERATION to Determine T_out_cold and T_out_hot___________________________"""
 #F_Q(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
-def iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
     # These variables will not change during the iteration - Design Point Dependent Constants - Pass into
     # iterate_hydraulic():
@@ -171,19 +171,19 @@ def iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 """_____________________LMTD Method: EXTERNAL Functions: functions to be used in main_________________________"""
 
 def F_Q_LMTD(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
-    results = iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
+    results = iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
     # Give average of heat rates
     Q = (results['Q_dot_cold'] + results['Q_dot_hot'] + results['Q_dot_temp']) / 3
     return Q
 
 
 def F_T_out_cold(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
-    results = iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
+    results = iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
     return results['T_out_cold']
 
 
 def F_T_out_hot(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
-    results = iterate_hydraulic(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
+    results = iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
     return results['T_out_hot']
 
 
