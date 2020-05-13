@@ -172,7 +172,7 @@ COLD STREAM CALCULATIONS
 """
 
 def give_A_sh(geometry):
-    """Gives A_sh. Defined inits own function as this is something that could be tweaked as we improve A_sh"""
+    """Gives A_sh. Defined in its own function as this is something that could be tweaked as we improve A_sh"""
     
     # Define design variables
     Y = geometry.get('Y')
@@ -201,6 +201,7 @@ def total_dP_cold(m_dot_c,geometry):
     N_row = para.N_row(geometry)
     a = para.a(geometry)
     N_baffle = geometry.get('N_baffle')
+    N_shell = geometry.get('N_shell')
     
     # Calculate A_sh
     A_sh = give_A_sh(geometry)
@@ -214,20 +215,30 @@ def total_dP_cold(m_dot_c,geometry):
     #calculate v_nozzle cold
     v_nozzle_c = m_dot_c / (rho_water * 0.25 * d_nozzle**2 *np.pi)
     
-    # dP FROM SHELL
+    """dP FROM SHELL BUNDLE PASSES"""
     # Equation 9 from notes - NOTE DUBIOUS
-    """ALSO INITIALLY I HAD THIS AS FOR THE WHOLE THING, BUT ISN'T IT PER SHELL PASS?"""
+    #ALSO INITIALLY I HAD THIS AS FOR THE WHOLE THING, BUT ISN'T IT PER PASS OF BUNDLES?
     dP_shell = 4 * a * Re_sh**(-0.15) * N_row * rho_water * v_sh**2
-    dP_shell *= (N_baffle + 1)
+    # Multiply by number of passes in a shell
+    dP_shell *= (N_baffle + 1) 
+    # Multiply by number of shells
+    # Note when N_row is used that N_shell has no effect since N_row is per shell
+    dP_shell *= N_shell
     
-    # dP form bends
-    K = 1 # just a guess for now but something to tweak!
-    dP_bends = K* 0.5*rho_water*v_sh**2
+    """dP FROM BAFFLE BENDS"""
+    K_baffle_bend = 1 # just a guess for now but something to tweak!
+    # One baffle bend
+    dP_bends = K_baffle_bend* 0.5*rho_water*v_sh**2
+    # One shell's worth of baffle bends
     dP_bends *= N_baffle
+    # Total baffle bends
+    dP_bends *= N_shell
     
-    # dP FROM NOZZLE
-    # Assume one dynamic head (x2 for 2 nozzles)
-    dP_nozzle = 2*0.5*rho_water*v_nozzle_c**2
+    """dP FROM NOZZLE"""
+    K_nozzle = 1# Assume one dynamic head (x2 for 2 nozzles)
+    dP_nozzle = 0.5*K_nozzle*rho_water*v_nozzle_c**2
+    # Two Nozzles
+    dP_nozzle *= 2
     
     return(dP_nozzle + dP_shell + dP_bends)
 

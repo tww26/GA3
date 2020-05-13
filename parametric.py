@@ -9,8 +9,15 @@ import numpy as np
 from Definitions import *
     
 def N_row(geometry):
-    """Returns the number of non-zero values in the array"""
-    return(len(geometry.get('bundle_array'))-geometry.get('bundle_array').count(0))
+    """Returns the number of non-zero values in the array and divides by shell count to give:
+        - the number of tube rows within each shell"""
+        
+    # Number of rows total - omitting any zero rows
+    N_row = len(geometry.get('bundle_array'))-geometry.get('bundle_array').count(0)
+    # Number of rows per shell
+    N_row *= (1/geometry.get('N_shell'))
+    
+    return(N_row)
     
 def N_tube(geometry):
     return(sum(geometry.get('bundle_array')))

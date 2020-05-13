@@ -7,10 +7,10 @@ import geometric as geom
 
 """DEFINE STATIC DESIGN VARIABLES"""
 L = 300e-3
-N_baffle = 9
+N_baffle = 10
 pitch_type = "square"
 Y = 12e-3
-bundle_array = [1,5,5,1]
+bundle_array = [2,5,0,5,2]
 N_shell = 1
 N_pass = 1
 L_header = 0.1
@@ -20,9 +20,12 @@ geometry = {'L': L,'N_baffle': N_baffle,'pitch_type': pitch_type,'Y': Y,'bundle_
 
 """PLAYING WITH DESIGN VARIABLES"""
 
-hydraulic.hydraulic_plot_h(geometry)
-geometry['N_pass'] = 4
-hydraulic.hydraulic_plot_h(geometry)
+#hydraulic.hydraulic_plot_c(geometry)
+
+print(hydraulic.total_dP_cold(0.58,geometry))
+geometry['N_shell']=2
+print(hydraulic.total_dP_cold(0.58,geometry))
+
 
 #hydraulic.hydraulic_plot_c(geometry)
 

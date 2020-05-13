@@ -129,9 +129,6 @@ def optimise_design():
     optimal_geometry['pitch_type']=optimal_pitch_type
     
     return([Q_max,optimal_geometry.get('N_baffle'),optimal_geometry.get('Y'),optimal_geometry.get('L'),optimal_geometry.get('bundle_array'),optimal_geometry.get('pitch_type')])
-
-print()        
-print(optimise_design())
     
     
     
