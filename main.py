@@ -21,7 +21,7 @@ geometry = {'L': L,'N_baffle': N_baffle,'pitch_type': pitch_type,'Y': Y,'bundle_
 """PLAYING WITH DESIGN VARIABLES"""
 
 hydraulic.hydraulic_plot_h(geometry)
-geometry['N_pass'] = 3
+geometry['N_pass'] = 4
 hydraulic.hydraulic_plot_h(geometry)
 
 #hydraulic.hydraulic_plot_c(geometry)

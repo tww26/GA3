@@ -9,7 +9,8 @@ import numpy as np
 from Definitions import *
     
 def N_row(geometry):
-    return(len(geometry.get('bundle_array')))
+    """Returns the number of non-zero values in the array"""
+    return(len(geometry.get('bundle_array'))-geometry.get('bundle_array').count(0))
     
 def N_tube(geometry):
     return(sum(geometry.get('bundle_array')))

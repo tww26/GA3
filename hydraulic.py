@@ -155,10 +155,13 @@ def give_Re_tube(m_dot_h,geometry):
     """Does what is says on the tin"""
     # Define design variables
     N_tube = para.N_tube(geometry)
+    N_pass = geometry.get('N_pass')
+    
     # Calculate tube velocity
-    # generalise for N_pass
+    # (generalised for N_pass)
     m_dot_tube = m_dot_h / (N_tube / N_pass)
     v_tube = m_dot_tube / (rho_water * np.pi * 0.25 * d_inner**2)
+    
     # Calculate Re for tubes
     Re_tube = (v_tube*rho_water*d_inner)/mu
     
