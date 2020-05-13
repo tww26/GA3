@@ -11,7 +11,8 @@ import geometric as geom
 
 def generate_bundle_arrays(row_max=6, col_max=6):
     """Generates an exhaustive list of bundle_array configurations, including zeroes
-    NOTE: The maximum col_max is actually 6 as this is written"""
+    NOTE: The maximum col_max is actually 6 as this is written
+    NOTE: This is not a good way to do anything, Tomos - Tomos"""
     
     bundle_array_range = []
     
@@ -54,61 +55,80 @@ def optimise_design():
     """This function currently works only for 1-pass 1-shell, and optimises L,Y and N_baffle"""
     
     # Define minima and maxima of the iteration...
-    L_range = np.linspace(0.15,0.25,21)
+    L_range = np.linspace(0.10,0.30,31)
     Y_range = np.linspace(0.09,0.015,7)
     N_baffle_range = np.linspace(0,20,21)
+    pitch_type_array = ["square","triangle"]
+    bundle_array_array = []
+    bundle_array_array.append([1,3,5,3,1])
+    bundle_array_array.append([3,3,3,3])
+    bundle_array_array.append([1,3,3,3,1])
+    bundle_array_array.append([2,3,3,3,2])
+    bundle_array_array.append([2,5,5,2])
     
     # Define a list of arrays to try - assuming 
     # bundle_array_range = generate_bundle_arrays()
 
     # define some constant designs
-    pitch_type = "square"
-    bundle_array = [1,3,5,3,1]
     N_pass = 1
     N_shell = 1
     L_header = 0.01
     
-    geometry = {'pitch_type': pitch_type,'bundle_array': bundle_array, 'N_shell': N_shell, 'N_pass': N_pass, 'L_header': L_header}
+    geometry = {'N_shell': N_shell, 'N_pass': N_pass, 'L_header': L_header}
     optimal_geometry = geometry
     
     # Set the Q to beat
     Q_max = 0
     
-    for L in L_range:
+    for pitch_type in pitch_type_array:
         
-        # Set L
-        geometry['L']=L
+        # Set pitch_type
+        geometry['pitch_type']=pitch_type
         
-        for Y in Y_range:
+        for bundle_array in bundle_array_array:
             
-            # Set Y
-            geometry['Y']=Y
-            
-            for N_baffle in N_baffle_range:
+            # Set bundle_array
+            geometry['bundle_array']=bundle_array
+        
+            for L in L_range:
                 
-                # Set N_baffle
-                geometry['N_baffle']=N_baffle
+                # Set L
+                geometry['L']=L
                 
-                # Find values
-                m_dot_c = hydraulic.iterate_c(geometry)
-                m_dot_h = hydraulic.iterate_h(geometry)
-                Re_sh = hydraulic.give_Re_sh(m_dot_c,geometry)
-                Re_tube = hydraulic.give_Re_tube(m_dot_h,geometry)
-                
-                # Save values if they give the highest Q yet
-                if thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry) > Q_max:
-                    Q_max = thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
+                for Y in Y_range:
                     
-                    # Save new optimal geometry
-                    optimal_N_baffle=N_baffle
-                    optimal_Y=Y
-                    optimal_L=L
+                    # Set Y
+                    geometry['Y']=Y
+                    
+                    for N_baffle in N_baffle_range:
+                        
+                        # Set N_baffle
+                        geometry['N_baffle']=N_baffle
+                        
+                        # Find values
+                        m_dot_c = hydraulic.iterate_c(geometry)
+                        m_dot_h = hydraulic.iterate_h(geometry)
+                        Re_sh = hydraulic.give_Re_sh(m_dot_c,geometry)
+                        Re_tube = hydraulic.give_Re_tube(m_dot_h,geometry)
+                        
+                        # Save values if they give the highest Q yet
+                        if thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry) > Q_max:
+                            Q_max = thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
+                            
+                            # Save new optimal geometry
+                            optimal_N_baffle=N_baffle
+                            optimal_Y=Y
+                            optimal_L=L
+                            optimal_bundle_array = bundle_array
+                            optimal_pitch_type = pitch_type
                 
     optimal_geometry['L']=optimal_L
     optimal_geometry['Y']=optimal_Y
     optimal_geometry['N_baffle']=optimal_N_baffle
+    optimal_geometry['bundle_array']=optimal_bundle_array
+    optimal_geometry['pitch_type']=optimal_pitch_type
     
-    return([Q_max,optimal_geometry.get('N_baffle'),optimal_geometry.get('Y'),optimal_geometry.get('L')])
+    return([Q_max,optimal_geometry.get('N_baffle'),optimal_geometry.get('Y'),optimal_geometry.get('L'),optimal_geometry.get('bundle_array'),optimal_geometry.get('pitch_type')])
 
 print()        
 print(optimise_design())
