@@ -85,6 +85,3 @@ def L_total(geometry):
     # L_total = L + (2 * L_header) + (2 * L_endplate) + (2 * L_tubeplate)
     return(geometry.get('L') + 2*(geometry.get('L_header')) + 18e-3)
 
-
-
-

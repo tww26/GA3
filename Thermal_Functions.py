@@ -292,7 +292,7 @@ def F_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
     else:
     #THIS PART IS UNFINISHED
-    # if there is MORE than one shell the must compute E_p for each pass to determine the overall effectiveness.
+    # this may well be correct for multiple tube passes but more research required
         if C == 1:
             E = (N_shell * E_p) / (1 + (N_shell - 1) * E_p)
 
