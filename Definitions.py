@@ -27,11 +27,26 @@ d_nozzle = 20e-3
 t_baffle = 1.5e-3
 t_endplate = 4.5e-3
 
+""""Component Mass Properties"""
+
+# rhol (mass per unit length) - kg/m
+# rhoA (mass per unit area) - kg/m**2
+# mass - kg
+
+rhol_tube = 0.20      # copper tube
+rhol_pipe = 0.650     # acrylic pipe (as specified in handout)
+mass_nozzle = 0.025
+rhoA_plate = 6.375
+rhoA_baffle = 2.39
+
 
 """Geometric Constraints"""
 
+L_tube_total_max = 6
+L_shell_total_max = 0.5
 L_total_max = 0.40
-mass_total = 1
+mass_total_max = 1
+
 
 
 """Thermal and Hydraulic Constants"""
