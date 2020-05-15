@@ -96,6 +96,7 @@ def check_mass_total(geometry):
 
 
 def check_bundle_fit(geometry):
+<<<<<<< HEAD
     """Check the tube bundle fits within the radius of the HX casing
         ATM we use a very simplistic check:
         - does it fit vertically?
@@ -111,6 +112,27 @@ def check_bundle_fit(geometry):
         return True
     else:
         return False   
+=======
+        #Unfinished
+        bundle_array = geometry.get('bundle_array')
+        i=0
+        lim = round(0.5*len(bundle_array))
+        # Very confused about the indexing of this array
+        while i <= lim:
+            del bundle_array[i]
+            i+=1
+        print(bundle_array, lim)
+
+
+        if geometry.get('pitch_type') == 'square':
+            d = geometry.get('Y')
+        else:
+            d = 0.5 * (3**0.5) * geometry.get('Y')
+
+       # for i in len(bundle_array):
+
+       #     if bundle_array[i]:
+>>>>>>> master
 
 
 def check_tube_intersect(geometry):
@@ -247,7 +269,7 @@ def check_constraints(geometry):
     c8 = check_tube_intersect(geometry)
     c9 = check_bundle_fit(geometry)
 
-    if c1 and c2 and c3 and c4 and c5 and c6 and c7 and c8 and c9 == True:
+    if c1 and c2 and c3 and c4 and c5 and c6 and c7 and c8 == True:
         return True
     else:
         return False
