@@ -66,33 +66,33 @@ def check_mass_total(geometry):
 
     mass_total = mass_pipe_total + mass_tube_total + mass_baffle_total + mass_nozzle_total + mass_plate_total
 
-#    if 1 == 1:
-#        print('mass_tube_total: ... ', mass_tube_total)
-#        print('mass_pipe_total: ... ', mass_pipe_total)
-#        print('mass_baffle_total: . ', mass_baffle_total)
-#        print('mass_nozzle_total: . ', mass_nozzle_total)
-#        print('mass_plate_total: .. ', mass_plate_total)
-#        print('________________________________________')
-#        print('mass_total: ....... ',  mass_total)
-#        print('________________________________________')
+    if 1 == 1:
+        print('mass_tube_total: ... ', mass_tube_total)
+        print('mass_pipe_total: ... ', mass_pipe_total)
+        print('mass_baffle_total: . ', mass_baffle_total)
+        print('mass_nozzle_total: . ', mass_nozzle_total)
+        print('mass_plate_total: .. ', mass_plate_total)
+        print('________________________________________')
+        print('mass_total: ....... ',  mass_total)
+        print('________________________________________')
 
     if mass_total <= mass_total_max:
-        #print('pass: ', round(mass_total, 3), '<', mass_total_max)
+        print('pass: ', round(mass_total, 3), '<', mass_total_max)
         return True
 
     else:
-        #print('mass_total to large: ', round(mass_total, 3), '>', mass_total_max)
+        print('mass_total to large: ', round(mass_total, 3), '>', mass_total_max)
         return False
 
 
-#    if 1 == 0:                                                  # TO AMEND: Change to only print if ask for in argument
-#        print('mass_tube_total: ', mass_tube_total)
-#        print('mass_pipe_total: ', mass_pipe_total)
-#        print('mass_baffle_total: ', mass_baffle_total)
-#        print('mass_nozzle_total: ', mass_nozzle_total)
-#        print('mass_plate_total: ', mass_plate_total)
-#        print('________________________________________')
-#        print('mass_total: ',  mass_total)
+    if 1 == 0:                                                  # TO AMEND: Change to only print if ask for in argument
+        print('mass_tube_total: ', mass_tube_total)
+        print('mass_pipe_total: ', mass_pipe_total)
+        print('mass_baffle_total: ', mass_baffle_total)
+        print('mass_nozzle_total: ', mass_nozzle_total)
+        print('mass_plate_total: ', mass_plate_total)
+        print('________________________________________')
+        print('mass_total: ',  mass_total)
 
 
 def check_bundle_fit(geometry):
