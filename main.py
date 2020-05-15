@@ -8,9 +8,9 @@ import geometric as geom
 L = 170e-3
 N_baffle = 10
 pitch_type = "square"
-Y = 12e-3
-bundle_array = [1,3,5,3,1]
-N_shell = 2
+Y = 15e-3
+bundle_array = [1,3,3,1]
+N_shell = 1
 N_pass = 2
 L_header = 0.1
 breadth_gap = 0.01
@@ -28,6 +28,10 @@ Re_tube = hydraulic.give_Re_tube(m_dot_h,geometry)
 hydraulic.hydraulic_plot_c(geometry)
 hydraulic.hydraulic_plot_h(geometry)
 print(thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry))
+
+print()
+print(geom.check_constraints(geometry))
+print(geom.troubleshoot_geometry(geometry))
 
 
 #hydraulic.hydraulic_plot_c(geometry)

@@ -80,6 +80,7 @@ def optimise_design():
     
     # Set the Q to beat
     Q_max = 0
+    count = 0
     
     for N_shell in N_shell_array:
         
@@ -92,6 +93,9 @@ def optimise_design():
             geometry['N_pass']=N_pass
             
             for pitch_type in pitch_type_array:
+                
+                print("{}/12 way there!".format(count))
+                count += 1
                 
                 # Set pitch_type
                 geometry['pitch_type']=pitch_type
