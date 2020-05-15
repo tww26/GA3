@@ -326,7 +326,8 @@ def F_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
             E = 1 - np.exp(-NTU)
 
         else:
-            E = ((((1 - E_p * C)/(1 - E_p))**N_shell)-1)/((((1 - E_p * C)/(1 - E_p))**N_shell) - C)
+            # E = ((((1 - E_p * C)/(1 - E_p))**N_shell)-1)/((((1 - E_p * C)/(1 - E_p))**N_shell) - C)
+            E = (1 - np.exp(-NTU * (1 - C)))/(1 - C * np.exp(-NTU * (1 - C)))
 
     return E
 

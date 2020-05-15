@@ -95,7 +95,7 @@ def check_mass_total(geometry):
 
 
 def check_bundle_fit(geometry):
-        #Unfinishe
+        #Unfinished
         bundle_array = geometry.get('bundle_array')
         i=0
         lim = round(0.5*len(bundle_array))
