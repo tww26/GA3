@@ -231,22 +231,16 @@ def check_constraints(geometry):
     c4 = check_L_vs_baffle(geometry)
     c5 = check_N_baffle(geometry)
     c6 = check_tube_division(geometry)
-#    c7 =
-#    c8 =
-#    c9 =
+    c7 = check_pitch_distance(geometry)
+    c8 = check_tube_intersect(geometry)
+#    c9 = check_bundle_fit(geometry) UNFINISHED
 
-#    if c1 and c2 and c3 and c4 and c5 and c6 and c7 and c8 and c9 == True:
-#        return True
-#    else:
-#        return False
-
-    if check_mass_total(geometry)=='pass' and check_L_total(geometry)=='pass' and check_L_total(geometry)=='pass':
-        print('constraints satisfied')
-        return 'pass'
-
+    if c1 and c2 and c3 and c4 and c5 and c6 and c7 and c8 and c9 == True:
+        return True
     else:
-        print('ERROR: constraints not satisfied')
-        return 'fail'
+        return False
+
+
 
 
 
