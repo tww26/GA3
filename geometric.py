@@ -96,7 +96,6 @@ def check_mass_total(geometry):
 
 
 def check_bundle_fit(geometry):
-<<<<<<< HEAD
     """Check the tube bundle fits within the radius of the HX casing
         ATM we use a very simplistic check:
         - does it fit vertically?
@@ -112,28 +111,27 @@ def check_bundle_fit(geometry):
         return True
     else:
         return False   
-=======
-        #Unfinished
-        bundle_array = geometry.get('bundle_array')
-        i=0
-        lim = round(0.5*len(bundle_array))
-        # Very confused about the indexing of this array
-        while i <= lim:
-            del bundle_array[i]
-            i+=1
-        print(bundle_array, lim)
-
-
-        if geometry.get('pitch_type') == 'square':
-            d = geometry.get('Y')
-        else:
-            d = 0.5 * (3**0.5) * geometry.get('Y')
-
-       # for i in len(bundle_array):
-
-       #     if bundle_array[i]:
->>>>>>> master
-
+    
+def check_bundle_pitch_type(geometry):
+    """Checks if bundle arrays are compatible with pitch_types"""
+    
+    bundle_array = geometry.get('bundle_array')
+    pitch_type = geometry.get('pitch_type')
+    
+    if pitch_type == "square":
+        for i in range(len(bundle_array)-1):
+            # Fails if you have something like 3,4 or 5,6
+            if bundle_array[i]+1==bundle_array[i+1]:
+                return False
+            else:
+                return True
+            
+    else:
+        for i in range(len(bundle_array)-1):
+            if bundle_array[i]+2==bundle_array[i+1]:
+                return False
+            else:
+                return True
 
 def check_tube_intersect(geometry):
     """Checks that a divider doesn't intersect the tubes, for N_shell or N_pass > 1, by virtue of not fitting between tubes
@@ -228,7 +226,7 @@ def check_tube_division(geometry):
 
         elif N_shell < 3 and N_pass == 4:
 
-            if N_row % 1 > 0 and N_Shell == 2:
+            if N_row % 1 > 0 and N_shell == 2:
                 return False
 
             elif N_row % 2 > 0 and N_shell == 1:
@@ -268,8 +266,9 @@ def check_constraints(geometry):
     c7 = check_pitch_distance(geometry)
     c8 = check_tube_intersect(geometry)
     c9 = check_bundle_fit(geometry)
+    c10 = check_bundle_pitch_type(geometry)
 
-    if c1 and c2 and c3 and c4 and c5 and c6 and c7 and c8 == True:
+    if c1 and c2 and c3 and c4 and c5 and c6 and c7 and c8 and c9 and c10 == True:
         return True
     else:
         return False
@@ -285,8 +284,9 @@ def troubleshoot_geometry(geometry):
     c7 = check_pitch_distance(geometry)
     c8 = check_tube_intersect(geometry)
     c9 = check_bundle_fit(geometry)
+    c10 = check_bundle_pitch_type(geometry)
     
-    return([1,c1,2,c2,3,c3,4,c4,5,c5,6,c6,7,c7,8,c8,9,c9])
+    return([1,c1,2,c2,3,c3,4,c4,5,c5,6,c6,7,c7,8,c8,9,c9,10,c10])
 
 
 

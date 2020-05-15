@@ -4,20 +4,22 @@ import hydraulic
 import Thermal_Functions as thermal
 import matplotlib.pyplot as plt
 import geometric as geom
+import draw as draw
 
 L = 170e-3
-N_baffle = 10
-pitch_type = "square"
+N_baffle = 14
+pitch_type = "triangle"
 Y = 15e-3
-bundle_array = [1,3,3,1]
+bundle_array = [2,3,4,3,2]
 N_shell = 1
-N_pass = 2
+N_pass = 1
 L_header = 0.1
 breadth_gap = 0.01
 
 geometry = {'L': L,'N_baffle': N_baffle,'pitch_type': pitch_type,'Y': Y,'bundle_array': bundle_array, 'N_shell': N_shell, 'N_pass': N_pass, 'L_header': L_header, 'breadth_gap': breadth_gap}
 
 
+#draw.cross_section(geometry)
 """PLAYING WITH DESIGN VARIABLES"""
 
 m_dot_c = hydraulic.iterate_c(geometry)
