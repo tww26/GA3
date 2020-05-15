@@ -9,47 +9,47 @@ import hydraulic
 import Thermal_Functions as thermal
 import geometric as geom
 
-def generate_bundle_arrays(row_max=6, col_max=6):
-    """Generates an exhaustive list of bundle_array configurations, including zeroes
-    NOTE: The maximum col_max is actually 6 as this is written
-    NOTE: This is not a good way to do anything, Tomos - Tomos"""
-    
-    bundle_array_range = []
-    
-    for i in range(row_max+1):
-        bundle_array_range.append([i])
-    if col_max>1:
-        for i in range(row_max+1):
-            for j in range(row_max+1):
-                bundle_array_range.append([i,j])
-    if col_max>2:
-        for i in range(row_max+1):
-            for j in range(row_max+1):
-                for k in range(row_max+1):
-                    bundle_array_range.append([i,j,k])
-    if col_max>3:
-        for i in range(row_max+1):
-            for j in range(row_max+1):
-                for k in range(row_max+1):
-                    for l in range(row_max+1):
-                        bundle_array_range.append([i,j,k,l])
-    if col_max>4:
-        for i in range(row_max+1):
-            for j in range(row_max+1):
-                for k in range(row_max+1):
-                    for l in range(row_max+1):
-                        for m in range(row_max+1):
-                            bundle_array_range.append([i,j,k,l,m])
-    if col_max>5:
-        for i in range(row_max+1):
-            for j in range(row_max+1):
-                for k in range(row_max+1):
-                    for l in range(row_max+1):
-                        for m in range(row_max+1):
-                            for n in range(row_max+1):
-                                bundle_array_range.append([i,j,k,l,m,n])
-    
-    return(bundle_array_range)
+#def generate_bundle_arrays(row_max=6, col_max=6):
+#    """Generates an exhaustive list of bundle_array configurations, including zeroes
+#    NOTE: The maximum col_max is actually 6 as this is written
+#    NOTE: This is not a good way to do anything, Tomos - Tomos"""
+#    
+#    bundle_array_range = []
+#    
+#    for i in range(row_max+1):
+#        bundle_array_range.append([i])
+#    if col_max>1:
+#        for i in range(row_max+1):
+#            for j in range(row_max+1):
+#                bundle_array_range.append([i,j])
+#    if col_max>2:
+#        for i in range(row_max+1):
+#            for j in range(row_max+1):
+#                for k in range(row_max+1):
+#                    bundle_array_range.append([i,j,k])
+#    if col_max>3:
+#        for i in range(row_max+1):
+#            for j in range(row_max+1):
+#                for k in range(row_max+1):
+#                    for l in range(row_max+1):
+#                        bundle_array_range.append([i,j,k,l])
+#    if col_max>4:
+#        for i in range(row_max+1):
+#            for j in range(row_max+1):
+#                for k in range(row_max+1):
+#                    for l in range(row_max+1):
+#                        for m in range(row_max+1):
+#                            bundle_array_range.append([i,j,k,l,m])
+#    if col_max>5:
+#        for i in range(row_max+1):
+#            for j in range(row_max+1):
+#                for k in range(row_max+1):
+#                    for l in range(row_max+1):
+#                        for m in range(row_max+1):
+#                            for n in range(row_max+1):
+#                                bundle_array_range.append([i,j,k,l,m,n])
+#    
+#    return(bundle_array_range)
 
 def optimise_design():
     """This function currently works only for 1-pass 1-shell, and optimises L,Y and N_baffle"""
