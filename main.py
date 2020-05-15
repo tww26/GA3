@@ -89,9 +89,3 @@ print(thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry))
 #plt.plot()
 
 
-
-
-
-#geom.check_mass_total(geometry)
-
-#geom.check_constraints(geometry)

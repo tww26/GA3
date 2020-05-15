@@ -86,10 +86,35 @@ def f_T_out_hot(Q_dot_hot, m_dot_h, cp, T_in_hot):
     T_out_hot = T_in_hot - Q_dot_hot / (m_dot_h * cp)
     return T_out_hot
 
+def f_F(T_in_cold, T_out_cold, T_in_hot, T_out_hot, geometry):
 
+    if geometry.get('N_shell')==1:
+        F=1
+        return F
+
+    if geometry.get('N_shell')>1:
+
+        #     dTlm = ((T_in_hot - T_out_cold) - (T_out_hot - T_in_cold)) / np.log((T_in_hot - T_out_cold) / (T_out_hot - T_in_cold))
+        dT1 = T_in_hot - T_out_cold
+        dT2 = T_out_hot - T_in_cold
+        # T1 = T_in_hot
+        # T2 = T_out_hot
+        # t1 = T_in_cold
+        # t2 = T_out_cold
+
+        P1 = (T_out_hot - T_in_hot) / (T_in_cold - T_in_hot)
+        R1 = (T_in_cold - T_out_cold) / (T_out_hot - T_in_hot)
+
+        S = (R1**2 + 1)**0.5 / (R1 -1)
+        W = ((1 - P1*R1) / (1-P1))**(1/geometry.get('N_shell'))
+
+        F = S * np.log(W) / np.log((1 + W - S + S*W)/(1 + W + S - S*W))
+
+        return F
 
 """_____________________LMTD Method: ITERATION to Determine T_out_cold and T_out_hot___________________________"""
-#F_Q(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
+
+    #F_Q(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
 def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
     # These variables will not change during the iteration - Design Point Dependent Constants - Pass into
@@ -100,7 +125,8 @@ def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     # Design Variable - Affected
     c = evaluate_c(geometry)
     A = para.A(geometry)
-    F = para.F(geometry)
+#    F = para.F(geometry)
+
     # Affected in turn by the above...
     Nu_outer = f_Nu_outer(Re_outer, Pr, c)
     # And in turn affected by the above...
@@ -115,6 +141,7 @@ def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     T_out_cold = T_out_cold_init
 
     # These variables will change during the iteration.
+    F = f_F(T_in_cold, T_out_cold, T_in_hot, T_out_hot, geometry)
     Q_dot_cold = f_Q_dot_cold(m_dot_c, cp, T_in_cold, T_out_cold)
     Q_dot_hot = f_Q_dot_hot(m_dot_h, cp, T_in_hot, T_out_hot)
     dTlm = f_dTlm(T_in_hot, T_out_hot, T_in_cold, T_out_cold)
@@ -148,6 +175,7 @@ def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
             break
         """
 
+        F = f_F(T_in_cold, T_out_cold, T_in_hot, T_out_hot, geometry)
         dTlm = f_dTlm(T_in_hot, T_out_hot, T_in_cold, T_out_cold)
 
         Q_dot_temp = f_Q_dot_temp(U, A, F, dTlm)
@@ -165,8 +193,6 @@ def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     """
 
     return Results
-
-
 
 """_____________________LMTD Method: EXTERNAL Functions: functions to be used in main_________________________"""
 
