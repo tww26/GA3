@@ -1,11 +1,18 @@
 from Definitions import *
 import parametric as para
 
+
+"""Andrew Fns"""
 # Check total mass
 # Check total length
 # Check total required length of tubing
 # Check bundle fits within shell
 # Check nozzle fits
+
+"""Tomos Fns"""
+# Check bundle divides by shell and pass
+# Check L > Baffles
+# Check even baffles for >1 shell
 
 
 
@@ -163,6 +170,21 @@ def check_tube_division(geometry):
 
 
 def check_constraints(geometry):
+    
+    c1 = check_mass_total(geometry)
+    c2 = check_L_total(geometry)
+    c3 = check_L_total(geometry)
+    c4 = check_L_vs_baffle(geometry)
+    c5 = check_N_baffle(geometry)
+    c6 = check_tube_division(geometry)
+#    c7 = 
+#    c8 = 
+#    c9 = 
+     
+#    if c1 and c2 and c3 and c4 and c5 and c6 and c7 and c8 and c9 == True:
+#        return True
+#    else:
+#        return False
 
     if check_mass_total(geometry)=='pass' and check_L_total(geometry)=='pass' and check_L_total(geometry)=='pass':
         print('constraints satisfied')
