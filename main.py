@@ -88,10 +88,9 @@ print(thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry))
 ##plt.ylim(ymin=0)
 #plt.plot()
 
+m_dot_c = hydraulic.iterate_c(geometry)
+m_dot_h = hydraulic.iterate_h(geometry)
+Re_sh = hydraulic.give_Re_sh(m_dot_c,geometry)
+Re_tube = hydraulic.give_Re_tube(m_dot_h,geometry)
 
-
-
-
-#geom.check_mass_total(geometry)
-
-#geom.check_constraints(geometry)
+print(thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry), thermal.F_T_out_hot(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry), thermal.F_T_out_cold(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry))
