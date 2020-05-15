@@ -143,7 +143,10 @@ def check_tube_division(geometry):
                     
         elif N_shell < 3 and N_pass == 4:
             
-            if N_row % 2 > 0:
+            if N_row % 1 > 0 and N_Shell == 2:
+                return False
+            
+            elif N_row % 2 > 0 and N_shell == 1:
                 return False
             
             else:
