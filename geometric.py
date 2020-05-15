@@ -235,7 +235,7 @@ def check_constraints(geometry):
     c8 = check_tube_intersect(geometry)
 #    c9 = check_bundle_fit(geometry) UNFINISHED
 
-    if c1 and c2 and c3 and c4 and c5 and c6 and c7 and c8 and c9 == True:
+    if c1 and c2 and c3 and c4 and c5 and c6 and c7 and c8 == True:
         return True
     else:
         return False
