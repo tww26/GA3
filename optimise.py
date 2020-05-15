@@ -140,8 +140,8 @@ def optimise_design():
     optimal_geometry['N_baffle']=optimal_N_baffle
     optimal_geometry['bundle_array']=optimal_bundle_array
     optimal_geometry['pitch_type']=optimal_pitch_type
-    optimal_geometry['N_shell']=N_shell
-    optimal_geometry['N_pass']=N_pass
+    optimal_geometry['N_shell']=optimal_N_shell
+    optimal_geometry['N_pass']=optimal_N_pass
     
     return([Q_max,optimal_geometry.get('N_shell'),optimal_geometry.get('N_pass'),optimal_geometry.get('N_baffle'),optimal_geometry.get('Y'),optimal_geometry.get('L'),optimal_geometry.get('bundle_array'),optimal_geometry.get('pitch_type')])
     
