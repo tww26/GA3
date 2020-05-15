@@ -40,6 +40,7 @@ def check_L_tube_total(geometry):
 def check_L_vs_baffle(geometry):
     """Checks if L is greater than total baffle length"""
     N_baffle = geometry.get('N_baffle')
+    L = geometry.get('L')
     # I have my functions as pass / fail being True / False - Tomos
     if N_baffle*0.0015 > L:
         return False
@@ -113,9 +114,12 @@ def check_tube_division(geometry):
     
     (len(bundle_array)/2)-1
     
-    # check first that there's equal tubes either side of the halfway point
-    if sum(bundle_array[0:((len(bundle_array)/2)-1)]) != sum(bundle_array[(len(bundle_array)/2):-1]) and N_pass%2<1:
-        return False
+    # check first that there's equal tubes either side of the halfway point (checks %2 rows later)
+    if len(bundle_array)%2 < 1:
+        if sum(bundle_array[0:((len(bundle_array)/2)-1)]) != sum(bundle_array[(len(bundle_array)/2):-1]) and N_pass%2<1:
+            return False
+        else:
+            pass
     
     # Check equal no of tubes per pass
     if N_tube % N_pass > 1:
