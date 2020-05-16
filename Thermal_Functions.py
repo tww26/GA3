@@ -68,6 +68,10 @@ def f_Q_dot_hot(m_dot_h, cp, T_in_hot, T_out_hot):
 def f_dTlm(T_in_hot, T_out_hot, T_in_cold, T_out_cold):
     if (T_in_hot - T_out_cold) / (T_out_hot - T_in_cold) == 1:
         T_out_cold -= 0.01
+        print('IT HAPPENED!!!')
+    if T_in_hot - T_out_cold == 0:
+        T_out_cold -= 0.01
+        print('THE OTHER ONE HAPPENED!!!')
     dTlm = ((T_in_hot - T_out_cold) - (T_out_hot - T_in_cold)) / np.log((T_in_hot - T_out_cold) / (T_out_hot - T_in_cold))
     return dTlm
 
@@ -149,18 +153,18 @@ def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
     i = 0
 
-    while i < 1000:
-        """
-        if i%100==0:
+    while i < 100:
 
+        if i%10==0:
+            """
             print("Q_dot_cold:", round(Q_dot_cold, 1), "Q_dot_hot:", round(Q_dot_hot, 1), "Q_dot_temp:",
                   round(Q_dot_temp, 0),
                   "__", "T_out_cold:", round(T_out_cold, 5), "T_out_hot:", round(T_out_hot, 5), "__", "T_in_cold:",
                   T_in_cold,
                   "T_in_hot:", T_in_hot)
-         """
-        Q_dot_cold = (0.5 * Q_dot_temp + 0.5 * Q_dot_cold)
-        Q_dot_hot = (0.5 * Q_dot_temp + 0.5 * Q_dot_hot)
+            """
+        Q_dot_cold = Q_dot_temp
+        Q_dot_hot = Q_dot_temp
 
         T_out_cold = f_T_out_cold(Q_dot_cold, m_dot_c, cp, T_in_cold)
         T_out_hot = f_T_out_hot(Q_dot_hot, m_dot_h, cp, T_in_hot)
@@ -311,14 +315,13 @@ def F_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     NTU = U * A / C_min
 
     E_p = f_E_NTU_p(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
-
+    """
     if N_shell ==1:
     # if there is one shell then just return the result from f_E_NTU_p
         E = E_p
 
     else:
-    #THIS PART IS UNFINISHED
-    # this may well be correct for multiple tube passes but more research required
+        
         if C == 1:
             E = (N_shell * E_p) / (1 + (N_shell - 1) * E_p)
 
@@ -326,9 +329,10 @@ def F_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
             E = 1 - np.exp(-NTU)
 
         else:
-            # E = ((((1 - E_p * C)/(1 - E_p))**N_shell)-1)/((((1 - E_p * C)/(1 - E_p))**N_shell) - C)
-            E = (1 - np.exp(-NTU * (1 - C)))/(1 - C * np.exp(-NTU * (1 - C)))
-
+            # E = ((((1 - E_p * C)/(1 - E_p))**N_shell)-1)/((((1 - E_p * C)/(1 - E_p))**N_shell) - C)       # Holman equation (returns rubbish, need to investigate)
+            E = (1 - np.exp(-NTU * (1 - C)))/(1 - C * np.exp(-NTU * (1 - C)))                               # 3A6 Notes: Counter flow, works very nicely
+        """
+    E = (1 - np.exp(-NTU * (1 - C))) / (1 - C * np.exp(-NTU * (1 - C)))                                     # This uses the equation from 3A6 Notes always.
     return E
 
 
