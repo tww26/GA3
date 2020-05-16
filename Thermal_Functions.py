@@ -138,8 +138,8 @@ def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     U = f_U(h_inner, h_outer, d_inner, d_outer, lambda_tube)
     
     # Initialisation: these values serve as initial guess to iterate from
-    T_out_hot_init = 315
-    T_out_cold_init = 285
+    T_out_hot_init = 305
+    T_out_cold_init = 295
 
     T_out_hot = T_out_hot_init
     T_out_cold = T_out_cold_init
