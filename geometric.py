@@ -17,25 +17,29 @@ import matplotlib.pyplot as plt
 
 
 
-def check_L_total(geometry):
+def check_L_total(geometry,display=False):
     L_total = para.L_total(geometry)
     if L_total <= L_total_max:
-        #print('pass: ', round(L_total, 3), '<', L_total_max)
+        if display == True:
+            print('pass: ', round(L_total, 3), '<', L_total_max)
         return True
 
     else:
-        #print('L_total to large: ', round(L_total, 3), '>', L_total_max)
+        if display == True:
+            print('L_total to large: ', round(L_total, 3), '>', L_total_max)
         return False
 
 
-def check_L_tube_total(geometry):
-    L_tube_total = para.L_tube(geometry) * geometry.get('N_tube')
+def check_L_tube_total(geometry,display=False):
+    L_tube_total = para.L_tube(geometry) * para.N_tube(geometry)
     if L_tube_total <= L_tube_total_max:
-        #print('pass: ', round(L_tube_total, 3), '<', L_tube_total_max)
+        if display == True:
+            print('pass: ', round(L_tube_total, 3), '<', L_tube_total_max)
         return True
 
     else:
-        #print('L_tube_total to large: ', round(L_tube_total, 3), '>', L_tube_total_max)
+        if display == True:
+            print('L_tube_total to large: ', round(L_tube_total, 3), '>', L_tube_total_max)
         return False
 
 
@@ -49,7 +53,7 @@ def check_L_vs_baffle(geometry):
     else:
         return True
 
-def check_mass_total(geometry):
+def check_mass_total(geometry,display=False):
     """"TO BE FULLY GENERALISED TO n-shell m-pass"""
     # A_baffle needs to take into account non-intersecting tubes
     # Add flow separaters for mulitishell
@@ -66,7 +70,7 @@ def check_mass_total(geometry):
 
     mass_total = mass_pipe_total + mass_tube_total + mass_baffle_total + mass_nozzle_total + mass_plate_total
 
-    if 1 == 1:
+    if display == True:
         print('mass_tube_total: ... ', mass_tube_total)
         print('mass_pipe_total: ... ', mass_pipe_total)
         print('mass_baffle_total: . ', mass_baffle_total)
@@ -77,11 +81,13 @@ def check_mass_total(geometry):
         print('________________________________________')
 
     if mass_total <= mass_total_max:
-        print('pass: ', round(mass_total, 3), '<', mass_total_max)
+        if display == True:
+            print('pass: ', round(mass_total, 3), '<', mass_total_max)
         return True
 
     else:
-        print('mass_total to large: ', round(mass_total, 3), '>', mass_total_max)
+        if display == True:
+            print('mass_total to large: ', round(mass_total, 3), '>', mass_total_max)
         return False
 
 
@@ -259,7 +265,7 @@ def check_constraints(geometry):
 
     c1 = check_mass_total(geometry)
     c2 = check_L_total(geometry)
-    c3 = check_L_total(geometry)
+    c3 = check_L_tube_total(geometry)
     c4 = check_L_vs_baffle(geometry)
     c5 = check_N_baffle(geometry)
     c6 = check_tube_division(geometry)
@@ -277,7 +283,7 @@ def troubleshoot_geometry(geometry):
     
     c1 = check_mass_total(geometry)
     c2 = check_L_total(geometry)
-    c3 = check_L_total(geometry)
+    c3 = check_L_tube_total(geometry)
     c4 = check_L_vs_baffle(geometry)
     c5 = check_N_baffle(geometry)
     c6 = check_tube_division(geometry)

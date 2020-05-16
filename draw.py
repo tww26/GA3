@@ -35,6 +35,7 @@ def cross_section(geometry):
                 ax.add_artist(plt.Circle((x,y), d_outer/2,color='r'))
                 
     ax.add_artist(plt.Circle((0, 0), D_inner/2, edgecolor='r',fill=False))
+
     
 
 

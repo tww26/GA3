@@ -72,12 +72,9 @@ def optimise_design():
     bundle_array_array.append([3,5,5,5,5,3])
     bundle_array_array.append([2,4,6,6,4,2])
     bundle_array_array.append([2,4,4,4,4,2])
-    
-    # Define a list of arrays to try - assuming 
-    # bundle_array_range = generate_bundle_arrays()
 
     # define some constant designs
-    L_header = 0.01
+    L_header = 0.025
     breadth_gap = 0.01
     
     geometry = {'L_header': L_header,'breadth_gap':breadth_gap}
@@ -135,6 +132,8 @@ def optimise_design():
                                     
                                     # Save values if they give the highest Q yet
                                     if thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry) > Q_max:
+                                        
+                                        # This is the new best design
                                         Q_max = thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
                                         
                                         # Save new optimal geometry
@@ -156,12 +155,17 @@ def optimise_design():
     optimal_geometry['pitch_type']=optimal_pitch_type
     optimal_geometry['N_shell']=optimal_N_shell
     optimal_geometry['N_pass']=optimal_N_pass
+
+    m_dot_c = hydraulic.iterate_c(optimal_geometry)   
+    m_dot_h = hydraulic.iterate_h(optimal_geometry)
+
+    NTU_Q = thermal.F_Q_LMTD(m_dot_c, m_dot_h, hydraulic.give_Re_tube(m_dot_h,optimal_geometry), hydraulic.give_Re_sh(m_dot_c,optimal_geometry), optimal_geometry)
     
-    return([Q_max,optimal_geometry.get('N_shell'),optimal_geometry.get('N_pass'),optimal_geometry.get('N_baffle'),optimal_geometry.get('Y'),optimal_geometry.get('L'),optimal_geometry.get('bundle_array'),optimal_geometry.get('pitch_type'),thermal.F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, optimal_geometry)])
+    return([Q_max,optimal_geometry.get('N_shell'),optimal_geometry.get('N_pass'),optimal_geometry.get('N_baffle'),optimal_geometry.get('Y'),optimal_geometry.get('L'),optimal_geometry.get('bundle_array'),optimal_geometry.get('pitch_type'),NTU_Q])
     
 result = optimise_design()
 print("Q = {}W".format(result[0]))
-print("NTU Q = {}W".format(result[8]))
+print("e-NTU Q = {}W".format(result[8]))
 print("{}-shell".format(result[1]))
 print("{}-pass".format(result[2]))
 print("{} baffles".format(result[3]))

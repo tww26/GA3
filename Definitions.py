@@ -5,9 +5,6 @@ Created on Mon May 11 10:02:39 2020
 @author: Tomos
 """
 
-import numpy as np
-
-
 """For Parametric Definitions, import design fraiables from main???"""
 
 """_________________________________________________________________________________________________________"""
