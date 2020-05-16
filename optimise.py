@@ -65,13 +65,13 @@ def optimise_design():
     bundle_array_array = []
     bundle_array_array.append([1,3,5,3,1])
     bundle_array_array.append([3,3,3,3])
-    bundle_array_array.append([2,3,3,3,2])
-    bundle_array_array.append([2,5,5,2])
+    bundle_array_array.append([2,5,2])
     bundle_array_array.append([3,5,5,5,3])
     bundle_array_array.append([2,3,4,3,2])
     bundle_array_array.append([3,5,5,5,5,3])
     bundle_array_array.append([2,4,6,6,4,2])
     bundle_array_array.append([2,4,4,4,4,2])
+    bundle_array_array.append([4,5,6,5,4])
 
     # define some constant designs
     L_header = 0.025
