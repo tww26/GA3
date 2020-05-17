@@ -20,6 +20,7 @@ def N_row(geometry):
     return(N_row)
     
 def N_tube(geometry):
+    """This is absolute - not per pass or shell or anything"""
     return(sum(geometry.get('bundle_array')))
     
 def A(geometry):
