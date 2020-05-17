@@ -24,11 +24,10 @@ import parametric as para
 """____________LMTD Method: INTERNAL Functions: functions to be used by other thermal functions_____________"""
 
 def evaluate_c(geometry):
-    return geometry.get('c')
-#    if geometry.get('pitch_type') == "square":
-#        return 0.15
-#    else:
-#        return 0.2
+    if geometry.get('pitch_type') == "square":
+        return 0.15
+    else:
+        return 0.2
 
 
 def f_Nu_inner(Re_inner, Pr):

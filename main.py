@@ -20,23 +20,6 @@ breadth_gap = 0.01
 geometry = {'L': L,'N_baffle': N_baffle,'pitch_type': pitch_type,'Y': Y,'bundle_array': bundle_array, 'N_shell': N_shell, 'N_pass': N_pass, 'L_header': L_header, 'breadth_gap': breadth_gap}
 
 
-c = np.linspace(0.1,0.25,100)
-Qs = []
-
-for i in c:
-    geometry['c']=i
-    m_dot_c = hydraulic.iterate_c(geometry)
-    m_dot_h = hydraulic.iterate_h(geometry)
-    Re_sh = hydraulic.give_Re_sh(m_dot_c,geometry)
-    Re_tube = hydraulic.give_Re_tube(m_dot_h,geometry)
-    Qs.append(thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry))
-    
-plt.plot(c,Qs)
-plt.xlabel('c')
-plt.ylabel('Heat Rate (W)')
-plt.title('Effect of Variation of c in Pair 4 Code on Pair 3 Optimum Design Heat Rate')
-plt.show()
-
 #draw.cross_section(geometry)
 #"""PLAYING WITH DESIGN VARIABLES"""
 #
