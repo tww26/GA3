@@ -40,7 +40,23 @@ def a(geometry):
     return(a_value)
     
 def B(geometry):
-    return(geometry.get('L')/(geometry.get('N_baffle')+1))
+    """IN FUTURE NEED TO CHANGE THIS FOR THICKNESS ACCOUNTING"""
+    B_end = geometry.get('B_end')
+    N_baffle = geometry.get('N_baffle')
+    L = geometry.get('L')
+    
+    if N_baffle > 2:
+        # Weighted average for B would just return the same previous B
+        # I'll assume we take the middle B values as being limiting
+        # B = (2/(N_baffle+1))*(B_end) + ((N_baffle-1)/(N_baffle+1))*((L-2*B_end)/(N_baffle-1))
+        B = (L-2*B_end)/(N_baffle-1)
+        return(B)
+        
+    elif N_baffle==2:
+        return(B_end)
+        
+    else:
+        return(L)
 
 
 def A_end_plate(geometry):
