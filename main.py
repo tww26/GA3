@@ -52,6 +52,7 @@ plt.plot(B_ends, Qs_constant, linestyle="--")
 plt.ylabel('Heat Transfer (W)')
 plt.xlabel('End Baffle Spacing (m)')
 plt.title('Effect of variation of end baffle spacing on heat transfer of Group B chosen design')
+plt.grid()
 plt.show()
 
 

@@ -92,11 +92,11 @@ def f_T_out_hot(Q_dot_hot, m_dot_h, cp, T_in_hot):
 
 def f_F(T_in_cold, T_out_cold, T_in_hot, T_out_hot, geometry):
 
-    if geometry.get('N_shell')==1:
+    if geometry.get('N_shell')==1 and geometry.get('N_pass')==1:
         F=1
         return F
 
-    if geometry.get('N_shell')>1:
+    else:
 
         #     dTlm = ((T_in_hot - T_out_cold) - (T_out_hot - T_in_cold)) / np.log((T_in_hot - T_out_cold) / (T_out_hot - T_in_cold))
         dT1 = T_in_hot - T_out_cold

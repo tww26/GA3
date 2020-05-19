@@ -260,17 +260,15 @@ def NTUvsLMTD(passes,shells):
 def plots():
     """Plots some NTU vs LMTD values"""
     value1 = NTUvsLMTD(1,1)
-    print('1/6')
+    print('1/5')
     value2 = NTUvsLMTD(2,1)
-    print('2/6')
+    print('2/5')
     value3 = NTUvsLMTD(4,1)
-    print('3/6')
-    value4 = NTUvsLMTD(1,2)
-    print('4/6')
+    print('3/5')
     value5 = NTUvsLMTD(2,2)
-    print('5/6')
+    print('4/5')
     value6 = NTUvsLMTD(4,2)
-    print('6/6')
+    print('5/5')
     
     LMTD11 = value1[0]
     NTU11 = value1[1]
@@ -287,11 +285,6 @@ def plots():
     differences41 = value3[2]
     reldifferences41 = value3[3]
     
-    LMTD12 = value4[0]
-    NTU12 = value4[1]
-    differences12 = value4[2]
-    reldifferences12 = value4[3]
-    
     LMTD22 = value5[0]
     NTU22 = value5[1]
     differences22 = value5[2]
@@ -305,7 +298,6 @@ def plots():
     plt.scatter(LMTD11,NTU11,label='1-pass,1-shell', s=1.5)
     plt.scatter(LMTD21,NTU21,label='2-pass,1-shell', s=1.5)
     plt.scatter(LMTD41,NTU41,label='4-pass,1-shell', s=1.5)
-    plt.scatter(LMTD12,NTU12,label='1-pass,2-shell', s=1.5)
     plt.scatter(LMTD22,NTU22,label='2-pass,2-shell', s=1.5)
     plt.scatter(LMTD42,NTU42,label='4-pass,2-shell', s=1.5)
     plt.title('LMTD vs NTU heat transfers')
@@ -318,7 +310,6 @@ def plots():
     plt.scatter(LMTD11,NTU11,label='1-pass,1-shell', s=1.5)
     plt.scatter(LMTD21,NTU21,label='2-pass,1-shell', s=1.5)
     plt.scatter(LMTD41,NTU41,label='4-pass,1-shell', s=1.5)
-    plt.scatter(LMTD12,NTU12,label='1-pass,2-shell', s=1.5)
     plt.scatter(LMTD22,NTU22,label='2-pass,2-shell', s=1.5)
     plt.scatter(LMTD42,NTU42,label='4-pass,2-shell', s=1.5)
     plt.ylabel('e-NTU heat transfer (W)')
@@ -333,7 +324,6 @@ def plots():
     plt.scatter(LMTD11,reldifferences11,label='1-pass,1-shell', s=1.5)
     plt.scatter(LMTD21,reldifferences21,label='2-pass,1-shell', s=1.5)
     plt.scatter(LMTD41,reldifferences41,label='4-pass,1-shell', s=1.5)
-    plt.scatter(LMTD12,reldifferences12,label='1-pass,2-shell', s=1.5)
     plt.scatter(LMTD22,reldifferences22,label='2-pass,2-shell', s=1.5)
     plt.scatter(LMTD42,reldifferences42,label='4-pass,2-shell', s=1.5)
     plt.ylabel('NTU heat transfer %error from LMTD method')
@@ -348,7 +338,6 @@ def plots():
     plt.scatter(LMTD11,reldifferences11,label='1-pass,1-shell', s=1.5)
     plt.scatter(LMTD21,reldifferences21,label='2-pass,1-shell', s=1.5)
     plt.scatter(LMTD41,reldifferences41,label='4-pass,1-shell', s=1.5)
-    plt.scatter(LMTD12,reldifferences12,label='1-pass,2-shell', s=1.5)
     plt.scatter(LMTD22,reldifferences22,label='2-pass,2-shell', s=1.5)
     plt.scatter(LMTD42,reldifferences42,label='4-pass,2-shell', s=1.5)
     plt.ylabel('NTU heat transfer %error from LMTD method')
@@ -360,7 +349,7 @@ def plots():
     
     return 1
 
-
+plots()
     
 #result = optimise_design()
 #print("Q = {}W".format(result[0]))
