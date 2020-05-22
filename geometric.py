@@ -53,7 +53,7 @@ def check_L_vs_baffle(geometry):
     else:
         return True
 
-def check_mass_total(geometry,display=False):
+def check_mass_total(geometry,display=True):
     """"TO BE FULLY GENERALISED TO n-shell m-pass"""
     # A_baffle needs to take into account non-intersecting tubes
     # Add flow separaters for mulitishell
@@ -91,7 +91,7 @@ def check_mass_total(geometry,display=False):
         return False
 
 
-    if 1 == 0:                                                  # TO AMEND: Change to only print if ask for in argument
+    if 1 == 1:                                                  # TO AMEND: Change to only print if ask for in argument
         print('mass_tube_total: ', mass_tube_total)
         print('mass_pipe_total: ', mass_pipe_total)
         print('mass_baffle_total: ', mass_baffle_total)

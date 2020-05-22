@@ -140,6 +140,7 @@ E = {'L': 200e-3,
 
 designs_2019 = {'Year': Year, 'A': A, 'B': B, 'C': C, 'D': D, 'E': E}
 
+
 """2018 Designs"""
 
 Year = 2018
