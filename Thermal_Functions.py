@@ -154,7 +154,7 @@ def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
     i = 0
 
-    while i < 100:
+    while i < 100 and np.abs(Q_dot_temp - Q_dot_hot)>1e-10:
 
         if i%10==0:
             """
