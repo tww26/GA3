@@ -348,8 +348,6 @@ def plots():
     plt.show()
     
     return 1
-
-plots()
     
 #result = optimise_design()
 #print("Q = {}W".format(result[0]))

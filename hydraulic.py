@@ -14,23 +14,54 @@ import parametric as para
 Start by defining the Characteristic dP-massflowrate relationship from graphs
 """
 
-def dp_flowrate(m_dot,temp):
+def dp_flowrate(m_dot,temp,year):
     """Uses a dP-Flowrate data curve-fit for hot and cold to determine the pressure drop from the mass flow rate
     NOTE: Doesn't tell you if the flowrate is beyond what we can expect to work at all!!!"""
     
     # Calculate flowrate in L/s 
     Q = (m_dot / rho_water) * 1000
     
-    # if Cold
-    if temp == "cold":
-        dP = -1.07*Q**2 + 0.0995*Q + 0.584
+    # 2019 or 2020 values
     
-    # if Hot
-    else:
-        dP = -0.52*Q**2 - 0.769*Q + 0.677
+    if year == 2020 or year == 2019:
+    
+        # if Cold
+        if temp == "cold":
+            dP = -1.07*Q**2 + 0.0995*Q + 0.584
         
-    # dP in Pa not bar
-    dP *= 100000
+        # if Hot
+        else:
+            dP = -0.52*Q**2 - 0.769*Q + 0.677
+            
+        # dP in Pa not bar
+        dP *= 100000
+        
+    elif year == 2018:
+        
+        # if Cold
+        if temp == "cold":
+            dP = -0.594*Q**2 - 1.37*Q + 0.833
+        
+        # if Hot
+        else:
+            dP = -1.31*Q**2 - 0.553*Q + 0.691
+            
+        # dP in Pa not bar
+        dP *= 100000
+      
+    # 2017!!
+    else:
+
+        # if Cold
+        if temp == "cold":
+            dP = -3.35*Q**2 + 0.159*Q + 0.816
+        
+        # if Hot
+        else:
+            dP = -1.18*Q**2 - 0.597*Q + 0.638
+            
+        # dP in Pa not bar
+        dP *= 100000
     
     return(dP)
     
@@ -260,7 +291,7 @@ ITERATION & PLOTTING
 """
     
 
-def hydraulic_plot_h(geometry):
+def hydraulic_plot_h(geometry,year):
     """Plots dP-massflowrate curves from both the given characteristics and the calculations for hot flow"""
     
     # Starts mass flowrate at 0
@@ -275,7 +306,7 @@ def hydraulic_plot_h(geometry):
         m_dot += 0.005
         m_dots.append(m_dot)
         dp_calc.append(total_dP_hot(m_dot,geometry))
-        dp_graph.append(dp_flowrate(m_dot,"hot"))
+        dp_graph.append(dp_flowrate(m_dot,"hot",year))
     
     plt.plot(m_dots,dp_graph,label = "from pump characteristics")
     plt.plot(m_dots,dp_calc,label = "from calculations")
@@ -289,7 +320,7 @@ def hydraulic_plot_h(geometry):
     
     return(m_dot)
 
-def hydraulic_plot_c(geometry):
+def hydraulic_plot_c(geometry,year):
     """Plots dP-massflowrate curves from both the given characteristics and the calculations for hot flow"""
     
     # Starts mass flowrate at 0
@@ -304,7 +335,7 @@ def hydraulic_plot_c(geometry):
         m_dot += 0.005
         m_dots.append(m_dot)
         dp_calc.append(total_dP_cold(m_dot,geometry))
-        dp_graph.append(dp_flowrate(m_dot,"cold"))
+        dp_graph.append(dp_flowrate(m_dot,"cold",year))
     
     plt.plot(m_dots,dp_graph,label = "from pump characteristics")
     plt.plot(m_dots,dp_calc,label = "from calculations")
@@ -319,7 +350,7 @@ def hydraulic_plot_c(geometry):
     return(m_dot)
 
 
-def iterate_c(geometry):
+def iterate_c(geometry,year):
     """Iterates to find the massflowrate of cold flow"""
     # NOTE - I've had this give same ans for 1-2 Baffles?
     
@@ -331,13 +362,13 @@ def iterate_c(geometry):
     for i in range (1600):
         
         m_dot += 0.0005
-        if abs(total_dP_cold(m_dot,geometry)-dp_flowrate(m_dot,"cold")) < difference:
-            difference = abs(total_dP_cold(m_dot,geometry)-dp_flowrate(m_dot,"cold"))
+        if abs(total_dP_cold(m_dot,geometry)-dp_flowrate(m_dot,"cold",year)) < difference:
+            difference = abs(total_dP_cold(m_dot,geometry)-dp_flowrate(m_dot,"cold",year))
             m_dot_final = m_dot
             
     return(m_dot_final)
 
-def iterate_h(geometry):
+def iterate_h(geometry,year):
     """Iterates to find the massflowrate of hot flow"""
     
     # Starts mass flowrate at 0
@@ -348,8 +379,8 @@ def iterate_h(geometry):
     for i in range (1250):
         
         m_dot += 0.0005
-        if abs(total_dP_hot(m_dot,geometry)-dp_flowrate(m_dot,"hot")) < difference:
-            difference = abs(total_dP_hot(m_dot,geometry)-dp_flowrate(m_dot,"hot"))
+        if abs(total_dP_hot(m_dot,geometry)-dp_flowrate(m_dot,"hot",year)) < difference:
+            difference = abs(total_dP_hot(m_dot,geometry)-dp_flowrate(m_dot,"hot",year))
             m_dot_final = m_dot
             
     return(m_dot_final)

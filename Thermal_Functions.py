@@ -8,6 +8,7 @@ Created on Mon May 11 10:02:05 2020
 import numpy as np
 from Definitions import *
 import parametric as para
+import hydraulic
 
 
 
@@ -347,3 +348,17 @@ def F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry):
         Q = m_dot_h * cp * (T_in_hot - T_out_hot)
 
     return Q
+
+def Q(geometry, year, method="LMTD"):
+    """Calculates Q"""
+    m_dot_c = hydraulic.iterate_c(geometry, year)
+    m_dot_h = hydraulic.iterate_h(geometry, year)
+    Re_sh = hydraulic.give_Re_sh(m_dot_c,geometry)
+    Re_tube = hydraulic.give_Re_tube(m_dot_h,geometry)
+    if method=="LMTD":
+        Qval = F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
+    else:
+        Qval = F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
+    return Qval
+        
+    

@@ -41,8 +41,21 @@ def a(geometry):
     
 def B(geometry):
     """IN FUTURE NEED TO CHANGE THIS FOR THICKNESS ACCOUNTING"""
-
-    return(geometry.get('L')/(geometry.get('N_baffle')+1))
+    # All baffles equally spaced apart
+    
+    N_baffle = geometry.get('N_baffle')
+    L = geometry.get('L')
+    
+    # The end baffles are there and we'd rather use middle ones
+    if "B_end" in geometry and N_baffle > 4:
+        L_new = L - 2*geometry.get('B_end')
+        B = L_new/(N_baffle-1)
+        return(B)
+        
+    # All baffles equally spaced
+    else:
+        return(L/(N_baffle+1))
+        
 
 
 def A_end_plate(geometry):
