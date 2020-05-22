@@ -124,7 +124,7 @@ def Find_f(Re):
     return(f)
 
 # Now combine the above functions to give a pressure drop
-def total_dP_hot(m_dot_h,geometry):
+def total_dP_hot(m_dot_h,geometry,K_turn=1,K_nozzle=1):
     """Given massflowrate, Calculates velocities, Re and Kc, Ke 
     (assumes design variables D_inner,d_inner,N_tube set elsewhere)
     THEN
@@ -165,7 +165,7 @@ def total_dP_hot(m_dot_h,geometry):
     
     """dP FROM NOZZLE"""
     # Assume one dynamic head (x2 for 2 nozzles)
-    dP_nozzle = 2*0.5*rho_water*v_nozzle_h**2
+    dP_nozzle = 2*0.5*K_nozzle*rho_water*v_nozzle_h**2
     
     """dP FROM ENTRY/EXIT"""
     # In-Out Pressure Head
@@ -174,7 +174,6 @@ def total_dP_hot(m_dot_h,geometry):
     dP_inout *= N_pass
 
     """dP FROM TURN - atm only 180 degree turns between passes"""
-    K_turn = 1 # We need to make this a function of L_header too
     v_turn = m_dot_tube / (rho_water * (N_tube/N_pass) * np.pi * 0.25 * d_inner**2)
     dP_turn = 0.5*rho_water*(v_turn**2)*K_turn
     # Times number of passes - 1
@@ -219,7 +218,7 @@ def give_A_sh(geometry):
     
     return(A_sh)
 
-def total_dP_cold(m_dot_c,geometry):
+def total_dP_cold(m_dot_c,geometry,K_baffle_bend=1,K_nozzle=1):
     """Given mass flowrate, calculates velocities and Re
     (assumes some design variables)
     THEN
@@ -257,7 +256,6 @@ def total_dP_cold(m_dot_c,geometry):
     dP_shell *= N_shell
     
     """dP FROM BAFFLE BENDS"""
-    K_baffle_bend = 1 # just a guess for now but something to tweak!
     # One baffle bend
     dP_bends = K_baffle_bend* 0.5*rho_water*v_sh**2
     # One shell's worth of baffle bends
@@ -266,7 +264,6 @@ def total_dP_cold(m_dot_c,geometry):
     dP_bends *= N_shell
     
     """dP FROM NOZZLE"""
-    K_nozzle = 1# Assume one dynamic head (x2 for 2 nozzles)
     dP_nozzle = 0.5*K_nozzle*rho_water*v_nozzle_c**2
     # Two Nozzles
     dP_nozzle *= 2
@@ -291,7 +288,7 @@ ITERATION & PLOTTING
 """
     
 
-def hydraulic_plot_h(geometry,year):
+def hydraulic_plot_h(geometry,year,K_turn=1,K_nozzle=1):
     """Plots dP-massflowrate curves from both the given characteristics and the calculations for hot flow"""
     
     # Starts mass flowrate at 0
@@ -305,7 +302,7 @@ def hydraulic_plot_h(geometry,year):
         
         m_dot += 0.005
         m_dots.append(m_dot)
-        dp_calc.append(total_dP_hot(m_dot,geometry))
+        dp_calc.append(total_dP_hot(m_dot,geometry,K_turn,K_nozzle))
         dp_graph.append(dp_flowrate(m_dot,"hot",year))
     
     plt.plot(m_dots,dp_graph,label = "from pump characteristics")
@@ -320,7 +317,7 @@ def hydraulic_plot_h(geometry,year):
     
     return(m_dot)
 
-def hydraulic_plot_c(geometry,year):
+def hydraulic_plot_c(geometry,year,K_baffle_bend=1,K_nozzle=1):
     """Plots dP-massflowrate curves from both the given characteristics and the calculations for hot flow"""
     
     # Starts mass flowrate at 0
@@ -334,7 +331,7 @@ def hydraulic_plot_c(geometry,year):
         
         m_dot += 0.005
         m_dots.append(m_dot)
-        dp_calc.append(total_dP_cold(m_dot,geometry))
+        dp_calc.append(total_dP_cold(m_dot,geometry,K_baffle_bend,K_nozzle))
         dp_graph.append(dp_flowrate(m_dot,"cold",year))
     
     plt.plot(m_dots,dp_graph,label = "from pump characteristics")
@@ -350,7 +347,7 @@ def hydraulic_plot_c(geometry,year):
     return(m_dot)
 
 
-def iterate_c(geometry,year):
+def iterate_c(geometry,year,K_baffle_bend=1,K_nozzle=1):
     """Iterates to find the massflowrate of cold flow"""
     # NOTE - I've had this give same ans for 1-2 Baffles?
     
@@ -362,13 +359,13 @@ def iterate_c(geometry,year):
     for i in range (1600):
         
         m_dot += 0.0005
-        if abs(total_dP_cold(m_dot,geometry)-dp_flowrate(m_dot,"cold",year)) < difference:
-            difference = abs(total_dP_cold(m_dot,geometry)-dp_flowrate(m_dot,"cold",year))
+        if abs(total_dP_cold(m_dot,geometry,K_baffle_bend,K_nozzle)-dp_flowrate(m_dot,"cold",year)) < difference:
+            difference = abs(total_dP_cold(m_dot,geometry,K_baffle_bend,K_nozzle)-dp_flowrate(m_dot,"cold",year))
             m_dot_final = m_dot
             
     return(m_dot_final)
 
-def iterate_h(geometry,year):
+def iterate_h(geometry,year,K_turn=1,K_nozzle=1):
     """Iterates to find the massflowrate of hot flow"""
     
     # Starts mass flowrate at 0
@@ -379,8 +376,8 @@ def iterate_h(geometry,year):
     for i in range (1250):
         
         m_dot += 0.0005
-        if abs(total_dP_hot(m_dot,geometry)-dp_flowrate(m_dot,"hot",year)) < difference:
-            difference = abs(total_dP_hot(m_dot,geometry)-dp_flowrate(m_dot,"hot",year))
+        if abs(total_dP_hot(m_dot,geometry,K_turn,K_nozzle)-dp_flowrate(m_dot,"hot",year)) < difference:
+            difference = abs(total_dP_hot(m_dot,geometry,K_turn,K_nozzle)-dp_flowrate(m_dot,"hot",year))
             m_dot_final = m_dot
             
     return(m_dot_final)

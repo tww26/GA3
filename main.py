@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import hydraulic
+#import hydraulic
 import Thermal_Functions as thermal
+import configure
 #import matplotlib.pyplot as plt
 #import geometric as geom
 #import draw as draw
@@ -21,7 +22,7 @@ B_end = 27.25e-3
 
 geometry = {'L': L,'N_baffle': N_baffle,'pitch_type': pitch_type,'Y': Y,'bundle_array': bundle_array, 'N_shell': N_shell, 'N_pass': N_pass, 'L_header': L_header, 'breadth_gap': breadth_gap, 'B_end':B_end}
 
-print(thermal.Q(geometry,2018))
+print(configure.K_config(geometry,2020))
 
 
 

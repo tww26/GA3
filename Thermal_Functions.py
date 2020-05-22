@@ -349,10 +349,10 @@ def F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry):
 
     return Q
 
-def Q(geometry, year, method="LMTD"):
+def Q(geometry, year, method="LMTD",K_baffle_bend=1,K_nozzle=1,K_turn=1):
     """Calculates Q"""
-    m_dot_c = hydraulic.iterate_c(geometry, year)
-    m_dot_h = hydraulic.iterate_h(geometry, year)
+    m_dot_c = hydraulic.iterate_c(geometry, year, K_baffle_bend, K_nozzle)
+    m_dot_h = hydraulic.iterate_h(geometry, year,K_turn,K_nozzle)
     Re_sh = hydraulic.give_Re_sh(m_dot_c,geometry)
     Re_tube = hydraulic.give_Re_tube(m_dot_h,geometry)
     if method=="LMTD":
