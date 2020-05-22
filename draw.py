@@ -7,6 +7,8 @@ Created on Fri May 15 13:09:23 2020
 
 import matplotlib.pyplot as plt
 from Definitions import *
+from designs import *
+import Thermal_Functions as thermal
 
 def cross_section(geometry):
     """Plot the cross-section"""
@@ -36,6 +38,61 @@ def cross_section(geometry):
                 
     ax.add_artist(plt.Circle((0, 0), D_inner/2, edgecolor='r',fill=False))
 
+def plot_difference():
+    """Plots and prints the differences between the designs of the different years"""
     
+    N_17 = len(Designs.get('designs_2017'))-1
+    N_18 = len(Designs.get('designs_2018'))-1
+    N_19 = len(Designs.get('designs_2019'))-1
+    
+    # Initialise some lists
+    Q_calcs = [] # What we predict
+    Q_actual = []
+    
+    # Fill the lists
+    for i in Designs.get('designs_2017'):
+        if i != 'Year':
+            Q_actual.append(Designs.get('designs_2017').get(i).get('Q'))
+            Q_calcs.append(thermal.Q(Designs.get('designs_2017').get(i),'2017'))
+            
+    for i in Designs.get('designs_2018'):
+        if i != 'Year':
+            Q_actual.append(Designs.get('designs_2018').get(i).get('Q'))
+            Q_calcs.append(thermal.Q(Designs.get('designs_2018').get(i),'2018'))
+            
+    for i in Designs.get('designs_2019'):
+        if i != 'Year':
+            Q_actual.append(Designs.get('designs_2019').get(i).get('Q'))
+            Q_calcs.append(thermal.Q(Designs.get('designs_2019').get(i),'2019'))
+    
+    # Plot the lists
+    plt.scatter(Q_actual[0:N_17],Q_calcs[0:N_17],label="2017")
+    plt.scatter(Q_actual[N_17:N_17+N_18],Q_calcs[N_17:N_17+N_18],label="2018")
+    plt.scatter(Q_actual[N_17+N_18:],Q_calcs[N_17+N_18:],label="2019")
+    plt.legend()
+    
+    #Plot a y = x line
+    MaxQ = []
+    MaxQ.append(max(Q_calcs))
+    MaxQ.append(max(Q_actual))
+    MaxQ = max(MaxQ)
+    MinQ = []
+    MinQ.append(min(Q_calcs))
+    MinQ.append(min(Q_actual))
+    MinQ = min(MinQ)
+    plt.plot([MinQ,MinQ],[MaxQ,MaxQ],linestyle="--",color="k")
 
+    # Plotting magic
+    plt.title('Measuring difference of Pair 4 code to actual value')
+    plt.ylabel('Pair 4 Predicted Heat Transfer (W)')
+    plt.xlabel('Measured Heat Transfer (W)')
+    plt.plot()
+    
+    # Print some results
+    print("% Differences")
+    for i in len(Q_actual):
+        percent_diff = 100*(Q_calcs-Q_actual)/Q_actual
+        print(percent_diff)
+    
+plot_difference()
 
