@@ -31,8 +31,8 @@ def evaluate_c(geometry):
         return 0.2
 
 
-def f_Nu_inner(Re_inner, Pr):
-    Nu_inner = 0.023 * (Re_inner**0.8) * (Pr**0.3)
+def f_Nu_inner(Re_inner, Pr, Calibration2=1):
+    Nu_inner = Calibration2*0.023 * (Re_inner**0.8) * (Pr**0.3)
     return Nu_inner
 
 
@@ -41,8 +41,8 @@ def f_h_inner(lambda_water, d_inner, Nu_inner):
     return h_inner
 
 
-def f_Nu_outer(Re_outer, Pr, c):
-    Nu_outer = c * (Re_outer**0.6) * (Pr**0.3)
+def f_Nu_outer(Re_outer, Pr, c, Calibration1=1, Calibration3=1):
+    Nu_outer = Calibration1 * c * (Re_outer**(0.6*Calibration3)) * (Pr**0.3)
     return Nu_outer
 
 
@@ -69,7 +69,7 @@ def f_Q_dot_hot(m_dot_h, cp, T_in_hot, T_out_hot):
 def f_dTlm(T_in_hot, T_out_hot, T_in_cold, T_out_cold):
     if (T_in_hot - T_out_cold) / (T_out_hot - T_in_cold) == 1:
         T_out_cold -= 0.01
-        print('IT HAPPENED!!!')
+        #print('IT HAPPENED!!!')
     if T_in_hot - T_out_cold == 0:
         T_out_cold -= 0.01
         print('THE OTHER ONE HAPPENED!!!')
@@ -120,11 +120,11 @@ def f_F(T_in_cold, T_out_cold, T_in_hot, T_out_hot, geometry):
 """_____________________LMTD Method: ITERATION to Determine T_out_cold and T_out_hot___________________________"""
 
     #F_Q(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
-def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry, Calibration1=1, Calibration2=1, Calibration3=1):
 
     # These variables will not change during the iteration - Design Point Dependent Constants - Pass into
     # iterate_hydraulic():
-    Nu_inner = f_Nu_inner(Re_inner, Pr)
+    Nu_inner = f_Nu_inner(Re_inner, Pr, Calibration2)
     h_inner = f_h_inner(lambda_water, d_inner, Nu_inner)
     
     # Design Variable - Affected
@@ -133,7 +133,7 @@ def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 #    F = para.F(geometry)
 
     # Affected in turn by the above...
-    Nu_outer = f_Nu_outer(Re_outer, Pr, c)
+    Nu_outer = f_Nu_outer(Re_outer, Pr, c, Calibration1, Calibration3)
     # And in turn affected by the above...
     h_outer = f_h_outer(lambda_water, d_outer, Nu_outer)
     U = f_U(h_inner, h_outer, d_inner, d_outer, lambda_tube)
@@ -201,20 +201,20 @@ def iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
 """_____________________LMTD Method: EXTERNAL Functions: functions to be used in main_________________________"""
 
-def F_Q_LMTD(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
-    results = iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
+def F_Q_LMTD(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry,Calibration1=1, Calibration2=1, Calibration3=1):
+    results = iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry,Calibration1, Calibration2, Calibration3)
     # Give average of heat rates
     Q = (results['Q_dot_cold'] + results['Q_dot_hot'] + results['Q_dot_temp']) / 3
     return Q
 
 
-def F_T_out_cold(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
-    results = iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
+def F_T_out_cold(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry,Calibration1=1, Calibration2=1, Calibration3=1):
+    results = iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry,Calibration1, Calibration2, Calibration3)
     return results['T_out_cold']
 
 
-def F_T_out_hot(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
-    results = iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
+def F_T_out_hot(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry, Calibration1=1, Calibration2=1, Calibration3=1):
+    results = iterate_thermal(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry,Calibration1, Calibration2, Calibration3)
     return results['T_out_hot']
 
 
@@ -258,10 +258,10 @@ def f_C_max(m_dot_c, m_dot_h):
     return C_max
 
 
-def f_E_NTU_p(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+def f_E_NTU_p(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry, Calibration1=1, Calibration2=1, Calibration3=1):
 # Returns the effectiveness for a single shell pass through the NTU method
 
-    Nu_inner = f_Nu_inner(Re_inner, Pr)
+    Nu_inner = f_Nu_inner(Re_inner, Pr, Calibration2)
     h_inner = f_h_inner(lambda_water, d_inner, Nu_inner)
 
     # Design Variable - Affected
@@ -269,7 +269,7 @@ def f_E_NTU_p(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     A = para.A(geometry)
 
     # Affected in turn by the above...
-    Nu_outer = f_Nu_outer(Re_outer, Pr, c)
+    Nu_outer = f_Nu_outer(Re_outer, Pr, c, Calibration1, Calibration3)
     # And in turn affected by the above...
     h_outer = f_h_outer(lambda_water, d_outer, Nu_outer)
     U = f_U(h_inner, h_outer, d_inner, d_outer, lambda_tube)
@@ -289,12 +289,12 @@ def f_E_NTU_p(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 """_____________________________________E-NTU Method: EXTERNAL Functions___________________________________"""
 
 
-def F_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+def F_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry, Calibration1=1, Calibration2=1, Calibration3=1):
 # Returns the effectiveness through NTU method
 # FUNCTION INCOMPLETE: need a way to determine E_p, the effectiveness per shell pass inorder to be able to generalise
 # to multiple shell passes.
 
-    Nu_inner = f_Nu_inner(Re_inner, Pr)
+    Nu_inner = f_Nu_inner(Re_inner, Pr, Calibration2 = 1)
     h_inner = f_h_inner(lambda_water, d_inner, Nu_inner)
 
     # Design Variable - Affected
@@ -302,7 +302,7 @@ def F_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     A = para.A(geometry)
 
     # Affected in turn by the above...
-    Nu_outer = f_Nu_outer(Re_outer, Pr, c)
+    Nu_outer = f_Nu_outer(Re_outer, Pr, c, Calibration1, Calibration3)
     # And in turn affected by the above...
     h_outer = f_h_outer(lambda_water, d_outer, Nu_outer)
     U = f_U(h_inner, h_outer, d_inner, d_outer, lambda_tube)
@@ -315,7 +315,7 @@ def F_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
 
     NTU = U * A / C_min
 
-    E_p = f_E_NTU_p(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry)
+    E_p = f_E_NTU_p(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry,Calibration1, Calibration2, Calibration3)
     """
     if N_shell ==1:
     # if there is one shell then just return the result from f_E_NTU_p
@@ -337,8 +337,8 @@ def F_E_NTU(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
     return E
 
 
-def F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry):
-    E = F_E_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
+def F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry,Calibration1=1, Calibration2=1, Calibration3=1):
+    E = F_E_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry,Calibration1, Calibration2, Calibration3)
 
     if m_dot_h > m_dot_c:
         T_out_cold = T_in_cold + E * (T_in_hot - T_in_cold)
@@ -349,16 +349,16 @@ def F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry):
 
     return Q
 
-def Q(geometry, year, method="LMTD",K_baffle_bend=1,K_nozzle=1,K_turn=1):
+def Q(geometry, year, method="LMTD",K_baffle_bend=1,K_nozzle=1,K_turn=1,Calibration1=1,Calibration2=1,Calibration3=1):
     """Calculates Q"""
     m_dot_c = hydraulic.iterate_c(geometry, year, K_baffle_bend, K_nozzle)
     m_dot_h = hydraulic.iterate_h(geometry, year,K_turn,K_nozzle)
     Re_sh = hydraulic.give_Re_sh(m_dot_c,geometry)
     Re_tube = hydraulic.give_Re_tube(m_dot_h,geometry)
     if method=="LMTD":
-        Qval = F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
+        Qval = F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry, Calibration1, Calibration2, Calibration3)
     else:
-        Qval = F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
+        Qval = F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry,Calibration1, Calibration2, Calibration3)
     return Qval
         
     

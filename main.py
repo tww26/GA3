@@ -32,8 +32,7 @@ m_dot_h = hydraulic.iterate_h(geometry, year)
 Re_sh = hydraulic.give_Re_sh(m_dot_c,geometry)
 Re_tube = hydraulic.give_Re_tube(m_dot_h,geometry)
 
-print(Re_sh)
-print(Re_tube)
+print(thermal.Q(geometry,'2017'))
 
 #print(thermal.iterate_thermal(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry))
 
