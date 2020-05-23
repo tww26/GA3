@@ -116,7 +116,7 @@ C = {'L': 210e-3,
 D = {'L': 214e-3,
      'N_baffle': 11,
      'pitch_type': 'triangular', #circular
-     'Y': 6e-3, #very approximate
+     'Y': 12.25, #approximate
      'bundle_array': [2,4,4,4,4,2],
      'N_shell': 2,
      'N_pass': 4,
@@ -164,7 +164,7 @@ Year = 2018
 A = {'L': 129e-3,
      'N_baffle': 8,
      'pitch_type': 'triangular', # concentric circles
-     'Y': 4e-3, #very approximate
+     'Y': 12.25e-3, #approximate
      'bundle_array': [4,6,6,4],
      'N_shell': 2,
      'N_pass': 4,
