@@ -41,29 +41,29 @@ def cross_section(geometry):
 def plot_difference():
     """Plots and prints the differences between the designs of the different years"""
     
-    N_17 = len(Designs.get('designs_2017'))-1
-    N_18 = len(Designs.get('designs_2018'))-1
-    N_19 = len(Designs.get('designs_2019'))-1
+    N_17 = len(Designs.get('2017'))
+    N_18 = len(Designs.get('2018'))
+    N_19 = len(Designs.get('2019'))
     
     # Initialise some lists
     Q_calcs = [] # What we predict
     Q_actual = []
     
     # Fill the lists
-    for i in Designs.get('designs_2017'):
+    for i in Designs.get('2017'):
         if i != 'Year':
-            Q_actual.append(Designs.get('designs_2017').get(i).get('Q'))
-            Q_calcs.append(thermal.Q(Designs.get('designs_2017').get(i),'2017'))
+            Q_actual.append(Designs.get('2017').get(i).get('Q'))
+            Q_calcs.append(thermal.Q(Designs.get('2017').get(i),'2017',K_baffle_bend=0.5,K_nozzle=0.5,Calibration3=1.1))
             
-    for i in Designs.get('designs_2018'):
+    for i in Designs.get('2018'):
         if i != 'Year':
-            Q_actual.append(Designs.get('designs_2018').get(i).get('Q'))
-            Q_calcs.append(thermal.Q(Designs.get('designs_2018').get(i),'2018'))
+            Q_actual.append(Designs.get('2018').get(i).get('Q'))
+            Q_calcs.append(thermal.Q(Designs.get('2018').get(i),'2018',K_baffle_bend=0.5,K_nozzle=0.5,Calibration3=1.1))
             
-    for i in Designs.get('designs_2019'):
+    for i in Designs.get('2019'):
         if i != 'Year':
-            Q_actual.append(Designs.get('designs_2019').get(i).get('Q'))
-            Q_calcs.append(thermal.Q(Designs.get('designs_2019').get(i),'2019'))
+            Q_actual.append(Designs.get('2019').get(i).get('Q'))
+            Q_calcs.append(thermal.Q(Designs.get('2019').get(i),'2019',K_baffle_bend=0.5,K_nozzle=0.5,Calibration3=1.1))
     
     
     #Plot a y = x line

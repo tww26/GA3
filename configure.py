@@ -73,7 +73,6 @@ def K_config_2(geometry,year):
 
 for i in Designs:
     for j in Designs.get(i):
-        if j != "Year":
-            print(K_config_2(Designs.get(i).get(j),Designs.get(i).get('Year')))
-            print()
+        print(K_config_2(Designs.get(i).get(j),Designs.get(i).keys()))
+        print()
                     
