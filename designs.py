@@ -275,8 +275,8 @@ E = {'L': 120e-3,
 designs_2017 = {'A': A, 'B': B, 'C': C, 'D': D}
 
 
-
 """Dictionary of designs from all years"""
 
-Designs = {'2017': designs_2017, '2018': designs_2018,'2019': designs_2019 ,'2020': designs_2020}
+Designs = {'2017': designs_2017, '2018': designs_2018,'2019': designs_2019}
+
 
