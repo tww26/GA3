@@ -67,7 +67,7 @@ E = {'L': 105e-3,
      'breadth_gap': 0.0193,
      'B_end': 0}
 
-designs_2020 = {'Year': Year, 'A': A, 'B': B, 'C': C, 'D': D, 'E': E}
+designs_2020 = {'A': A, 'B': B, 'C': C, 'D': D, 'E': E}
 
 
 """2019 Designs"""
@@ -154,7 +154,7 @@ E = {'L': 350e-3,
      'B_end': 0,
      'Q': 16060}
 
-designs_2019 = {'Year': Year, 'A': A, 'B': B, 'C': C, 'D': D, 'E': E}
+designs_2019 = {'A': A, 'B': B, 'C': C, 'D': D, 'E': E}
 
 
 """2018 Designs"""
@@ -200,7 +200,7 @@ C = {'L': 156e-3,
      'B_end': 0,
      'Q': 11620}
 
-designs_2018 = {'Year': Year, 'A': A, 'B': B, 'C': C}
+designs_2018 = {'A': A, 'B': B, 'C': C}
 
 
 """2017 Designs"""
@@ -272,11 +272,11 @@ E = {'L': 120e-3,
      'B_end': 0,
      'Q': 14866.5}
 
-designs_2017 = {'Year': Year, 'A': A, 'B': B, 'C': C, 'D': D}
+designs_2017 = {'A': A, 'B': B, 'C': C, 'D': D}
 
 
 
 """Dictionary of designs from all years"""
 
-Designs = {'designs_2017': designs_2017, 'designs_2018': designs_2018,'designs_2019': designs_2019 ,'designs_2020': designs_2020}
+Designs = {'2017': designs_2017, '2018': designs_2018,'2019': designs_2019 ,'2020': designs_2020}
 
