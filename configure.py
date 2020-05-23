@@ -16,23 +16,27 @@ def K_config(geometry,year):
     K_nozzle_list = np.linspace(0,3,7)
     K_turn_list = np.linspace(0,3,7)
     K_baffle_bend_list = np.linspace(0,3,7)
-    Calibration1 = np.linspace(0.8,1.2,5)
-    Calibration2 = np.linspace(0.8,1.2,5)
-    Calibration3 = np.linspace(0.8,1.2,5)
+    Calibration1_list = np.linspace(0.8,1.2,5)
+    Calibration2_list = np.linspace(0.8,1.2,5)
+    Calibration3_list = np.linspace(0.8,1.2,5)
     
     Qmax = 0
     Qmin = 10e5
     Qlist = []
     
-    for x in K_nozzle_list:
-        for y in K_turn_list:
-            for z in K_baffle_bend_list:
-                Q = thermal.Q(geometry,year,K_baffle_bend=z,K_nozzle=x,K_turn=y)
-                Qlist.append(Q)
-                if Q>Qmax:
-                    Qmax=Q
-                if Q<Qmin:
-                    Qmin=Q
+    
+    for u in Calibration1_list:
+        for v in Calibration2_list:
+            for w in Calibration3_list:
+                for x in K_nozzle_list:
+                    for y in K_turn_list:
+                        for z in K_baffle_bend_list:
+                            Q = thermal.Q(geometry,year,K_baffle_bend=z,K_nozzle=x,K_turn=y,Calibration1=u,Calibration2=v,Calibration3=w)
+                            Qlist.append(Q)
+                            if Q>Qmax:
+                                Qmax=Q
+                            if Q<Qmin:
+                                Qmin=Q
     
     Qave = sum(Qlist)/len(Qlist)
     

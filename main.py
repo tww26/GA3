@@ -2,7 +2,7 @@
 
 import hydraulic
 import Thermal_Functions as thermal
-import configure
+#import configure
 from designs import *
 #import matplotlib.pyplot as plt
 #import geometric as geom
