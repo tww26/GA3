@@ -65,34 +65,39 @@ def plot_difference():
             Q_actual.append(Designs.get('designs_2019').get(i).get('Q'))
             Q_calcs.append(thermal.Q(Designs.get('designs_2019').get(i),'2019'))
     
-    # Plot the lists
-    plt.scatter(Q_actual[0:N_17],Q_calcs[0:N_17],label="2017")
-    plt.scatter(Q_actual[N_17:N_17+N_18],Q_calcs[N_17:N_17+N_18],label="2018")
-    plt.scatter(Q_actual[N_17+N_18:],Q_calcs[N_17+N_18:],label="2019")
-    plt.legend()
     
     #Plot a y = x line
     MaxQ = []
     MaxQ.append(max(Q_calcs))
     MaxQ.append(max(Q_actual))
-    MaxQ = max(MaxQ)
+    MaxQ = int(max(MaxQ))
     MinQ = []
     MinQ.append(min(Q_calcs))
     MinQ.append(min(Q_actual))
-    MinQ = min(MinQ)
-    plt.plot([MinQ,MinQ],[MaxQ,MaxQ],linestyle="--",color="k")
+    MinQ = int(min(MinQ))
+    x = range(MinQ,MaxQ)
+    y = range(MinQ,MaxQ)
+    plt.scatter(x,y,color='k',s=0.5)
+    #plt.plot([MinQ,MinQ],[MaxQ,MaxQ])#,linestyle="--")
+    
+    # Plot the lists
+    plt.scatter(Q_actual[0:N_17],Q_calcs[0:N_17],label="2017")
+    plt.scatter(Q_actual[N_17:N_17+N_18],Q_calcs[N_17:N_17+N_18],label="2018")
+    plt.scatter(Q_actual[N_17+N_18:],Q_calcs[N_17+N_18:],label="2019")
 
     # Plotting magic
     plt.title('Measuring difference of Pair 4 code to actual value')
     plt.ylabel('Pair 4 Predicted Heat Transfer (W)')
     plt.xlabel('Measured Heat Transfer (W)')
+    plt.legend()
+    plt.grid()
     plt.plot()
     
     # Print some results
     print("% Differences")
-    for i in len(Q_actual):
-        percent_diff = 100*(Q_calcs-Q_actual)/Q_actual
+    for i in range(len(Q_actual)):
+        percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         print(percent_diff)
-    
+  
 plot_difference()
 

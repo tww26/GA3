@@ -210,7 +210,7 @@ Year = 2017
 A = {'L': 249e-3,
      'N_baffle': 12,
      'pitch_type': 'triangular',
-     'Y': 7.5e-3,
+     'Y': 10e-3,
      'bundle_array': [4,4],
      'N_shell': 1,
      'N_pass': 1,
