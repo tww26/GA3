@@ -218,14 +218,14 @@ def F_T_out_hot(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry, Calibration1=1, 
     return results['T_out_hot']
 
 
-def F_E_LMTD(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry):
+def F_E_LMTD(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry, Calibration1=1, Calibration2=1, Calibration3=1):
 
     if m_dot_h > m_dot_c:
         m_dot = m_dot_c
     else:
         m_dot = m_dot_h
 
-    E = F_Q_LMTD(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry) / (m_dot * cp * (T_in_hot - T_in_cold))
+    E = F_Q_LMTD(m_dot_c, m_dot_h, Re_inner, Re_outer, geometry, Calibration1, Calibration2, Calibration3) / (m_dot * cp * (T_in_hot - T_in_cold))
 
     return E
 
@@ -360,5 +360,18 @@ def Q(geometry, year, method="LMTD",K_baffle_bend=1,K_nozzle=1,K_turn=1,Calibrat
     else:
         Qval = F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry,Calibration1, Calibration2, Calibration3)
     return Qval
+
+def E(geometry, year, method="LMTD",K_baffle_bend=1,K_nozzle=1,K_turn=1,Calibration1=1,Calibration2=1,Calibration3=1):
+    """Calculates Q"""
+    m_dot_c = hydraulic.iterate_c(geometry, year, K_baffle_bend, K_nozzle)
+    m_dot_h = hydraulic.iterate_h(geometry, year,K_turn,K_nozzle)
+    Re_sh = hydraulic.give_Re_sh(m_dot_c,geometry)
+    Re_tube = hydraulic.give_Re_tube(m_dot_h,geometry)
+    if method=="LMTD":
+        Eval = F_E_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry, Calibration1, Calibration2, Calibration3)
+    else:
+        Eval = F_E_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry,Calibration1, Calibration2, Calibration3)
+    return Eval
+        
         
     

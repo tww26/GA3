@@ -44,12 +44,12 @@ def K_config_1(geometry,year):
 def K_config_2(geometry,year):
     """Varies the value of K_nozzle, K_turn (pass), and K_baffle_bend, to find closest Q to answer"""
     
-    K_nozzle_list = np.linspace(0,1.5,4)
-    K_turn_list = np.linspace(0,1.5,4)
-    K_baffle_bend_list = np.linspace(0,1.5,4)
-    Calibration1_list = np.linspace(0.9,1.2,4)
-    Calibration2_list = np.linspace(0.9,1.2,4)
-    Calibration3_list = np.linspace(0.9,1.2,4)
+    K_nozzle_list = [0.5]
+    K_turn_list = [0.5]
+    K_baffle_bend_list = [0.5]
+    Calibration1_list = np.linspace(1,1.1,5)
+    Calibration2_list = np.linspace(1,1.1,5)
+    Calibration3_list = np.linspace(1.1,1.175,4)
     
     Difference = 10e4
     Optimal_Constants = (1,1,1,1,1)
