@@ -2,7 +2,7 @@
 
 import hydraulic
 import Thermal_Functions as thermal
-import configure
+#import configure
 from designs import *
 #import matplotlib.pyplot as plt
 #import geometric as geom
@@ -24,20 +24,12 @@ B_end = 27.25e-3
 geometry = {'L': L,'N_baffle': N_baffle,'pitch_type': pitch_type,'Y': Y,'bundle_array': bundle_array, 'N_shell': N_shell, 'N_pass': N_pass, 'L_header': L_header, 'breadth_gap': breadth_gap, 'B_end':B_end}
 
 
-year = "2017"
-#print(configure.K_config(geometry,2020))
-geometry = Designs.get('designs_2017').get('A')
-m_dot_c = hydraulic.iterate_c(geometry, year)
-m_dot_h = hydraulic.iterate_h(geometry, year)
-Re_sh = hydraulic.give_Re_sh(m_dot_c,geometry)
-Re_tube = hydraulic.give_Re_tube(m_dot_h,geometry)
+year = "2020"
 
-print(Re_sh)
-print(Re_tube)
-
-#print(thermal.iterate_thermal(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry))
-
-#hydraulic.hydraulic_plot_c(geometry,2017)
+for i in designs_2020:
+    Q = thermal.Q(designs_2020.get(i),year,K_baffle_bend=0.5,K_nozzle=0.5,Calibration1=1.048,Calibration2=1.048,Calibration3=1.13)
+    E = thermal.E(designs_2020.get(i),year,K_baffle_bend=0.5,K_nozzle=0.5,Calibration1=1.048,Calibration2=1.048,Calibration3=1.13)
+    print("{}: Q={}W, E={}%".format(i,int(round(Q,0)),int(round(E*100,0))))
 
 
 
