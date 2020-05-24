@@ -85,7 +85,10 @@ A = {'L': 209e-3,
      'L_turner': 20e-3,
      'breadth_gap': 0.01134,
      'B_end': 0,
-     'Q': 12610}
+     'Q': 12610,
+     'm_dot_hot': 0.29604,
+     'm_dot_cold': 0.41287
+     }
 
 B = {'L': 214e-3,
      'N_baffle': 11,
@@ -98,7 +101,10 @@ B = {'L': 214e-3,
      'L_turner': 20e-3,
      'breadth_gap': 0.014,
      'B_end': 0,
-     'Q': 12705}
+     'Q': 12705,
+     'm_dot_hot': 0.4574262,
+     'm_dot_cold': 0.3712875
+     }
 
 C = {'L': 210e-3,
      'N_baffle': 6,
@@ -111,7 +117,10 @@ C = {'L': 210e-3,
      'L_turner': 24e-3,
      'breadth_gap': 0.01734,
      'B_end': 0,
-     'Q': 14495}
+     'Q': 14495,
+     'm_dot_hot': 0.4643569,
+     'm_dot_cold': 0.5861392
+     }
 
 D = {'L': 214e-3,
      'N_baffle': 11,
@@ -124,7 +133,10 @@ D = {'L': 214e-3,
      'L_turner': 20e-3,
      'breadth_gap': 0.0064,
      'B_end': 0,
-     'Q': 15945} # circular pitch type, need to revisit
+     'Q': 15945,
+     'm_dot_hot': 0.34802015,
+     'm_dot_cold': 0.5693075
+     } # circular pitch type, need to revisit
 
 """E = {'L': 200e-3,
      'N_baffle': 8,
@@ -152,7 +164,10 @@ E = {'L': 350e-3,
      'L_turner': 50e-3,
      'breadth_gap': 0.01734,
      'B_end': 0,
-     'Q': 16060}
+     'Q': 16060,
+     'm_dot_hot': 0.485149,
+     'm_dot_cold': 0.5198025
+     }
 
 designs_2019 = {'A': A, 'B': B, 'C': C, 'D': D, 'E': E}
 
@@ -172,7 +187,10 @@ A = {'L': 129e-3,
      'L_turner': 20.5e-3,
      'breadth_gap': 0.01907,
      'B_end': 0,
-     'Q': 11090} #circular pitch
+     'Q': 11090,
+     'm_dot_hot': 0.3534657,
+     'm_dot_cold': 0.3297033
+     } #circular pitch
 
 B = {'L': 218e-3,
      'N_baffle': 6,
@@ -185,7 +203,10 @@ B = {'L': 218e-3,
      'L_turner': 21e-3,
      'breadth_gap': 0.019,
      'B_end': 0,
-     'Q': 11610}
+     'Q': 11610,
+     'm_dot_hot': 0.4574262,
+     'm_dot_cold': 0.2891092
+     }
 
 C = {'L': 156e-3,
      'N_baffle': 5,
@@ -198,7 +219,10 @@ C = {'L': 156e-3,
      'L_turner': 21e-3,
      'breadth_gap': 0.015,
      'B_end': 0,
-     'Q': 11620}
+     'Q': 11620,
+     'm_dot_hot': 0.4594064,
+     'm_dot_cold': 0.31831715
+     }
 
 designs_2018 = {'A': A, 'B': B, 'C': C}
 
@@ -218,7 +242,10 @@ A = {'L': 249e-3,
      'L_turner': 38e-3,
      'breadth_gap': 0.016,
      'B_end': 0,
-     'Q': 9668}
+     'Q': 9668,
+     'm_dot_hot': 0.456,
+     'm_dot_cold': 0.44825
+     }
 
 B = {'L': 221e-3,
      'N_baffle': 12,
@@ -231,7 +258,10 @@ B = {'L': 221e-3,
      'L_turner': 20e-3,
      'breadth_gap': 0.02585,
      'B_end': 0,
-     'Q': 13813.5}
+     'Q': 13813.5,
+     'm_dot_hot': 0.422,
+     'm_dot_cold': 0.304325
+     }
 
 C = {'L': 180e-3,
      'N_baffle': 8,
@@ -244,7 +274,10 @@ C = {'L': 180e-3,
      'L_turner': 21e-3,
      'breadth_gap': 0.016,
      'B_end': 0,
-     'Q': 11767}
+     'Q': 11767,
+     'm_dot_hot': 0.4285,
+     'm_dot_cold': 0.4169
+     }
 
 D = {'L': 136e-3,
      'N_baffle': 6,
@@ -257,7 +290,10 @@ D = {'L': 136e-3,
      'L_turner': 21e-3,
      'breadth_gap': 0.016,
      'B_end': 0,
-     'Q': 13925.5}
+     'Q': 13925.5,
+     'm_dot_hot': 0.355,
+     'm_dot_cold': 0.44255
+     }
 
 E = {'L': 120e-3,
      'N_baffle': 7,
@@ -270,7 +306,10 @@ E = {'L': 120e-3,
      'L_turner': 28e-3,   # guessed
      'breadth_gap': 0.0163,
      'B_end': 0,
-     'Q': 14866.5}
+     'Q': 14866.5,
+     'm_dot_hot': 0.385,
+     'm_dot_cold': 0.377
+     }
 
 designs_2017 = {'A': A, 'B': B, 'C': C, 'D': D}
 
