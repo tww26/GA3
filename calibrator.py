@@ -137,25 +137,29 @@ def f_sum_dm_dot_cold_squared(K_c):
 
     return sum_dm_dot_cold_squared
 
+"""Trying and failing to plot the cost function over the K_h space"""
 
-"""K_h_bounds = [(0, 2), (0, 2)]
+K_h_bounds = [(0, 2), (0, 2)]
 
-K_turn = np.arange(0, 2, 0.1)
-K_nozzle = np.arange(0, 2, 0.1)
+K_turn = np.arange(0.5, 1, 0.1)
+K_nozzle = np.arange(0.5, 1, 0.1)
 K_turn_grid, K_nozzle_grid = np.meshgrid(K_turn, K_nozzle)
-xy = np.stack([K_turn_grid, K_nozzle_grid])
+K_h_stack = np.stack([K_turn_grid, K_nozzle_grid])
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.plot_surface(K_turn_grid, K_nozzle_grid, f_sum_dm_dot_hot_squared(xy), cmap='terrain')
+ax.view_init(45, -45)
+ax.plot_surface(K_turn_grid, K_nozzle_grid, f_sum_dm_dot_hot_squared(K_h_stack), cmap='terrain')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('eggholder(x, y)')
 plt.show()
-"""
 
 
 
+
+
+"""Example surface plot"""
 """def eggholder(x):
     return (-(x[1] + 47) * np.sin(np.sqrt(abs(x[0]/2 + (x[1]  + 47))))
             -x[0] * np.sin(np.sqrt(abs(x[0] - (x[1]  + 47)))))
@@ -181,15 +185,18 @@ plt.show()
 """print(scipy.optimize.minimize(f_sum_dm_dot_hot_squared, [1,1], method="Nelder-Mead"))
 print(scipy.optimize.minimize(f_sum_dm_dot_hot_squared, [1,1], method="Powell"))"""
 
+"""Using N-M and Powell to determine K_turn and K_nozzle from hot then K_baffle_bend only from cold"""
 #print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1], method="Nelder-Mead"))
-print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1], method="Powell"))
+#print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1], method="Powell"))
 
 """print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="CG"))
 print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="BFGS"))
 print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="L-BFGS-B"))"""
 
+"""Using N-M and Powell to determine Ks independently of each other"""
+"""print(scipy.optimize.minimize(f_sum_dm_dot_hot_squared, [1,1], method="Nelder-Mead"))
+print(scipy.optimize.minimize(f_sum_dm_dot_hot_squared, [1,1], method="Powell"))
 
-"""print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="CG"))
 print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="CG"))
 print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="CG"))"""
 
