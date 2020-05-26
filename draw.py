@@ -46,44 +46,65 @@ def plot_difference():
     N_19 = len(Designs.get('2019'))
     
     # Initialise some lists
-    Q_calcs = [] # What we predict
-    Q_actual = []
+    Q_calcs_1 = [] # What we predict
+    Q_actual_1 = []
+    Q_calcs_2 = [] # What we predict
+    Q_actual_2 = []
+    Q_calcs_3 = [] # What we predict
+    Q_actual_3 = []
+
     
-    # Fill the lists
-    for i in Designs.get('2017'):
-        if i != 'Year':
-            Q_actual.append(Designs.get('2017').get(i).get('Q'))
-            Q_calcs.append(thermal.Q(Designs.get('2017').get(i),'2017',K_baffle_bend=1.73710938,K_nozzle=2.0296875,K_turn=0.68613281,Calibration1=1.17,Calibration2=0.87,Calibration3=1.18))
-            
-    for i in Designs.get('2018'):
-        if i != 'Year':
-            Q_actual.append(Designs.get('2018').get(i).get('Q'))
-            Q_calcs.append(thermal.Q(Designs.get('2018').get(i),'2018',K_baffle_bend=1.73710938,K_nozzle=2.0296875,K_turn=0.68613281,Calibration1=1.17,Calibration2=0.87,Calibration3=1.18))
-            
-    for i in Designs.get('2019'):
-        if i != 'Year':
-            Q_actual.append(Designs.get('2019').get(i).get('Q'))
-            Q_calcs.append(thermal.Q(Designs.get('2019').get(i),'2019',K_baffle_bend=1.73710938,K_nozzle=2.0296875,K_turn=0.68613281,Calibration1=1.17,Calibration2=0.87,Calibration3=1.18))
+    # Values
+    K1 = 4.609375
+    K2 = 3.9421875
+    K3 = 1.346875
+    C1 = 4.72854947
+    C2 = 0.59867577
+    C3 = 0.86864792
+    
+    # Fill the lists per Design category
+    for i in Designs:
+        for j in Designs.get(i):
+            category = Designs.get(i).get(j).get('category')
+            if category == 1:
+#                Q_calcs_1.append(thermal.Q(Designs.get(i).get(j),i))
+                Q_calcs_1.append(thermal.Q(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K1,K_turn=K2,Calibration1=C1,Calibration2=C2,Calibration3=C3))
+                Q_actual_1.append(Designs.get(i).get(j).get('Q'))
+            elif category == 2:
+#                Q_calcs_2.append(thermal.Q(Designs.get(i).get(j),i))
+                Q_calcs_2.append(thermal.Q(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K1,K_turn=K2,Calibration1=C1,Calibration2=C2,Calibration3=C3))
+                Q_actual_2.append(Designs.get(i).get(j).get('Q'))
+            else:
+#                Q_calcs_3.append(thermal.Q(Designs.get(i).get(j),i))
+                Q_calcs_3.append(thermal.Q(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K1,K_turn=K2,Calibration1=C1,Calibration2=C2,Calibration3=C3))
+                Q_actual_3.append(Designs.get(i).get(j).get('Q'))
     
     
     #Plot a y = x line
     MaxQ = []
-    MaxQ.append(max(Q_calcs))
-    MaxQ.append(max(Q_actual))
+    MaxQ.append(max(Q_calcs_1))
+    MaxQ.append(max(Q_actual_1))
+    MaxQ.append(max(Q_calcs_2))
+    MaxQ.append(max(Q_actual_2))
+    MaxQ.append(max(Q_calcs_3))
+    MaxQ.append(max(Q_actual_3))
     MaxQ = int(max(MaxQ))
     MinQ = []
-    MinQ.append(min(Q_calcs))
-    MinQ.append(min(Q_actual))
+    MinQ.append(min(Q_calcs_1))
+    MinQ.append(min(Q_actual_1))
+    MinQ.append(min(Q_calcs_2))
+    MinQ.append(min(Q_actual_2))
+    MinQ.append(min(Q_calcs_3))
+    MinQ.append(min(Q_actual_3))
     MinQ = int(min(MinQ))
     x = range(MinQ,MaxQ)
     y = range(MinQ,MaxQ)
     plt.scatter(x,y,color='k',s=0.5)
-    #plt.plot([MinQ,MinQ],[MaxQ,MaxQ])#,linestyle="--")
     
     # Plot the lists
-    plt.scatter(Q_actual[0:N_17],Q_calcs[0:N_17],label="2017")
-    plt.scatter(Q_actual[N_17:N_17+N_18],Q_calcs[N_17:N_17+N_18],label="2018")
-    plt.scatter(Q_actual[N_17+N_18:],Q_calcs[N_17+N_18:],label="2019")
+    plt.scatter(Q_actual_1,Q_calcs_1,label="Category 1")
+    plt.scatter(Q_actual_2,Q_calcs_2,label="Category 2")
+    plt.scatter(Q_actual_3,Q_calcs_3,label="Category 3")
 
     # Plotting magic
     plt.title('Measuring difference of Pair 4 code to actual value')
@@ -94,10 +115,40 @@ def plot_difference():
     plt.plot()
     
     # Print some results
-    print("% Differences")
+    print("Category 1 % Differences")
+    avgdiff = []
+    Q_actual = Q_actual_1
+    Q_calcs = Q_calcs_1
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
+        avgdiff.append(abs(percent_diff))
         print(percent_diff)
-  
+    avgdiff = sum(avgdiff)/len(avgdiff)
+    print("AVERAGE ABS: {}%".format(avgdiff))
+    print()
+    print("Category 2 % Differences")
+    avgdiff = []
+    Q_actual = Q_actual_2
+    Q_calcs = Q_calcs_2
+    for i in range(len(Q_actual)):
+        percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
+        avgdiff.append(abs(percent_diff))
+        print(percent_diff)
+    avgdiff = sum(avgdiff)/len(avgdiff)
+    print("AVERAGE ABS: {}%".format(avgdiff))
+    print()
+    print("Category 3 % Differences")
+#    avgdiff = []
+#    Q_actual = Q_actual_3
+#    Q_calcs = Q_calcs_3
+#    for i in range(len(Q_actual)):
+#        percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
+#        avgdiff.append(abs(percent_diff))
+#        print(percent_diff)
+#    avgdiff = sum(avgdiff)/len(avgdiff)
+#    print("AVERAGE ABS: {}%".format(avgdiff))
+#    print()
+    
+
 plot_difference()
 

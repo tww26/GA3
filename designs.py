@@ -18,7 +18,7 @@ A = {'L': 132e-3,
      'L_turner': 20.5e-3,
      'breadth_gap': 0.0175,
      'B_end': 0,
-     'category': 2}
+     'category': 1}
 
 B = {'L': 180e-3,
      'N_baffle': 7,
