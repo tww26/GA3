@@ -44,12 +44,12 @@ def K_config_1(geometry,year):
 def K_config_2(geometry,year):
     """Varies the value of K_nozzle, K_turn (pass), and K_baffle_bend, to find closest Q to answer"""
     
-    K_nozzle_list = [0.5]
-    K_turn_list = [0.5]
-    K_baffle_bend_list = [0.5]
-    Calibration1_list = np.linspace(1,1.1,5)
-    Calibration2_list = np.linspace(1,1.1,5)
-    Calibration3_list = np.linspace(1.1,1.175,4)
+    K_nozzle_list = [3.676678]
+    K_turn_list = [1.89314558]
+    K_baffle_bend_list = [1.76628]
+    Calibration1_list = np.linspace(1,1.1,11)
+    Calibration2_list = np.linspace(1,1.1,11)
+    Calibration3_list = np.linspace(1.1,1.12,11)
     
     Difference = 10e4
     Optimal_Constants = (1,1,1,1,1)
@@ -68,11 +68,80 @@ def K_config_2(geometry,year):
                                 Difference = abs(Q-geometry.get('Q'))
                                 Optimal_Constants = (x,y,z,u,v,w)
                                 
-    print("{}/{} for one design".format(count1, len(Calibration2_list)*len(Calibration1_list)))
-    return (Optimal_Constants)      
+    return (Optimal_Constants)   
 
-for i in Designs:
-    for j in Designs.get(i):
-        print(K_config_2(Designs.get(i).get(j),Designs.get(i).keys()))
-        print()
-                    
+def K_config_2_ave():
+    """Prints the Average of the best values"""
+    
+    # Define some lists
+    Values_list = []
+    Optimal_Constants = [0,0,0]
+    
+    # Values list filled with tuples
+    for i in Designs:
+        for j in Designs.get(i):
+            Values_list.append(K_config_2(Designs.get(i).get(j),Designs.get(i).keys()))
+    
+    # Optimal_constants filled with sums of values
+    for k in Values_list:
+        for l in range(3):
+            Optimal_Constants[l]+=k[l+3]
+            
+    # Optimal constanta filled with averages      
+    count = 0
+    for m in Optimal_Constants:
+        Optimal_Constants[count]=m/len(Values_list)
+        count += 1
+        
+    return Optimal_Constants
+
+def K_config_3():
+    """Finds the optimum of the average, not vice versa"""
+    
+    K_nozzle_list = [3.676678]
+    K_turn_list = [1.89314558]
+    K_baffle_bend_list = [1.76628]
+    Calibration1_list = np.linspace(1,1.15,16)
+    Calibration2_list = np.linspace(1,1.15,16)
+    Calibration3_list = np.linspace(1.1,1.125,16)
+    
+    Absolute_Difference = 10e4
+    Percent_Difference = 100
+    count1 = 0
+    
+    for u in Calibration1_list:
+        for v in Calibration2_list:
+            print("{}/{} complete".format(count1, len(Calibration2_list)*len(Calibration1_list)))
+            count1 += 1
+            for w in Calibration3_list:
+                for x in K_nozzle_list:
+                    for y in K_turn_list:
+                        for z in K_baffle_bend_list:
+                            Difference_list = []
+                            Percent_Difference_list = []
+                            for i in Designs:
+                                for j in Designs.get(i):
+                                    Q = thermal.Q(Designs.get(i).get(j),Designs.get(i).keys(),K_baffle_bend=z,K_nozzle=x,K_turn=y,Calibration1=u,Calibration2=v,Calibration3=w)
+                                    Difference_list.append(abs(Q-Designs.get(i).get(j).get('Q')))
+                                    Percent_Difference_list.append(100*abs(Q-Designs.get(i).get(j).get('Q'))/Designs.get(i).get(j).get('Q'))
+                                    
+                            # Average design for those constants
+                            Ave_Difference = sum(Difference_list)/len(Difference_list)
+                            # Average % design for those constants
+                            Ave_Percent_Difference = sum(Percent_Difference_list)/len(Percent_Difference_list)
+                            
+                            # Store best average vaues
+                            if Ave_Difference < Absolute_Difference:
+                                lowest_1 = int(round(Ave_Difference,0))
+                                Optimal_Constants_1 = (x,y,z,u,v,w)
+                                
+                            if Ave_Percent_Difference < Percent_Difference:
+                                lowest_2 = round(Ave_Percent_Difference,2)
+                                Optimal_Constants_2 = (x,y,z,u,v,w)
+                                
+
+    return (("Ave Absolute Difference = {}".format(lowest_1),Optimal_Constants_1,"Lowest Ave % difference is {}%".format(lowest_2),Optimal_Constants_2))
+            
+print(K_config_3())
+            
+                        
