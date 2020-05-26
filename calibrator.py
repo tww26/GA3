@@ -8,6 +8,7 @@ from scipy import optimize
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+
 L = 180e-3
 N_baffle = 7
 pitch_type = "square"
@@ -83,10 +84,8 @@ def f_dm_hot_squared(year, group, K_turn, K_nozzle):
 
     return dm_dot_hot_squared
 
-def f_sum_dm_dot_hot_squared(K_h):
-    """When this function is used for the minimise methods the input should be K_h, otherwise K_turn and K_nozzle"""
-    K_turn = K_h[0]
-    K_nozzle = K_h[1]
+def f_sum_dm_dot_hot_squared(K_turn, K_nozzle):
+    """When this function is used for the minimise methods the input should be K_h, otherwise K_turn and K_nozzle (for plotting)"""
 
     sum_dm_dot_hot_squared = 0
 
@@ -96,6 +95,10 @@ def f_sum_dm_dot_hot_squared(K_h):
 
     return sum_dm_dot_hot_squared
 
+def f_sum_dm_dot_hot_sqaured_array(K_h):
+    K_turn = K_h[0]
+    K_nozzle = K_h[1]
+    return f_sum_dm_dot_hot_squared(K_turn, K_nozzle)
 
 def f_dm_dot_cold_squared(year, group, K_baffle_bend, K_nozzle):
 
@@ -127,7 +130,7 @@ def f_sum_dm_dot_cold_squared(K_c):
     if len(K_c) == 2:
         K_nozzle = K_c[1]
     else:
-        K_nozzle = 1.89314558
+        K_nozzle = 4.48993054
 
     sum_dm_dot_cold_squared = 0
 
@@ -137,68 +140,139 @@ def f_sum_dm_dot_cold_squared(K_c):
 
     return sum_dm_dot_cold_squared
 
-"""Trying and failing to plot the cost function over the K_h space"""
-
-K_h_bounds = [(0, 2), (0, 2)]
-
-K_turn = np.arange(0.5, 1, 0.1)
-K_nozzle = np.arange(0.5, 1, 0.1)
-K_turn_grid, K_nozzle_grid = np.meshgrid(K_turn, K_nozzle)
-K_h_stack = np.stack([K_turn_grid, K_nozzle_grid])
-
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.view_init(45, -45)
-ax.plot_surface(K_turn_grid, K_nozzle_grid, f_sum_dm_dot_hot_squared(K_h_stack), cmap='terrain')
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-ax.set_zlabel('eggholder(x, y)')
-plt.show()
 
 
+"""______________________WORKING CODE______________________________"""
 
+"""Using N-M and Powell to determine K_turn and K_nozzle from hot"""
+# print(scipy.optimize.minimize(f_sum_dm_dot_hot_sqaured_array, [4,4], method="Nelder-Mead"))
+# print(scipy.optimize.minimize(f_sum_dm_dot_hot_sqaured_array, [4,4], method="Powell"))
 
-
-"""Example surface plot"""
-"""def eggholder(x):
-    return (-(x[1] + 47) * np.sin(np.sqrt(abs(x[0]/2 + (x[1]  + 47))))
-            -x[0] * np.sin(np.sqrt(abs(x[0] - (x[1]  + 47)))))
-
-bounds = [(-512, 512), (-512, 512)]
-
-x = np.arange(-512, 513)
-y = np.arange(-512, 513)
-xgrid, ygrid = np.meshgrid(x, y)
-xy = np.stack([xgrid, ygrid])
-
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.view_init(45, -45)
-ax.plot_surface(xgrid, ygrid, eggholder(xy), cmap='terrain')
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-ax.set_zlabel('eggholder(x, y)')
-plt.show()
-"""
-
-
-"""print(scipy.optimize.minimize(f_sum_dm_dot_hot_squared, [1,1], method="Nelder-Mead"))
-print(scipy.optimize.minimize(f_sum_dm_dot_hot_squared, [1,1], method="Powell"))"""
-
-"""Using N-M and Powell to determine K_turn and K_nozzle from hot then K_baffle_bend only from cold"""
-#print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1], method="Nelder-Mead"))
-#print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1], method="Powell"))
-
-"""print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="CG"))
-print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="BFGS"))
-print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="L-BFGS-B"))"""
+"""Using N-M and Powell to determine K_baffle_bend only from cold"""
+# print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1], method="Nelder-Mead"))
+# print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1], method="Powell"))
 
 """Using N-M and Powell to determine Ks independently of each other"""
-"""print(scipy.optimize.minimize(f_sum_dm_dot_hot_squared, [1,1], method="Nelder-Mead"))
-print(scipy.optimize.minimize(f_sum_dm_dot_hot_squared, [1,1], method="Powell"))
+# print(scipy.optimize.minimize(f_sum_dm_dot_hot_squared, [1,1], method="Nelder-Mead"))
+# print(scipy.optimize.minimize(f_sum_dm_dot_hot_squared, [1,1], method="Powell"))
+#
+# print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="CG"))
+# print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="CG"))
 
-print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="CG"))
-print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="CG"))"""
+"""Surface plot - THIS WORKS NOW"""
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+import numpy as np
+
+tempf = np.vectorize(f_sum_dm_dot_hot_squared)
+
+
+
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+
+# Make data.
+K_turn = np.arange(0, 8, .4)
+K_nozzle = np.arange(0, 8, .4)
+X, Y = np.meshgrid(K_turn, K_nozzle)
+
+Z = tempf(X, Y)
+
+# Plot the surface.
+surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
+                       linewidth=0, antialiased=False)
+
+# Customize the z axis.
+
+ax.zaxis.set_major_locator(LinearLocator(10))
+ax.zaxis.set_major_formatter(FormatStrFormatter('%.04f'))
+ax.set_xlabel('K_turn')
+ax.set_ylabel('K_nozzle')
+ax.set_zlabel('Cost Function')
+
+# Add a color bar which maps values to colors.
+fig.colorbar(surf, shrink=0.5, aspect=5)
+
+plt.show()
+
+"""__________________PLOTTING EXPERIMENTS________________________"""
+
+"""Trying and failing to plot the cost function over the K_h space"""
+# K_h_bounds = [(0, 2), (0, 2)]
+#
+# K_turn = np.arange(0.5, 1, 0.1)
+# K_nozzle = np.arange(0.5, 1, 0.1)
+# K_turn_grid, K_nozzle_grid = np.meshgrid(K_turn, K_nozzle)
+# K_h_stack = np.stack([K_turn_grid, K_nozzle_grid])
+#
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d')
+# ax.view_init(45, -45)
+# ax.plot_surface(K_turn_grid, K_nozzle_grid, f_sum_dm_dot_hot_squared(K_h_stack), cmap='terrain')
+# ax.set_xlabel('x')
+# ax.set_ylabel('y')
+# ax.set_zlabel('eggholder(x, y)')
+# plt.show()
+
+"""Example surface plot"""
+# def eggholder(x):
+#     return (-(x[1] + 47) * np.sin(np.sqrt(abs(x[0]/2 + (x[1]  + 47))))
+#             -x[0] * np.sin(np.sqrt(abs(x[0] - (x[1]  + 47)))))
+#
+# bounds = [(-512, 512), (-512, 512)]
+#
+# x = np.arange(-512, 513)
+# y = np.arange(-512, 513)
+# xgrid, ygrid = np.meshgrid(x, y)
+# xy = np.stack([xgrid, ygrid])
+#
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d')
+# ax.view_init(45, -45)
+# ax.plot_surface(xgrid, ygrid, eggholder(xy), cmap='terrain')
+# ax.set_xlabel('x')
+# ax.set_ylabel('y')
+# ax.set_zlabel('eggholder(x, y)')
+# plt.show()
+
+"""Trisurface plot"""
+# from mpl_toolkits.mplot3d import Axes3D
+# import matplotlib.pyplot as plt
+# import numpy as np
+#
+# x = np.linspace(0,5,10)
+# y = np.linspace(0,5,10)
+# z = []
+#
+# for xv in x:
+#     for yv in y:
+#         z.append(f_sum_dm_dot_hot_squared(xv, yv))
+#
+# z = np.array(z)
+# fig = plt.figure()
+# ax = fig.gca(projection='3d')
+#
+# ax.plot_trisurf(x, y, z, linewidth=0.2, antialiased=True)
+#
+# plt.show()
+
+"""____________________MINIMISING EXPERIMENTS______________________"""
+
+"""Trying to get CG method to work"""
+#print(scipy.optimize.minimize(f_sum_dm_dot_hot_sqaured_array, [0.1,0.1], method="CG", jac=False, options={'gtol': 1e-20}, tol=1e-20))
+
+#dK_nozzle = 1e-6
+#print((f_sum_dm_dot_hot_squared(0.1, 0.1 + dK_nozzle)-f_sum_dm_dot_hot_squared(0.1, 0.1-dK_nozzle))/(2*dK_nozzle))
+
+"""Trying to use shgo"""
+# K_h_bounds = [(0, 2), (0, 2)]
+# print(optimize.shgo(f_sum_dm_dot_hot_squared, K_h_bounds))
+
+"""Trying to get other optimisation methods to work"""
+# print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="BFGS"))
+# print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="L-BFGS-B"))
 
 
 
