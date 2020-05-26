@@ -36,7 +36,7 @@ def dp_flowrate(m_dot,temp,year):
         dP *= 100000
 
     
-    elif year == 2018 or year == 2018:
+    elif year == 2018 or year == "2018":
         
         # if Cold
         if temp == "cold":
