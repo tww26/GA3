@@ -101,9 +101,9 @@ def K_config_3():
     K_nozzle_list = [3.676678]
     K_turn_list = [1.89314558]
     K_baffle_bend_list = [1.76628]
-    Calibration1_list = np.linspace(1.25,1.35,3)
-    Calibration2_list = np.linspace(0.9,1.2,4)
-    Calibration3_list = np.linspace(1,1.2,3)
+    Calibration1_list = np.linspace(1.17,1.2,3)
+    Calibration2_list = np.linspace(0.87,0.89,4)
+    Calibration3_list = np.linspace(1.16,1.18,3)
     
     Absolute_Difference = 10e4
     Percent_Difference = 100

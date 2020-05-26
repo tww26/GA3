@@ -53,17 +53,17 @@ def plot_difference():
     for i in Designs.get('2017'):
         if i != 'Year':
             Q_actual.append(Designs.get('2017').get(i).get('Q'))
-            Q_calcs.append(thermal.Q(Designs.get('2017').get(i),'2017',K_baffle_bend=1.73710938,K_nozzle=2.0296875,K_turn=0.68613281,Calibration1=1.235,Calibration2=0.916,Calibration3=1.23))
+            Q_calcs.append(thermal.Q(Designs.get('2017').get(i),'2017',K_baffle_bend=1.73710938,K_nozzle=2.0296875,K_turn=0.68613281,Calibration1=1.17,Calibration2=0.87,Calibration3=1.18))
             
     for i in Designs.get('2018'):
         if i != 'Year':
             Q_actual.append(Designs.get('2018').get(i).get('Q'))
-            Q_calcs.append(thermal.Q(Designs.get('2018').get(i),'2018',K_baffle_bend=1.73710938,K_nozzle=2.0296875,K_turn=0.68613281,Calibration1=1.235,Calibration2=0.916,Calibration3=1.23))
+            Q_calcs.append(thermal.Q(Designs.get('2018').get(i),'2018',K_baffle_bend=1.73710938,K_nozzle=2.0296875,K_turn=0.68613281,Calibration1=1.17,Calibration2=0.87,Calibration3=1.18))
             
     for i in Designs.get('2019'):
         if i != 'Year':
             Q_actual.append(Designs.get('2019').get(i).get('Q'))
-            Q_calcs.append(thermal.Q(Designs.get('2019').get(i),'2019',K_baffle_bend=1.73710938,K_nozzle=2.0296875,K_turn=0.68613281,Calibration1=1.235,Calibration2=0.916,Calibration3=1.23))
+            Q_calcs.append(thermal.Q(Designs.get('2019').get(i),'2019',K_baffle_bend=1.73710938,K_nozzle=2.0296875,K_turn=0.68613281,Calibration1=1.17,Calibration2=0.87,Calibration3=1.18))
     
     
     #Plot a y = x line
