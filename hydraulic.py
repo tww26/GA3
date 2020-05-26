@@ -21,22 +21,22 @@ def dp_flowrate(m_dot,temp,year):
     # Calculate flowrate in L/s 
     Q = (m_dot / rho_water) * 1000
     
-    # 2019 or 2020 values
-    
-    if year == 2020 or year == 2019:
-    
+    # 2017!!
+    if year == 2017 or year == "2017":
+
         # if Cold
         if temp == "cold":
-            dP = -1.07*Q**2 + 0.0995*Q + 0.584
+            dP = -3.35*Q**2 + 0.159*Q + 0.816
         
         # if Hot
         else:
-            dP = -0.52*Q**2 - 0.769*Q + 0.677
+            dP = -1.18*Q**2 - 0.597*Q + 0.638
             
         # dP in Pa not bar
         dP *= 100000
-        
-    elif year == 2018:
+
+    
+    elif year == 2018 or year == 2018:
         
         # if Cold
         if temp == "cold":
@@ -49,16 +49,16 @@ def dp_flowrate(m_dot,temp,year):
         # dP in Pa not bar
         dP *= 100000
       
-    # 2017!!
+    # 2019 or 2020 values
     else:
-
+    
         # if Cold
         if temp == "cold":
-            dP = -3.35*Q**2 + 0.159*Q + 0.816
+            dP = -1.07*Q**2 + 0.0995*Q + 0.584
         
         # if Hot
         else:
-            dP = -1.18*Q**2 - 0.597*Q + 0.638
+            dP = -0.52*Q**2 - 0.769*Q + 0.677
             
         # dP in Pa not bar
         dP *= 100000

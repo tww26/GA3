@@ -101,9 +101,9 @@ def K_config_3():
     K_nozzle_list = [3.676678]
     K_turn_list = [1.89314558]
     K_baffle_bend_list = [1.76628]
-    Calibration1_list = np.linspace(1,1.15,16)
-    Calibration2_list = np.linspace(1,1.15,16)
-    Calibration3_list = np.linspace(1.1,1.125,16)
+    Calibration1_list = np.linspace(1.25,1.35,3)
+    Calibration2_list = np.linspace(0.9,0.95,11)
+    Calibration3_list = np.linspace(1.15,1.3,3)
     
     Absolute_Difference = 10e4
     Percent_Difference = 100
@@ -132,10 +132,12 @@ def K_config_3():
                             
                             # Store best average vaues
                             if Ave_Difference < Absolute_Difference:
+                                Absolute_Difference = Ave_Difference
                                 lowest_1 = int(round(Ave_Difference,0))
                                 Optimal_Constants_1 = (x,y,z,u,v,w)
                                 
                             if Ave_Percent_Difference < Percent_Difference:
+                                Percent_Difference = Ave_Percent_Difference
                                 lowest_2 = round(Ave_Percent_Difference,2)
                                 Optimal_Constants_2 = (x,y,z,u,v,w)
                                 
