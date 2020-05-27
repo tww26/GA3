@@ -46,6 +46,7 @@ def f_Nu_outer(Re_outer, Pr, c, Calibration1=1, Calibration3=1):
     return Nu_outer
 
 
+
 def f_h_outer(lambda_water, d_outer, Nu_outer):
     h_outer = (Nu_outer * lambda_water) / d_outer
     return h_outer
@@ -69,7 +70,7 @@ def f_Q_dot_hot(m_dot_h, cp, T_in_hot, T_out_hot):
 def f_dTlm(T_in_hot, T_out_hot, T_in_cold, T_out_cold):
     if (T_in_hot - T_out_cold) / (T_out_hot - T_in_cold) == 1:
         T_out_cold -= 0.01
-        #print('IT HAPPENED!!!')
+        print('IT HAPPENED!!!')
     if T_in_hot - T_out_cold == 0:
         T_out_cold -= 0.01
         print('THE OTHER ONE HAPPENED!!!')
@@ -348,6 +349,11 @@ def F_Q_NTU(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry,Calibration1=1, Calibrati
         Q = m_dot_h * cp * (T_in_hot - T_out_hot)
 
     return Q
+
+
+
+"""_____________________________________Aggregated EXTERNAL Functions___________________________________"""
+
 
 def Q(geometry, year, method="LMTD",K_baffle_bend=1,K_nozzle=1,K_turn=1,Calibration1=1,Calibration2=1,Calibration3=1):
     """Calculates Q"""

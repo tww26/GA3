@@ -22,7 +22,7 @@ B_end = 27.25e-3
 
 geometry = {'L': L,'N_baffle': N_baffle,'pitch_type': pitch_type,'Y': Y,'bundle_array': bundle_array, 'N_shell': N_shell, 'N_pass': N_pass, 'L_header': L_header, 'breadth_gap': breadth_gap, 'B_end':B_end}
 
-def f_dQ_squared(year, group):
+def f_dQ_squared(year, group, K_turn, K_nozzle, K_baffle_bend, Calibration1, Calibration2, Calibration3):
 
     year = str(year)
 
@@ -39,26 +39,122 @@ def f_dQ_squared(year, group):
                 'breadth_gap': des.Designs[year][group]['breadth_gap'],
                 'B_end': des.Designs[year][group]['B_end']}
 
-    m_dot_c = hydraulic.iterate_c(geometry, year)
-    m_dot_h = hydraulic.iterate_h(geometry, year)
+    m_dot_h = hydraulic.iterate_h(geometry, year, K_turn, K_nozzle)
+    m_dot_c = hydraulic.iterate_c(geometry,year,K_baffle_bend,K_nozzle)
+
     Re_sh = hydraulic.give_Re_sh(m_dot_c, geometry)
     Re_tube = hydraulic.give_Re_tube(m_dot_h, geometry)
 
-    Q_model = thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry)
+    Q_model = thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry,Calibration1, Calibration2, Calibration3)
     dQ = Q_model - Q_measured
     dQ_squared = dQ**2
 
     return dQ_squared
 
-def f_sum_dQ_squared():
+def f_sum_dQ_squared(Calibration1, Calibration2, Calibration3):
+
+    K_turn = 5.21461099
+    K_nozzle = 4.4899305
+    K_baffle_bend = 1.29030439
 
     sum_dQ_squared = 0
 
     for year in des.Designs.keys():
         for group in des.Designs[year].keys():
-            sum_dQ_squared += f_dQ_squared(year, group)
+            sum_dQ_squared += f_dQ_squared(year, group, K_turn, K_nozzle, K_baffle_bend, Calibration1, Calibration2, Calibration3)
 
     return sum_dQ_squared
+
+def f_sum_dQ_squared_array(Calibrations):
+    Calibration1 = Calibrations[0]
+    Calibration2 = Calibrations[1]
+    Calibration3 = Calibrations[2]
+    return f_sum_dQ_squared(Calibration1, Calibration2, Calibration3)
+
+
+def f_dQ(year, group, K_turn, K_nozzle, K_baffle_bend, Calibration1, Calibration2, Calibration3):
+
+    year = str(year)
+
+    Q_measured = des.Designs[year][group]['Q']
+
+    geometry = {'L': des.Designs[year][group]['L'],
+                'N_baffle': des.Designs[year][group]['N_baffle'],
+                'pitch_type': des.Designs[year][group]['pitch_type'],
+                'Y': des.Designs[year][group]['Y'],
+                'bundle_array': des.Designs[year][group]['bundle_array'],
+                'N_shell': des.Designs[year][group]['N_shell'],
+                'N_pass': des.Designs[year][group]['N_pass'],
+                'L_header': des.Designs[year][group]['L_header'],
+                'breadth_gap': des.Designs[year][group]['breadth_gap'],
+                'B_end': des.Designs[year][group]['B_end']}
+
+    m_dot_h = hydraulic.iterate_h(geometry, year, K_turn, K_nozzle)
+    m_dot_c = hydraulic.iterate_c(geometry,year,K_baffle_bend,K_nozzle)
+
+    Re_sh = hydraulic.give_Re_sh(m_dot_c, geometry)
+    Re_tube = hydraulic.give_Re_tube(m_dot_h, geometry)
+
+    Q_model = thermal.F_Q_LMTD(m_dot_c, m_dot_h, Re_tube, Re_sh, geometry, Calibration1, Calibration2, Calibration3)
+    dQ = Q_model - Q_measured
+    dQ_squared = dQ**2
+
+    return dQ
+
+def f_sum_dQ(Calibration1, Calibration2, Calibration3):
+
+    K_turn = 5.21461099
+    K_nozzle = 4.4899305
+    K_baffle_bend = 1.29030439
+
+    sum_dQ = 0
+
+    for year in des.Designs.keys():
+        for group in des.Designs[year].keys():
+            sum_dQ += f_dQ(year, group, K_turn, K_nozzle, K_baffle_bend, Calibration1, Calibration2, Calibration3)
+
+    return sum_dQ
+
+def f_sum_dQ_array(Calibrations):
+    Calibration1 = Calibrations[0]
+    Calibration2 = Calibrations[1]
+    Calibration3 = Calibrations[2]
+    return f_sum_dQ(Calibration1, Calibration2, Calibration3)
+
+
+def f_Q_measured(year, group):
+    year = str(year)
+
+    Q_measured = des.Designs[year][group]['Q']
+
+    return Q_measured
+
+def f_cost_Q(Calibrations):
+
+    Calibration1 = Calibrations[0]
+    Calibration2 = Calibrations[1]
+    Calibration3 = Calibrations[2]
+
+    K_turn = 5.21461099
+    K_nozzle = 4.4899305
+    K_baffle_bend = 1.29030439
+
+    sum_dQ_squared = 0
+    sum_Q_measured = 0
+    N = 0
+
+    for year in des.Designs.keys():
+        for group in des.Designs[year].keys():
+            sum_dQ_squared += f_dQ_squared(year, group, K_turn, K_nozzle, K_baffle_bend, Calibration1, Calibration2, Calibration3)
+            sum_Q_measured += f_Q_measured(year, group)
+            N+=1
+
+
+    cost_Q = (sum_dQ_squared/N)/((sum_Q_measured/N)**2)
+    return cost_Q
+
+
+
 
 def f_dm_hot_squared(year, group, K_turn, K_nozzle):
 
@@ -84,6 +180,13 @@ def f_dm_hot_squared(year, group, K_turn, K_nozzle):
 
     return dm_dot_hot_squared
 
+def f_m_dot_hot_measured(year, group):
+    year = str(year)
+
+    m_dot_hot_measured = des.Designs[year][group]['m_dot_hot']
+
+    return m_dot_hot_measured
+
 def f_sum_dm_dot_hot_squared(K_turn, K_nozzle):
     """When this function is used for the minimise methods the input should be K_h, otherwise K_turn and K_nozzle (for plotting)"""
 
@@ -99,6 +202,25 @@ def f_sum_dm_dot_hot_sqaured_array(K_h):
     K_turn = K_h[0]
     K_nozzle = K_h[1]
     return f_sum_dm_dot_hot_squared(K_turn, K_nozzle)
+
+def f_cost_hot(K_h):
+    """When this function is used for the minimise methods the input should be K_h, otherwise K_turn and K_nozzle (for plotting)"""
+    K_turn = K_h[0]
+    K_nozzle = K_h[1]
+
+    sum_dm_dot_hot_squared = 0
+    sum_m_dot_hot_measured = 0
+    N = 0
+
+    for year in des.Designs.keys():
+        for group in des.Designs[year].keys():
+            sum_dm_dot_hot_squared += f_dm_hot_squared(year, group, K_turn, K_nozzle)
+            sum_m_dot_hot_measured += f_m_dot_hot_measured(year, group)
+            N+=1
+
+    cost_hot = (sum_dm_dot_hot_squared/N)/((sum_m_dot_hot_measured/N)**2)
+    return cost_hot
+
 
 def f_dm_dot_cold_squared(year, group, K_baffle_bend, K_nozzle):
 
@@ -124,6 +246,13 @@ def f_dm_dot_cold_squared(year, group, K_baffle_bend, K_nozzle):
 
     return dm_dot_cold_squared
 
+def f_m_dot_cold_measured(year, group):
+    year = str(year)
+
+    m_dot_cold_measured = des.Designs[year][group]['m_dot_cold']
+
+    return m_dot_cold_measured
+
 def f_sum_dm_dot_cold_squared(K_c):
 
     K_baffle_bend = K_c[0]
@@ -140,17 +269,45 @@ def f_sum_dm_dot_cold_squared(K_c):
 
     return sum_dm_dot_cold_squared
 
+def f_cost_cold(K_c):
+
+
+    K_baffle_bend = K_c[0]
+    if len(K_c) == 2:
+        K_nozzle = K_c[1]
+    else:
+        K_nozzle = 4.48993054
+
+    sum_dm_dot_cold_squared = 0
+    sum_m_dot_cold_measured = 0
+    N = 0
+
+    for year in des.Designs.keys():
+        for group in des.Designs[year].keys():
+            sum_dm_dot_cold_squared += f_dm_dot_cold_squared(year, group, K_baffle_bend, K_nozzle)
+            sum_m_dot_cold_measured += f_m_dot_cold_measured(year, group)
+            N+=1
+
+    cost_cold = (sum_dm_dot_cold_squared/N)/((sum_m_dot_cold_measured/N)**2)
+    return cost_cold
+
+
+
+#print(f_cost_Q([2.96408332, 0.85582341, 1.02627201]))
 
 
 """______________________WORKING CODE______________________________"""
 
 """Using N-M and Powell to determine K_turn and K_nozzle from hot"""
-# print(scipy.optimize.minimize(f_sum_dm_dot_hot_sqaured_array, [4,4], method="Nelder-Mead"))
-# print(scipy.optimize.minimize(f_sum_dm_dot_hot_sqaured_array, [4,4], method="Powell"))
+# print(scipy.optimize.minimize(f_cost_hot, [4,4], method="Nelder-Mead"))
+# print(scipy.optimize.minimize(f_cost_hot, [4,4], method="Powell"))
 
 """Using N-M and Powell to determine K_baffle_bend only from cold"""
-# print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1], method="Nelder-Mead"))
-# print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1], method="Powell"))
+# print(scipy.optimize.minimize(f_cost_cold, [1], method="Nelder-Mead"))
+# print(scipy.optimize.minimize(f_cost_cold, [1], method="Powell"))
+
+"""Using N-M and Powell to determine Calibration1, 2 and 3 from Q"""
+print(scipy.optimize.minimize(f_sum_dQ_squared_array, [1,1,1], method="Powell"))
 
 """Using N-M and Powell to determine Ks independently of each other"""
 # print(scipy.optimize.minimize(f_sum_dm_dot_hot_squared, [1,1], method="Nelder-Mead"))
@@ -160,42 +317,42 @@ def f_sum_dm_dot_cold_squared(K_c):
 # print(scipy.optimize.minimize(f_sum_dm_dot_cold_squared, [1,1], method="CG"))
 
 """Surface plot - THIS WORKS NOW"""
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
-import numpy as np
-
-tempf = np.vectorize(f_sum_dm_dot_hot_squared)
-
-
-
-fig = plt.figure()
-ax = fig.gca(projection='3d')
-
-# Make data.
-K_turn = np.arange(0, 8, .4)
-K_nozzle = np.arange(0, 8, .4)
-X, Y = np.meshgrid(K_turn, K_nozzle)
-
-Z = tempf(X, Y)
-
-# Plot the surface.
-surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
-                       linewidth=0, antialiased=False)
-
-# Customize the z axis.
-
-ax.zaxis.set_major_locator(LinearLocator(10))
-ax.zaxis.set_major_formatter(FormatStrFormatter('%.04f'))
-ax.set_xlabel('K_turn')
-ax.set_ylabel('K_nozzle')
-ax.set_zlabel('Cost Function')
-
-# Add a color bar which maps values to colors.
-fig.colorbar(surf, shrink=0.5, aspect=5)
-
-plt.show()
+# from mpl_toolkits.mplot3d import Axes3D
+# import matplotlib.pyplot as plt
+# from matplotlib import cm
+# from matplotlib.ticker import LinearLocator, FormatStrFormatter
+# import numpy as np
+#
+# tempf = np.vectorize(f_cost_hot)
+#
+#
+#
+# fig = plt.figure()
+# ax = fig.gca(projection='3d')
+#
+# # Make data.
+# K_turn = np.arange(0, 8, .4)
+# K_nozzle = np.arange(0, 8, .4)
+# X, Y = np.meshgrid(K_turn, K_nozzle)
+#
+# Z = tempf(X, Y)
+#
+# # Plot the surface.
+# surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
+#                        linewidth=0, antialiased=False)
+#
+# # Customize the z axis.
+#
+# ax.zaxis.set_major_locator(LinearLocator(10))
+# ax.zaxis.set_major_formatter(FormatStrFormatter('%.04f'))
+# ax.set_xlabel('K_turn')
+# ax.set_ylabel('K_nozzle')
+# ax.set_zlabel('Cost Function')
+#
+# # Add a color bar which maps values to colors.
+# fig.colorbar(surf, shrink=0.5, aspect=5)
+#
+# plt.show()
 
 """__________________PLOTTING EXPERIMENTS________________________"""
 
