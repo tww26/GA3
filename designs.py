@@ -203,22 +203,22 @@ A = {'L': 129e-3,
      'category': 3
      } #circular pitch
 
-B = {'L': 218e-3,
-     'N_baffle': 6,
-     'pitch_type': 'triangular',
-     'Y': 10e-3,
-     'bundle_array': [2,4,6,6,4,2],
-     'N_shell': 2,
-     'N_pass': 2,
-     'L_header': 50e-3,
-     'L_turner': 21e-3,
-     'breadth_gap': 0.019,
-     'B_end': 0,
-     'Q': 11610,
-     'm_dot_hot': 0.4574262,
-     'm_dot_cold': 0.2891092,
-     'category': 1
-     }
+#B = {'L': 218e-3,
+#     'N_baffle': 6,
+#     'pitch_type': 'triangular',
+#     'Y': 10e-3,
+#     'bundle_array': [2,4,6,6,4,2],
+#     'N_shell': 2,
+#     'N_pass': 2,
+#     'L_header': 50e-3,
+#     'L_turner': 21e-3,
+#     'breadth_gap': 0.019,
+#     'B_end': 0,
+#     'Q': 11610,
+#     'm_dot_hot': 0.4574262,
+#     'm_dot_cold': 0.2891092,
+#     'category': 1
+#     }
 
 C = {'L': 156e-3,
      'N_baffle': 5,
