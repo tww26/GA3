@@ -9,19 +9,6 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 
-L = 180e-3
-N_baffle = 7
-pitch_type = "square"
-Y = 13e-3
-bundle_array = [4,4,4,4]
-N_shell = 1
-N_pass = 2
-L_header = 0.025
-breadth_gap = 0.01
-B_end = 27.25e-3
-
-geometry = {'L': L,'N_baffle': N_baffle,'pitch_type': pitch_type,'Y': Y,'bundle_array': bundle_array, 'N_shell': N_shell, 'N_pass': N_pass, 'L_header': L_header, 'breadth_gap': breadth_gap, 'B_end':B_end}
-
 def f_dQ_squared(year, group, K_turn, K_nozzle, K_baffle_bend, Calibration1, Calibration2, Calibration3):
 
     year = str(year)
@@ -53,6 +40,8 @@ def f_dQ_squared(year, group, K_turn, K_nozzle, K_baffle_bend, Calibration1, Cal
 
 def f_sum_dQ_squared(Calibration1, Calibration2, Calibration3):
 
+    print(Calibration1, Calibration2, Calibration3)
+
     K_turn = 5.21461099
     K_nozzle = 4.4899305
     K_baffle_bend = 1.29030439
@@ -68,7 +57,8 @@ def f_sum_dQ_squared(Calibration1, Calibration2, Calibration3):
 def f_sum_dQ_squared_array(Calibrations):
     Calibration1 = Calibrations[0]
     Calibration2 = Calibrations[1]
-    Calibration3 = Calibrations[2]
+    #Calibration3 = Calibrations[2]
+    Calibration3 = 1
     return f_sum_dQ_squared(Calibration1, Calibration2, Calibration3)
 
 
@@ -307,7 +297,7 @@ def f_cost_cold(K_c):
 # print(scipy.optimize.minimize(f_cost_cold, [1], method="Powell"))
 
 """Using N-M and Powell to determine Calibration1, 2 and 3 from Q"""
-print(scipy.optimize.minimize(f_sum_dQ_squared_array, [1,1,1], method="Powell"))
+print(scipy.optimize.minimize(f_sum_dQ_squared_array, [1,1], method="Nelder-Mead", options={'maxiter': 100}))
 
 """Using N-M and Powell to determine Ks independently of each other"""
 # print(scipy.optimize.minimize(f_sum_dm_dot_hot_squared, [1,1], method="Nelder-Mead"))

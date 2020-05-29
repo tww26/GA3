@@ -90,15 +90,34 @@ def check_mass_total(geometry,display=True):
             print('mass_total to large: ', round(mass_total, 3), '>', mass_total_max)
         return False
 
+def f_mass_total(geometry,display=True):
+    """"TO BE FULLY GENERALISED TO n-shell m-pass"""
+    # A_baffle needs to take into account non-intersecting tubes
+    # Add flow separaters for mulitishell
 
-    if 1 == 1:                                                  # TO AMEND: Change to only print if ask for in argument
-        print('mass_tube_total: ', mass_tube_total)
-        print('mass_pipe_total: ', mass_pipe_total)
-        print('mass_baffle_total: ', mass_baffle_total)
-        print('mass_nozzle_total: ', mass_nozzle_total)
-        print('mass_plate_total: ', mass_plate_total)
+    mass_tube_total = rhol_tube * para.L_tube(geometry) * para.N_tube(geometry)
+
+    mass_pipe_total = rhol_pipe * para.L_pipe(geometry)
+
+    mass_baffle_total = rhoA_baffle * geometry.get('N_baffle') * para.A_baffle(geometry)
+
+    mass_nozzle_total = 4 * mass_nozzle
+
+    mass_plate_total = 2 * rhoA_plate * para.A_tube_plate(geometry) + 2 * rhoA_plate * para.A_end_plate(geometry)
+
+    mass_total = mass_pipe_total + mass_tube_total + mass_baffle_total + mass_nozzle_total + mass_plate_total
+
+    if display == True:
+        print('mass_tube_total: ... ', mass_tube_total)
+        print('mass_pipe_total: ... ', mass_pipe_total)
+        print('mass_baffle_total: . ', mass_baffle_total)
+        print('mass_nozzle_total: . ', mass_nozzle_total)
+        print('mass_plate_total: .. ', mass_plate_total)
         print('________________________________________')
-        print('mass_total: ',  mass_total)
+        print('mass_total: ....... ',  mass_total)
+        print('________________________________________')
+
+    return mass_total
 
 
 def check_bundle_fit(geometry):

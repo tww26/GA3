@@ -174,15 +174,15 @@ def plot_mc_difference():
             category = Designs.get(i).get(j).get('category')
             if category == 1:
 #                Q_calcs_1.append(thermal.Q(Designs.get(i).get(j),i))
-                Q_calcs_1.append(hydraulic.iterate_c(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K1))
+                Q_calcs_1.append(hydraulic.iterate_c(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K2))
                 Q_actual_1.append(Designs.get(i).get(j).get('m_dot_cold'))
             elif category == 2:
 #                Q_calcs_2.append(thermal.Q(Designs.get(i).get(j),i))
-                Q_calcs_2.append(hydraulic.iterate_c(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K1))
+                Q_calcs_2.append(hydraulic.iterate_c(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K2))
                 Q_actual_2.append(Designs.get(i).get(j).get('m_dot_cold'))
             else:
 #                Q_calcs_3.append(thermal.Q(Designs.get(i).get(j),i))
-                Q_calcs_3.append(hydraulic.iterate_c(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K1))
+                Q_calcs_3.append(hydraulic.iterate_c(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K2))
                 Q_actual_3.append(Designs.get(i).get(j).get('m_dot_cold'))
 
 
@@ -278,15 +278,15 @@ def plot_mh_difference():
             category = Designs.get(i).get(j).get('category')
             if category == 1:
 #                Q_calcs_1.append(thermal.Q(Designs.get(i).get(j),i))
-                Q_calcs_1.append(hydraulic.iterate_h(Designs.get(i).get(j),i,K_nozzle=K1,K_turn=K2))
+                Q_calcs_1.append(hydraulic.iterate_h(Designs.get(i).get(j),i,K_nozzle=K2,K_turn=K1))
                 Q_actual_1.append(Designs.get(i).get(j).get('m_dot_hot'))
             elif category == 2:
 #                Q_calcs_2.append(thermal.Q(Designs.get(i).get(j),i))
-                Q_calcs_2.append(hydraulic.iterate_h(Designs.get(i).get(j),i,K_nozzle=K1,K_turn=K2))
+                Q_calcs_2.append(hydraulic.iterate_h(Designs.get(i).get(j),i,K_nozzle=K2,K_turn=K1))
                 Q_actual_2.append(Designs.get(i).get(j).get('m_dot_hot'))
             else:
 #                Q_calcs_3.append(thermal.Q(Designs.get(i).get(j),i))
-                Q_calcs_3.append(hydraulic.iterate_h(Designs.get(i).get(j),i,K_nozzle=K1,K_turn=K2))
+                Q_calcs_3.append(hydraulic.iterate_h(Designs.get(i).get(j),i,K_nozzle=K2,K_turn=K1))
                 Q_actual_3.append(Designs.get(i).get(j).get('m_dot_hot'))
 
 
@@ -385,15 +385,15 @@ def plot_mass_difference():
             category = Designs.get(i).get(j).get('category')
             if category == 1:
 #                Q_calcs_1.append(thermal.Q(Designs.get(i).get(j),i))
-                Q_calcs_1.append(thermal.Q(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K1,K_turn=K2,Calibration1=C1,Calibration2=C2,Calibration3=C3))
+                Q_calcs_1.append(thermal.Q(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K2,K_turn=K1,Calibration1=C1,Calibration2=C2,Calibration3=C3))
                 Q_actual_1.append(Designs.get(i).get(j).get('Q'))
             elif category == 2:
 #                Q_calcs_2.append(thermal.Q(Designs.get(i).get(j),i))
-                Q_calcs_2.append(thermal.Q(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K1,K_turn=K2,Calibration1=C1,Calibration2=C2,Calibration3=C3))
+                Q_calcs_2.append(thermal.Q(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K2,K_turn=K1,Calibration1=C1,Calibration2=C2,Calibration3=C3))
                 Q_actual_2.append(Designs.get(i).get(j).get('Q'))
             else:
 #                Q_calcs_3.append(thermal.Q(Designs.get(i).get(j),i))
-                Q_calcs_3.append(thermal.Q(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K1,K_turn=K2,Calibration1=C1,Calibration2=C2,Calibration3=C3))
+                Q_calcs_3.append(thermal.Q(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K2,K_turn=K1,Calibration1=C1,Calibration2=C2,Calibration3=C3))
                 Q_actual_3.append(Designs.get(i).get(j).get('Q'))
 
     

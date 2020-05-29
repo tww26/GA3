@@ -3,6 +3,25 @@ import parametric as para
 
 # Note that N_baffle is the number of baffles per shell.
 
+
+BTC = {'L': 200e-3,
+     'N_baffle': 8,
+     'pitch_type': 'triangular',
+     'Y': 12e-3,
+     'bundle_array': [4,5,4],
+     'N_shell': 1,
+     'N_pass': 1,
+     'L_header': 50e-3,
+     'L_turner': 50e-3,
+     'breadth_gap': 0.01734,
+     'B_end': 0,
+     'Q': 16060,
+     'm_dot_hot': 0.485149,
+     'm_dot_cold': 0.5198025,
+     'category': 1
+     }
+
+
 """2020 Design"""
 
 Year = 2020
@@ -93,7 +112,8 @@ A = {'L': 209e-3,
      'Q': 12610,
      'm_dot_hot': 0.29604,
      'm_dot_cold': 0.41287,
-     'category': 2
+     'category': 2,
+     'total_mass': 1.15
      }
 
 B = {'L': 214e-3,
@@ -110,7 +130,8 @@ B = {'L': 214e-3,
      'Q': 12705,
      'm_dot_hot': 0.4574262,
      'm_dot_cold': 0.3712875,
-     'category': 1
+     'category': 1,
+     'total_mass': 1.03
      }
 
 C = {'L': 210e-3,
@@ -127,7 +148,8 @@ C = {'L': 210e-3,
      'Q': 14495,
      'm_dot_hot': 0.4643569,
      'm_dot_cold': 0.5861392,
-     'category': 2
+     'category': 2,
+     'total_mass': 1.09
      }
 
 D = {'L': 214e-3,
@@ -144,7 +166,8 @@ D = {'L': 214e-3,
      'Q': 15945,
      'm_dot_hot': 0.34802015,
      'm_dot_cold': 0.5693075,
-     'category': 3
+     'category': 3,
+     'total_mass': 1.16
      } # circular pitch type, need to revisit
 
 """E = {'L': 200e-3,
@@ -176,7 +199,8 @@ E = {'L': 350e-3,
      'Q': 16060,
      'm_dot_hot': 0.485149,
      'm_dot_cold': 0.5198025,
-     'category': 1
+     'category': 1,
+     'total_mass': 1.11
      }
 
 designs_2019 = {'A': A, 'B': B, 'C': C, 'D': D, 'E': E}
@@ -200,25 +224,27 @@ A = {'L': 129e-3,
      'Q': 11090,
      'm_dot_hot': 0.3534657,
      'm_dot_cold': 0.3297033,
-     'category': 3
+     'category': 3,
+     'total_mass': 0.898
      } #circular pitch
 
-#B = {'L': 218e-3,
-#     'N_baffle': 6,
-#     'pitch_type': 'triangular',
-#     'Y': 10e-3,
-#     'bundle_array': [2,4,6,6,4,2],
-#     'N_shell': 2,
-#     'N_pass': 2,
-#     'L_header': 50e-3,
-#     'L_turner': 21e-3,
-#     'breadth_gap': 0.019,
-#     'B_end': 0,
-#     'Q': 11610,
-#     'm_dot_hot': 0.4574262,
-#     'm_dot_cold': 0.2891092,
-#     'category': 1
-#     }
+B = {'L': 218e-3,
+     'N_baffle': 6,
+     'pitch_type': 'triangular',
+     'Y': 10e-3,
+     'bundle_array': [2,4,6,6,4,2],
+     'N_shell': 2,
+     'N_pass': 2,
+     'L_header': 50e-3,
+     'L_turner': 21e-3,
+     'breadth_gap': 0.019,
+     'B_end': 0,
+     'Q': 11610,
+     'm_dot_hot': 0.4574262,
+     'm_dot_cold': 0.2891092,
+     'category': 1,
+     'total_mass': 0.935
+     }
 
 C = {'L': 156e-3,
      'N_baffle': 5,
@@ -234,11 +260,12 @@ C = {'L': 156e-3,
      'Q': 11620,
      'm_dot_hot': 0.4594064,
      'm_dot_cold': 0.31831715,
-     'category': 1
+     'category': 1,
+     'total_mass': 0.894
      }
 
 designs_2018 = {'A': A, 'B': B, 'C': C}
-
+#designs_2018 = {'A': A,  'C': C}
 
 """2017 Designs"""
 
@@ -258,7 +285,8 @@ A = {'L': 249e-3,
      'Q': 9668,
      'm_dot_hot': 0.456,
      'm_dot_cold': 0.44825,
-     'category': 1
+     'category': 1,
+     'total_mass': 0.807
      }
 
 B = {'L': 221e-3,
@@ -275,7 +303,8 @@ B = {'L': 221e-3,
      'Q': 13813.5,
      'm_dot_hot': 0.422,
      'm_dot_cold': 0.304325,
-     'category': 1
+     'category': 1,
+     'total_mass': 1.021
      }
 
 C = {'L': 180e-3,
@@ -292,7 +321,8 @@ C = {'L': 180e-3,
      'Q': 11767,
      'm_dot_hot': 0.4285,
      'm_dot_cold': 0.4169,
-     'category': 2
+     'category': 2,
+     'total_mass': 0.878
      }
 
 D = {'L': 136e-3,
@@ -309,7 +339,8 @@ D = {'L': 136e-3,
      'Q': 13925.5,
      'm_dot_hot': 0.355,
      'm_dot_cold': 0.44255,
-     'category': 1
+     'category': 1,
+     'total_mass': 0.856
      }
 
 E = {'L': 120e-3,
@@ -326,10 +357,11 @@ E = {'L': 120e-3,
      'Q': 14866.5,
      'm_dot_hot': 0.385,
      'm_dot_cold': 0.377,
-     'category': 1
+     'category': 1,
+     'total_mass': 0.885
      }
 
-designs_2017 = {'A': A, 'B': B, 'C': C, 'D': D}
+designs_2017 = {'A': A, 'B': B, 'C': C, 'D': D, 'E': E}
 
 
 
