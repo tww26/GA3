@@ -152,7 +152,7 @@ C = {'L': 210e-3,
      'total_mass': 1.09
      }
 
-D = {'L': 214e-3,
+D = {'L': 181e-3,
      'N_baffle': 11,
      'pitch_type': 'triangular', #circular
      'Y': 12.25, #approximate
@@ -185,25 +185,25 @@ D = {'L': 214e-3,
 
 # Group E used vortex generators and so their data was replaced by Dr Longley's design
 
-E = {'L': 350e-3,
-     'N_baffle': 14,
-     'pitch_type': 'triangular',
-     'Y': 12e-3,
-     'bundle_array': [4,5,4],
-     'N_shell': 1,
-     'N_pass': 1,
-     'L_header': 50e-3,
-     'L_turner': 50e-3,
-     'breadth_gap': 0.01734,
-     'B_end': 0,
-     'Q': 16060,
-     'm_dot_hot': 0.485149,
-     'm_dot_cold': 0.5198025,
-     'category': 1,
-     'total_mass': 1.11
-     }
+#E = {'L': 350e-3,
+#     'N_baffle': 14,
+#     'pitch_type': 'triangular',
+#     'Y': 12e-3,
+#     'bundle_array': [4,5,4],
+#     'N_shell': 1,
+#     'N_pass': 1,
+#     'L_header': 50e-3,
+#     'L_turner': 50e-3,
+#     'breadth_gap': 0.01734,
+#     'B_end': 0,
+#     'Q': 16060,
+#     'm_dot_hot': 0.485149,
+#     'm_dot_cold': 0.5198025,
+#     'category': 1,
+#     'total_mass': 0.898
+#     }
 
-designs_2019 = {'A': A, 'B': B, 'C': C, 'D': D, 'E': E}
+designs_2019 = {'A': A, 'B': B, 'C': C, 'D': D}#, 'E': E}
 
 
 """2018 Designs"""
@@ -228,7 +228,7 @@ A = {'L': 129e-3,
      'total_mass': 0.898
      } #circular pitch
 
-B = {'L': 218e-3,
+B = {'L': 118e-3,
      'N_baffle': 6,
      'pitch_type': 'triangular',
      'Y': 10e-3,

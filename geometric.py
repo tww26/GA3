@@ -53,7 +53,7 @@ def check_L_vs_baffle(geometry):
     else:
         return True
 
-def check_mass_total(geometry,display=True):
+def check_mass_total(geometry,display=False):
     """"TO BE FULLY GENERALISED TO n-shell m-pass"""
     # A_baffle needs to take into account non-intersecting tubes
     # Add flow separaters for mulitishell
@@ -90,7 +90,7 @@ def check_mass_total(geometry,display=True):
             print('mass_total to large: ', round(mass_total, 3), '>', mass_total_max)
         return False
 
-def f_mass_total(geometry,display=True):
+def f_mass_total(geometry,display=False):
     """"TO BE FULLY GENERALISED TO n-shell m-pass"""
     # A_baffle needs to take into account non-intersecting tubes
     # Add flow separaters for mulitishell
@@ -117,7 +117,7 @@ def f_mass_total(geometry,display=True):
         print('mass_total: ....... ',  mass_total)
         print('________________________________________')
 
-    return mass_total
+    return mass_total/1.09
 
 
 def check_bundle_fit(geometry):
