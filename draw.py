@@ -11,6 +11,7 @@ from designs import *
 import Thermal_Functions as thermal
 import hydraulic
 import numpy as np
+import statistics
 
 def cross_section(geometry):
     """Plot the cross-section"""
@@ -42,10 +43,6 @@ def cross_section(geometry):
 
 def plot_difference():
     """Plots and prints the differences between the designs of the different years"""
-    
-    N_17 = len(Designs.get('2017'))
-    N_18 = len(Designs.get('2018'))
-    N_19 = len(Designs.get('2019'))
     
     # Initialise some lists
     Q_calcs_1 = [] # What we predict
@@ -114,9 +111,10 @@ def plot_difference():
     plt.xlabel('Measured Heat Transfer (W)')
     #plt.legend()
     plt.grid()
-    plt.plot()
+    plt.show()
     
     # Print some results
+    dev_list=[]
     print("Category 1 % Differences")
     avgdiff = []
     Q_actual = Q_actual_1
@@ -124,6 +122,7 @@ def plot_difference():
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         avgdiff.append(abs(percent_diff))
+        dev_list.append(Q_calcs[i]-Q_actual[i])
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
@@ -135,6 +134,7 @@ def plot_difference():
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         avgdiff.append(abs(percent_diff))
+        dev_list.append(Q_calcs[i]-Q_actual[i])
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
@@ -147,10 +147,16 @@ def plot_difference():
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         avgdiff.append(abs(percent_diff))
+        dev_list.append(Q_calcs[i]-Q_actual[i])
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
+<<<<<<< Updated upstream
 
+=======
+    print("Standard Dev of Differences: {}".format(statistics.stdev(dev_list)))
+    
+>>>>>>> Stashed changes
 def plot_mc_difference():
     """Plots and prints the differences between the designs of the different years"""
 
@@ -218,9 +224,15 @@ def plot_mc_difference():
     plt.xlabel('Measured Cold Mass Flow Rate (kg/s)')
     #plt.legend()
     plt.grid()
+<<<<<<< Updated upstream
     plt.plot()
 
+=======
+    plt.show()
+    
+>>>>>>> Stashed changes
     # Print some results
+    dev_list=[]
     print("Category 1 % Differences")
     avgdiff = []
     Q_actual = Q_actual_1
@@ -228,6 +240,7 @@ def plot_mc_difference():
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         avgdiff.append(abs(percent_diff))
+        dev_list.append(Q_calcs[i]-Q_actual[i])
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
@@ -239,6 +252,7 @@ def plot_mc_difference():
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         avgdiff.append(abs(percent_diff))
+        dev_list.append(Q_calcs[i]-Q_actual[i])
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
@@ -251,10 +265,16 @@ def plot_mc_difference():
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         avgdiff.append(abs(percent_diff))
+        dev_list.append(Q_calcs[i]-Q_actual[i])
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
+<<<<<<< Updated upstream
 
+=======
+    print("Standard Dev of Differences: {}".format(statistics.stdev(dev_list)))
+    
+>>>>>>> Stashed changes
 def plot_mh_difference():
     """Plots and prints the differences between the designs of the different years"""
 
@@ -323,8 +343,14 @@ def plot_mh_difference():
     #plt.legend()
     plt.grid()
     plt.show()
+<<<<<<< Updated upstream
 
     # Print some results
+=======
+    
+        # Print some results
+    dev_list=[]
+>>>>>>> Stashed changes
     print("Category 1 % Differences")
     avgdiff = []
     Q_actual = Q_actual_1
@@ -332,6 +358,7 @@ def plot_mh_difference():
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         avgdiff.append(abs(percent_diff))
+        dev_list.append(Q_calcs[i]-Q_actual[i])
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
@@ -343,6 +370,7 @@ def plot_mh_difference():
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         avgdiff.append(abs(percent_diff))
+        dev_list.append(Q_calcs[i]-Q_actual[i])
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
@@ -355,10 +383,16 @@ def plot_mh_difference():
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         avgdiff.append(abs(percent_diff))
+        dev_list.append(Q_calcs[i]-Q_actual[i])
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
+<<<<<<< Updated upstream
 
+=======
+    print("Standard Dev of Differences: {}".format(statistics.stdev(dev_list)))
+    
+>>>>>>> Stashed changes
 def plot_mass_difference():
     """Plots and prints the differences between the designs of the different years"""
 
@@ -430,8 +464,14 @@ def plot_mass_difference():
     #plt.legend()
     plt.grid()
     plt.show()
+<<<<<<< Updated upstream
 
     # Print some results
+=======
+    
+        # Print some results
+    dev_list=[]
+>>>>>>> Stashed changes
     print("Category 1 % Differences")
     avgdiff = []
     Q_actual = Q_actual_1
@@ -439,6 +479,7 @@ def plot_mass_difference():
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         avgdiff.append(abs(percent_diff))
+        dev_list.append(Q_calcs[i]-Q_actual[i])
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
@@ -450,6 +491,7 @@ def plot_mass_difference():
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         avgdiff.append(abs(percent_diff))
+        dev_list.append(Q_calcs[i]-Q_actual[i])
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
@@ -462,11 +504,18 @@ def plot_mass_difference():
     for i in range(len(Q_actual)):
         percent_diff = 100*(Q_calcs[i]-Q_actual[i])/Q_actual[i]
         avgdiff.append(abs(percent_diff))
+        dev_list.append(Q_calcs[i]-Q_actual[i])
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
+<<<<<<< Updated upstream
 
 
+=======
+    print("Standard Dev of Differences: {}".format(statistics.stdev(dev_list)))
+    
+plot_difference()
+>>>>>>> Stashed changes
 plot_mh_difference()
 plot_mc_difference()
 
