@@ -55,12 +55,12 @@ def plot_difference():
 
     
     # Values
-    K1 = 5.21461099
-    K2 = 4.4899305
-    K3 = 1.29030439
-    C1 = 1.18
+    K1 = 5.30261345
+    K2 = 4.52516239
+    K3 = 1.38894101
+    C1 = 1.36
     C2 = 0.87
-    C3 = 1.19
+    C3 = 1.17
     
     # Fill the lists per Design category
     for i in Designs:
@@ -105,6 +105,11 @@ def plot_difference():
     plt.scatter(Q_actual_1,Q_calcs_1,label="Category 1",color='b')
     plt.scatter(Q_actual_2,Q_calcs_2,label="Category 2",color='b')
     plt.scatter(Q_actual_3,Q_calcs_3,label="Category 3",color='b')
+    
+    Qx = [thermal.Q(BTC,2020,K_turn=K1, K_nozzle=K2, K_baffle_bend=K3, Calibration1=C1,Calibration2=C2, Calibration3=C3)]
+    Qy = [thermal.Q(BTC,2020,K_turn=K1, K_nozzle=K2, K_baffle_bend=K3, Calibration1=C1,Calibration2=C2, Calibration3=C3)]
+    dev = [1293]
+    plt.errorbar(Qx, Qy, xerr=dev, fmt='o', color='r')
 
     # Plotting magic
     plt.title('Measuring difference of Pair 4 code to actual value')
@@ -171,9 +176,9 @@ def plot_mc_difference():
 
 
     # Values
-    K1 = 5.21461099
-    K2 = 4.4899305
-    K3 = 1.29030439
+    K1 = 5.30261345
+    K2 = 4.52516239
+    K3 = 1.38894101
 
     # Fill the lists per Design category
     for i in Designs:
@@ -218,6 +223,11 @@ def plot_mc_difference():
     plt.scatter(Q_actual_1,Q_calcs_1,label="Category 1",color='b')
     plt.scatter(Q_actual_2,Q_calcs_2,label="Category 2",color='b')
     plt.scatter(Q_actual_3,Q_calcs_3,label="Category 3",color='b')
+    
+    Qx = [hydraulic.iterate_c(BTC,2020,K_baffle_bend=K3,K_nozzle=K2)]
+    Qy = [hydraulic.iterate_c(BTC,2020,K_baffle_bend=K3,K_nozzle=K2)]
+    dev = [0.06]
+    plt.errorbar(Qx, Qy, xerr=dev, fmt='o', color='r')
 
     # Plotting magic
     plt.title('Measuring difference of Pair 4 code to actual value')
@@ -283,9 +293,9 @@ def plot_mh_difference():
 
 
     # Values
-    K1 = 5.21461099
-    K2 = 4.4899305
-    K3 = 1.29030439
+    K1 = 5.30261345
+    K2 = 4.52516239
+    K3 = 1.38894101
 
     # Fill the lists per Design category
     for i in Designs:
@@ -330,6 +340,11 @@ def plot_mh_difference():
     plt.scatter(Q_actual_1,Q_calcs_1,label="Category 1",color='b')
     plt.scatter(Q_actual_2,Q_calcs_2,label="Category 2",color='b')
     plt.scatter(Q_actual_3,Q_calcs_3,label="Category 3",color='b')
+    
+    Qx = [hydraulic.iterate_h(BTC,2020,K_turn=K1,K_nozzle=K2)]
+    Qy = [hydraulic.iterate_h(BTC,2020,K_turn=K1,K_nozzle=K2)]
+    dev = [0.01]
+    plt.errorbar(Qx, Qy, xerr=dev, fmt='o', color='r')
 
     # Plotting magic
     plt.title('Measuring difference of Pair 4 code to actual value')

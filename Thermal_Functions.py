@@ -30,42 +30,33 @@ def evaluate_c(geometry):
     else:
         return 0.2
 
-
 def f_Nu_inner(Re_inner, Pr, Calibration2=1):
     Nu_inner = Calibration2*0.023 * (Re_inner**0.8) * (Pr**0.3)
     return Nu_inner
-
 
 def f_h_inner(lambda_water, d_inner, Nu_inner):
     h_inner = (Nu_inner * lambda_water) / d_inner
     return h_inner
 
-
 def f_Nu_outer(Re_outer, Pr, c, Calibration1=1, Calibration3=1):
     Nu_outer = Calibration1 * c * (Re_outer**(0.6*Calibration3)) * (Pr**0.3)
     return Nu_outer
-
-
 
 def f_h_outer(lambda_water, d_outer, Nu_outer):
     h_outer = (Nu_outer * lambda_water) / d_outer
     return h_outer
 
-
 def f_U(h_inner, h_outer, d_inner, d_outer, lambda_tube):
     U = (1/h_inner + d_inner*np.log(d_outer/d_inner)/(2*lambda_tube) + d_inner/(d_outer * h_outer) + Rf)**-1
     return U
-
 
 def f_Q_dot_cold(m_dot_c, cp, T_in_cold, T_out_cold):
     Q_dot_cold = m_dot_c * cp * (T_out_cold - T_in_cold)
     return Q_dot_cold
 
-
 def f_Q_dot_hot(m_dot_h, cp, T_in_hot, T_out_hot):
     Q_dot_hot = m_dot_h * cp * (T_in_hot - T_out_hot)
     return Q_dot_hot
-
 
 def f_dTlm(T_in_hot, T_out_hot, T_in_cold, T_out_cold):
     if (T_in_hot - T_out_cold) / (T_out_hot - T_in_cold) == 1:
@@ -77,16 +68,13 @@ def f_dTlm(T_in_hot, T_out_hot, T_in_cold, T_out_cold):
     dTlm = ((T_in_hot - T_out_cold) - (T_out_hot - T_in_cold)) / np.log((T_in_hot - T_out_cold) / (T_out_hot - T_in_cold))
     return dTlm
 
-
 def f_Q_dot_temp(U, A, F, dTlm):
     Q_dot_temp = U * A * F * dTlm
     return Q_dot_temp
 
-
 def f_T_out_cold(Q_dot_cold, m_dot_c, cp, T_in_cold):
     T_out_cold = Q_dot_cold / (m_dot_c * cp) + T_in_cold
     return T_out_cold
-
 
 def f_T_out_hot(Q_dot_hot, m_dot_h, cp, T_in_hot):
     T_out_hot = T_in_hot - Q_dot_hot / (m_dot_h * cp)

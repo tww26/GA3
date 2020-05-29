@@ -4,31 +4,57 @@ import hydraulic
 import Thermal_Functions as thermal
 #import configure
 from designs import *
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import geometric as geom
 #import draw as draw
 #import numpy as np
 #import optimise 
 
-L = 180e-3
-N_baffle = 7
-pitch_type = "square"
-Y = 13e-3
-bundle_array = [4,4,4,4]
-N_shell = 1
-N_pass = 2
-L_header = 0.025
-breadth_gap = 0.01
-B_end = 27.25e-3
-
-geometry = {'L': L,'N_baffle': N_baffle,'pitch_type': pitch_type,'Y': Y,'bundle_array': bundle_array, 'N_shell': N_shell, 'N_pass': N_pass, 'L_header': L_header, 'breadth_gap': breadth_gap, 'B_end':B_end}
-
-print("MASS IS )
-geom.check_mass_total(designs_2018.get('B'),display=True)
+#L = 180e-3
+#N_baffle = 7
+#pitch_type = "square"
+#Y = 13e-3
+#bundle_array = [4,4,4,4]
+#N_shell = 1
+#N_pass = 2
+#L_header = 0.025
+#breadth_gap = 0.01
+#B_end = 27.25e-3
+#
+#geometry = {'L': L,'N_baffle': N_baffle,'pitch_type': pitch_type,'Y': Y,'bundle_array': bundle_array, 'N_shell': N_shell, 'N_pass': N_pass, 'L_header': L_header, 'breadth_gap': breadth_gap, 'B_end':B_end}
 
 
 
+#K1 = 5.30261345
+#K2 = 4.52516239
+#K3 = 1.38894101
+#C1 = 1.36
+#C2 = 0.87
+#C3 = 1.17
+#print("{} kg".format(geom.f_mass_total(BTC,display=False)))
+#print("{} W".format(thermal.Q(BTC,2020,K_turn=K1, K_nozzle=K2, K_baffle_bend=K3, Calibration1=C1,Calibration2=C2, Calibration3=C3)))
+#print("{} kg/s cold".format(hydraulic.iterate_c(BTC,2020, K_nozzle=K2, K_baffle_bend=K3)))
+#print("{} kg/s hot".format(hydraulic.iterate_h(BTC,2020,K_turn=K1, K_nozzle=K2)))
 
+As = []; Qs = []
+
+for j in Designs:
+    for i in Designs.get(j):
+        K1 = 4.609375
+        K2 = 3.9421875
+        K3 = 1.346875
+        C1 = 1.082
+        C2 = 0.86
+        C3 = 1.21
+        As.append(hydraulic.give_A_sh(Designs.get(j).get(i)))
+        Qs.append(thermal.Q(Designs.get(j).get(i), j, K_turn=K1, K_nozzle=K2, K_baffle_bend=K3, Calibration1=C1,Calibration2=C2, Calibration3=C3))
+        
+plt.scatter(As,Qs)
+plt.xlim(xmin=0,xmax=0.0012)
+plt.grid()
+plt.xlabel("$A_{sh}$ ($m^2$)")
+plt.ylabel("Heat Rate (W)")
+plt.show()
 
 
 

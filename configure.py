@@ -98,12 +98,12 @@ def K_config_2_ave():
 def K_config_3():
     """Finds the optimum of the average, not vice versa"""
     
-    K_nozzle_list = [4.609375]
-    K_turn_list = [3.9421875]
-    K_baffle_bend_list = [1.346875]
-    Calibration1_list = np.linspace(1.17,1.2,4)
-    Calibration2_list = np.linspace(0.84,0.88,5)
-    Calibration3_list = np.linspace(1.17,1.22,6)
+    K_nozzle_list = [4.52516239]
+    K_turn_list = [5.30261345]
+    K_baffle_bend_list = [1.38894101]
+    Calibration1_list = np.linspace(1.36,1.4,9)
+    Calibration2_list = np.linspace(0.87,0.89,7)
+    Calibration3_list = np.linspace(1.16,1.18,3)
     
     Absolute_Difference = 10e4
     Absolute_Difference_2 = 10e4
