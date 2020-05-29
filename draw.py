@@ -12,6 +12,7 @@ import Thermal_Functions as thermal
 import hydraulic
 import numpy as np
 import statistics
+import geometric
 
 def cross_section(geometry):
     """Plot the cross-section"""
@@ -151,12 +152,12 @@ def plot_difference():
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
-<<<<<<< Updated upstream
 
-=======
+
+
     print("Standard Dev of Differences: {}".format(statistics.stdev(dev_list)))
     
->>>>>>> Stashed changes
+
 def plot_mc_difference():
     """Plots and prints the differences between the designs of the different years"""
 
@@ -224,13 +225,10 @@ def plot_mc_difference():
     plt.xlabel('Measured Cold Mass Flow Rate (kg/s)')
     #plt.legend()
     plt.grid()
-<<<<<<< Updated upstream
     plt.plot()
-
-=======
     plt.show()
     
->>>>>>> Stashed changes
+
     # Print some results
     dev_list=[]
     print("Category 1 % Differences")
@@ -269,12 +267,9 @@ def plot_mc_difference():
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
-<<<<<<< Updated upstream
-
-=======
     print("Standard Dev of Differences: {}".format(statistics.stdev(dev_list)))
     
->>>>>>> Stashed changes
+
 def plot_mh_difference():
     """Plots and prints the differences between the designs of the different years"""
 
@@ -343,14 +338,12 @@ def plot_mh_difference():
     #plt.legend()
     plt.grid()
     plt.show()
-<<<<<<< Updated upstream
 
     # Print some results
-=======
+
     
         # Print some results
     dev_list=[]
->>>>>>> Stashed changes
     print("Category 1 % Differences")
     avgdiff = []
     Q_actual = Q_actual_1
@@ -387,12 +380,9 @@ def plot_mh_difference():
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
-<<<<<<< Updated upstream
-
-=======
     print("Standard Dev of Differences: {}".format(statistics.stdev(dev_list)))
     
->>>>>>> Stashed changes
+
 def plot_mass_difference():
     """Plots and prints the differences between the designs of the different years"""
 
@@ -419,16 +409,16 @@ def plot_mass_difference():
             category = Designs.get(i).get(j).get('category')
             if category == 1:
 #                Q_calcs_1.append(thermal.Q(Designs.get(i).get(j),i))
-                Q_calcs_1.append(thermal.Q(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K2,K_turn=K1,Calibration1=C1,Calibration2=C2,Calibration3=C3))
-                Q_actual_1.append(Designs.get(i).get(j).get('Q'))
+                Q_calcs_1.append(geometric.f_mass_total(Designs.get(i).get(j)))
+                Q_actual_1.append(Designs.get(i).get(j).get('total_mass'))
             elif category == 2:
 #                Q_calcs_2.append(thermal.Q(Designs.get(i).get(j),i))
-                Q_calcs_2.append(thermal.Q(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K2,K_turn=K1,Calibration1=C1,Calibration2=C2,Calibration3=C3))
-                Q_actual_2.append(Designs.get(i).get(j).get('Q'))
+                Q_calcs_2.append(geometric.f_mass_total(Designs.get(i).get(j)))
+                Q_actual_2.append(Designs.get(i).get(j).get('total_mass'))
             else:
 #                Q_calcs_3.append(thermal.Q(Designs.get(i).get(j),i))
-                Q_calcs_3.append(thermal.Q(Designs.get(i).get(j),i,K_baffle_bend=K3,K_nozzle=K2,K_turn=K1,Calibration1=C1,Calibration2=C2,Calibration3=C3))
-                Q_actual_3.append(Designs.get(i).get(j).get('Q'))
+                Q_calcs_3.append(geometric.f_mass_total(Designs.get(i).get(j)))
+                Q_actual_3.append(Designs.get(i).get(j).get('total_mass'))
 
     
     #Plot a y = x line
@@ -459,19 +449,14 @@ def plot_mass_difference():
 
     # Plotting magic
     plt.title('Measuring difference of Pair 4 code to actual value')
-    plt.ylabel('Pair 4 Predicted Heat Transfer (W)')
-    plt.xlabel('Measured Heat Transfer (W)')
+    plt.ylabel('Pair 4 Predicted Total Mass (kg)')
+    plt.xlabel('Measured Mass (kg)')
     #plt.legend()
     plt.grid()
     plt.show()
-<<<<<<< Updated upstream
-
-    # Print some results
-=======
     
-        # Print some results
+# Print some results
     dev_list=[]
->>>>>>> Stashed changes
     print("Category 1 % Differences")
     avgdiff = []
     Q_actual = Q_actual_1
@@ -508,14 +493,10 @@ def plot_mass_difference():
         print(percent_diff)
     avgdiff = sum(avgdiff)/len(avgdiff)
     print("AVERAGE ABS: {}%".format(avgdiff))
-<<<<<<< Updated upstream
-
-
-=======
     print("Standard Dev of Differences: {}".format(statistics.stdev(dev_list)))
     
 plot_difference()
->>>>>>> Stashed changes
 plot_mh_difference()
 plot_mc_difference()
+plot_mass_difference()
 
