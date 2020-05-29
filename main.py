@@ -40,6 +40,9 @@ for i in designs_2020:
     Q = thermal.Q(designs_2020.get(i), year, K_turn=K1, K_nozzle=K2, K_baffle_bend=K3, Calibration1=C1,Calibration2=C2, Calibration3=C3)
     E = thermal.E(designs_2020.get(i), year, K_turn=K1, K_nozzle=K2, K_baffle_bend=K3, Calibration1=C1,Calibration2=C2, Calibration3=C3)
     print("{}: Q={}W, E={}%".format(i,int(round(Q,0)),int(round(E*100,0))))
+    print("Max: {}W, Min: {}W".format(Q*1.17,Q*0.83))
+    hydraulic.hydraulic_plot_c(designs_2020.get(i),year,K_baffle_bend=K3,K_nozzle=K1)
+
 
 
 
